@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI">
+
+    <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
+
+
+    <Style TargetType="Label" Class="chocoLabel">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource TitleDark}}" />
+    </Style>
+
+    <Style TargetType="Label" Class="chocoItemLabel">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric }}" />
+    </Style>
+
+    <Style TargetType="Label" Class="chocoItemDateLabel">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource LightGray }}" />
+    </Style>
+
+
+    <Style TargetType="Button" Class="chocoButton">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Bric}, Dark=Black}" />
+        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric}}" />
+        <Setter Property="BorderWidth" Value="{AppThemeBinding Light=0, Dark=4}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric}}" />
+    </Style>
+
+    <Style TargetType="Button" Class="chocoAbsent">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Orange}, Dark={StaticResource Black}}" />
+        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Orange}}" />
+        <Setter Property="BorderWidth" Value="{AppThemeBinding Light=0, Dark=1}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark={StaticResource Orange}}" />
+        <Setter Property="FontSize" Value="10" />
+    </Style>
+
+
+    <Style TargetType="Border" Class="chocoBorder">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Bric}, Dark=Black}" />
+        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric}}" />
+        <Setter Property="StrokeThickness" Value="{AppThemeBinding Light=0, Dark=4}" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+        <Setter Property="Padding" Value="10" />
+    </Style>
+
+
+    <Style TargetType="Border" Class="chocoOuterBorderCollectionView">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Stroke" Value="{AppThemeBinding Light=Transparent, Dark={StaticResource BorderDark}}" />
+        <Setter Property="StrokeThickness" Value="{AppThemeBinding Light=0, Dark=1}" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 20" />
+        <Setter Property="Padding" Value="10" />
+    </Style>
+
+
+    <Style TargetType="ContentPage" ApplyToDerivedTypes="True" Class="chocoPage">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
+    </Style>
+
+    
+    <Style TargetType="CollectionView" ApplyToDerivedTypes="True" Class="chocoCollectionView">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
+    </Style>
+
+
+    <Style TargetType="skia:SKLottieView" Class="chocoAnim">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource Black}}" />
+    </Style>
+    
+
+    <Style TargetType="Label" Class="chocoLabelShell">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource TitleDark}}" />
+    </Style>
+
+</ResourceDictionary>

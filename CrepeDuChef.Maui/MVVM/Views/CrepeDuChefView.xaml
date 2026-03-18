@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CrepeDuChef.Maui.MVVM.Views.CrepeDuChefView"
+             xmlns:trad="clr-namespace:CrepeDuChef.Maui.Resources.languages"
+             xmlns:vm="clr-namespace:CrepeDuChef.Maui.MVVM.ViewModels"
+             xmlns:model_ui="clr-namespace:CrepeDuChef.Maui.MVVM.Models"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+             Title=""
+             Shell.NavBarIsVisible="True"
+             x:DataType="vm:CrepeDuChefViewModel"
+             class="chocoPage">
+
+
+    <Grid RowDefinitions="auto,.18*,.5*"
+          ColumnDefinitions=".8*,.2*"
+          HorizontalOptions="Center">
+
+        <Label Text="{Static trad:Traduction.CrepeDuChef_title}"
+               VerticalOptions="Start" 
+               HorizontalOptions="Center" 
+               FontSize="50"
+               Margin="0,20"
+               FontAttributes="Bold"
+               FontFamily="SalonDuChocolat"
+               class="chocoLabel"/>
+
+        <Grid Grid.Row="1" 
+                RowDefinitions="auto, auto">
+
+            <Button Grid.Row="0"
+                HeightRequest="80"
+                class="chocoButton"
+                CornerRadius="20"
+                Text="{Static trad:Traduction.WhoIsTheChef}"
+                LineBreakMode="WordWrap"
+                FontFamily="Swirly"
+                FontSize="40"
+                IsEnabled="{Binding CanUpdate}"
+                Command="{Binding GetNewChefCommand}"
+                IsVisible="{Binding CanUpdate}"
+                    Margin="0,0,0,5"/>
+            
+            <Button Grid.Row="1"
+                    Text="{Static trad:Traduction.UsersAway}"
+                    Command="{Binding SelectAvailableUsersCommand}"
+                    HorizontalOptions="End"
+                    class="chocoAbsent"/>
+
+        </Grid>
+
+        <ActivityIndicator Grid.Row="1" 
+                           Color="#FADE05"
+                           HeightRequest="85"
+                           WidthRequest="85"
+                           IsRunning="{Binding IsUpdating}"/>
+
+        <VerticalStackLayout Grid.Row="2">
+            <!--<uranium:ExpanderView>
+                <uranium:ExpanderView.Header>
+                    <Label Text="Section 1" />
+                </uranium:ExpanderView.Header>
+
+                <Label Margin="10" Text="This is the ExpanderView's body. It is hidden by default until user clicks/taps the header. The body automatically is shown when user interacts, no custom implementation required. It's animated by default." />
+            </uranium:ExpanderView>-->
+
+            <Border 
+                Margin="10"
+                class="chocoOuterBorderCollectionView"
+                HeightRequest="350">
+
+                <CollectionView ItemsSource="{Binding CrepeHistory}">
+
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model_ui:CrepeDisplay">
+
+                            <Border class="chocoBorder">
+
+                                <Grid RowDefinitions="auto,auto">
+
+                                    <Label Text="{Binding Name}"
+                                       FontFamily="Ananda"
+                                       FontSize="15"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="Fill"
+                                       class ="chocoItemLabel"/>
+
+                                    <Grid Grid.Row="1"
+                                      RowDefinitions="auto,auto"
+                                      HorizontalOptions="Fill">
+
+                                        <Label Grid.Row="0"
+                                           Text="{Binding DateLocal, StringFormat='{}{0:dddd dd  MMMM yyyy}'}" 
+                                           FontSize="10"
+                                           FontAttributes="Italic"
+                                           VerticalOptions="Center" 
+                                           HorizontalOptions="End"
+                                           class="chocoItemDateLabel"/>
+
+                                        <Label Grid.Row="1"
+                                               Text="{Binding DateLocal, StringFormat='{}{0:HH}h{0:mm}'}" 
+                                               FontSize="10"
+                                               FontAttributes="Italic"
+                                               VerticalOptions="Center" 
+                                               HorizontalOptions="End"
+                                               class="chocoItemDateLabel"/>
+                                    </Grid>
+                                </Grid>
+
+                            </Border>
+
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+
+            </Border>
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CrepeDuChef.Maui.MVVM.Views.UserSettingView"
+             xmlns:trad="clr-namespace:CrepeDuChef.Maui.Resources.languages"
+             xmlns:vm="clr-namespace:CrepeDuChef.Maui.MVVM.ViewModels"
+             xmlns:model_ui="clr-namespace:CrepeDuChef.Maui.MVVM.Models"
+             xmlns:model_common="clr-namespace:CrepeDuChef.Common.DTOs;assembly=CrepeDuChef.Common"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="vm:UserSettingViewModel"
+             Title=""
+             Shell.NavBarIsVisible="True"
+             class="chocoPage">
+
+    <Grid RowDefinitions=".2*,*">
+        <Label Text="{Static trad:Traduction.UserSetting}"
+               FontSize="50"
+               FontAttributes="Bold"
+               VerticalOptions="Center" 
+               HorizontalOptions="Center"
+               Margin="0,20,0,20"
+               FontFamily="SalonDuChocolat"
+               class="chocoLabel"/>
+
+        <Grid Grid.Row="1"
+              RowDefinitions="auto,*"
+              HeightRequest="500">
+
+            <Button Grid.Row="0"
+                    WidthRequest="250"
+                    HeightRequest="100"
+                    LineBreakMode="WordWrap"
+                    Margin="0,10,0,50"
+                    FontSize="Large"
+                    FontAttributes="Bold"
+                    Text="{Static trad:Traduction.AddUser}"
+                    CornerRadius="10"
+                    class="chocoButton"
+                    Command="{Binding AddUserCommand}"/>
+
+            <CollectionView Grid.Row="1"
+                            
+                            HorizontalOptions="Center"
+                            class="chocoCollectionView"
+                            ItemsSource="{Binding Users}"
+                            SelectedItem="{Binding SelectedUser}"
+                            SelectionMode="Single"
+                            
+                            SelectionChangedCommand="{Binding UserUpdateCommand}">
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.EmptyView>
+                    <Border 
+                            class="chocoBorder"
+                            StrokeShape="RoundRectangle 10"
+                            WidthRequest="200"
+                            HeightRequest="200">
+
+                        <Label Text="No Data"
+                               class="chocoItemLabel"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               HorizontalOptions="Center" 
+                               VerticalOptions="Center"/>
+                    </Border>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model_common:UserDto">
+                        <Border class="chocoBorder"
+                                Padding="5" 
+                                StrokeShape="RoundRectangle 10"
+                                HorizontalOptions="Center"
+                                WidthRequest="200">
+                            <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                <Label Text="{Binding FirstName}" HorizontalOptions="Center" VerticalOptions="Center" class ="chocoItemLabel"/>
+                                <Label Text=" "/>
+                                <Label Text="{Binding LastName}" HorizontalOptions="Center" VerticalOptions="Center" class ="chocoItemLabel"/>
+                            </HorizontalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </Grid>
+
+    </Grid>
+
+
+</ContentPage>

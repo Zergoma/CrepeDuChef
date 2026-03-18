@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/UI/">
+    <Project Path="CrepeDuChef.Maui/CrepeDuChef.Maui.csproj">
+      <Deploy />
+    </Project>
+  </Folder>
+  <Project Path="CrepeDuChef.Application/CrepeDuChef.Application.csproj" Id="ec9b46f5-0191-4571-a3ce-3e564ba6fd3c" />
+  <Project Path="CrepeDuChef.Common/CrepeDuChef.Common.csproj" Id="819b2f3d-15cb-42d0-8d05-65ee47b58841" />
+  <Project Path="CrepeDuChef.Infrastructure/CrepeDuChef.Infrastructure.csproj" Id="3bed3790-52e5-4308-9963-84c0f12cc63c" />
+  <Project Path="CrepeDuChef.Tests/CrepeDuChef.Tests.csproj" Id="8cf615a1-73c7-4f32-91b9-46b067a1f287" />
+</Solution>

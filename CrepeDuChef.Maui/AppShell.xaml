@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="CrepeDuChef.Maui.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:CrepeDuChef.Maui"
+    xmlns:view="clr-namespace:CrepeDuChef.Maui.MVVM.Views"
+    xmlns:trad="clr-namespace:CrepeDuChef.Maui.Resources.languages"
+    xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+    Title="CrepeDuChef.Maui"
+    FlyoutWidth="150"
+    FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource Black}}"
+    Shell.BackgroundColor="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource Black}}"
+    Shell.ForegroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric}}"
+    >
+
+    <Shell.FlyoutHeader>
+        <skia:SKLottieView Source="BingePanda.json" RepeatCount="-1" HeightRequest="200" class="chocoAnim"/>
+    </Shell.FlyoutHeader>
+
+    <Shell.ItemTemplate>
+        <DataTemplate>
+
+            <Label Text="{Binding Title}"
+                   class="chocoLabelShell"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   FontSize="Medium"
+                   FontFamily="SalonDuChocolat"
+                   Padding="10"/>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+
+
+    <FlyoutItem Title="{Static trad:Traduction.CrepeDuChef_title}">
+        <!--<Tab>-->
+        <ShellContent Title="{Static trad:Traduction.CrepeDuChef_title}"
+                      Route="CrepeDuChefView"
+                      ContentTemplate="{DataTemplate view:CrepeDuChefView}"/>
+        <!--</Tab>-->
+    </FlyoutItem>
+
+    <FlyoutItem Title="{Static trad:Traduction.UserSetting}">
+        <!--<Tab>-->
+        <ShellContent Title="{Static trad:Traduction.UserSetting}"
+                      Route="UserSettingView"
+                      ContentTemplate="{DataTemplate view:UserSettingView}"/>
+        <!--</Tab>-->
+    </FlyoutItem>
+
+
+
+</Shell>
