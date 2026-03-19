@@ -1,8 +1,13 @@
-﻿using CrepeDuChef.Common.DTOs;
+﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Extensions;
+using CommunityToolkit.Maui.Views;
+using CrepeDuChef.Common.DTOs;
 using CrepeDuChef.Common.Interfaces;
+using CrepeDuChef.Common.Models;
+using CrepeDuChef.Maui.PopupElements;
 using CrepeDuChef.Maui.Resources.languages;
-using UXDivers.Popups.Maui.Controls;
-using UXDivers.Popups.Services;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace CrepeDuChef.Maui.Services
 {
@@ -11,19 +16,33 @@ namespace CrepeDuChef.Maui.Services
         private readonly int _delayBetweenPopup = 300;
         private readonly SemaphoreSlim _popupLock = new SemaphoreSlim(1, 1);
 
-        private readonly IServiceProvider _provider;
         private readonly IUserFormResultMapper _mapper;
-        private readonly IUserPopupFactory<FormPopup, UserDto> _popupFactory;
+        private readonly IUserPopupFactory<Popup, UserDto> _popupFactory;
 
-        // UXDivers.Popups
-        private IPopupService PopupService => _provider.GetRequiredService<IPopupService>();
+        private static Color OverlayColor =>
+            App.Current!.RequestedTheme == AppTheme.Dark
+                ? Colors.Black.WithAlpha(0.5f)
+                : Colors.White.WithAlpha(0.5f);
+
+        private PopupOptions generateOptions()
+        {
+            return new PopupOptions
+            {
+                Shape = new RoundRectangle
+                {
+                    CornerRadius = new CornerRadius(12),
+                    Stroke = Colors.Transparent,
+                    StrokeThickness = 0
+                },
+                Shadow = null,
+                PageOverlayColor = OverlayColor
+            };
+        }
 
         public UserDtoPopupService(
-            IServiceProvider provider,
             IUserFormResultMapper mapper,
-            IUserPopupFactory<FormPopup, UserDto> popupFactory)
+            IUserPopupFactory<Popup, UserDto> popupFactory)
         {
-            _provider = provider;
             _mapper = mapper;
             _popupFactory = popupFactory;
         }
@@ -39,17 +58,19 @@ namespace CrepeDuChef.Maui.Services
         }
 
         private async Task<UserDataResult> ShowUserFormAsync(
-            Func<FormPopup> createPopup)
+            Func<Popup> createPopup)
         {
             await _popupLock.WaitAsync();
 
             try
             {
-                var popup = createPopup();
+                Popup popup =
+                    createPopup();
 
-                var results = await PopupService.PushAsync(popup);
+                IPopupResult<UserDto?> results = await Shell.Current.ShowPopupAsync<UserDto?>(popup, generateOptions());
 
-                return _mapper.Map(results);
+
+                return _mapper.Map(results.Result);
             }
             finally
             {
@@ -64,14 +85,14 @@ namespace CrepeDuChef.Maui.Services
 
             try
             {
-                var floater =
-                    new FloaterPopup
+                TitledMessagePopup messagePop =
+                    new (
+                        title:Traduction.Updated,
+                        message: Traduction.InformationUpdated)
                     {
-                        Title = Traduction.Updated,
-                        Text = Traduction.InformationUpdated,
                         IconColor = Colors.GreenYellow
                     };
-                await PopupService.PushAsync(floater);
+                await Shell.Current.ShowPopupAsync(messagePop, generateOptions());
 
             }
             finally
@@ -87,14 +108,14 @@ namespace CrepeDuChef.Maui.Services
 
             try
             {
-                var floatter =
-                    new FloaterPopup
+                TitledMessagePopup messagePop =
+                    new (
+                        title: Traduction.OperationCanceled,
+                        message: message)
                     {
-                        Title = Traduction.OperationCanceled,
-                        Text = message,//Traduction.YouMustEnterFirstAndLastName,
                         IconColor = Colors.Orange
                     };
-                await PopupService.PushAsync(floatter);
+                await Shell.Current.ShowPopupAsync(messagePop, generateOptions());
 
             }
             finally

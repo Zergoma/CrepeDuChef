@@ -2,7 +2,8 @@
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI">
+    xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
     <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
 
@@ -11,12 +12,16 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource TitleDark}}" />
     </Style>
 
+    <Style TargetType="BoxView" Class="chocoBoxview">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource TitleDark}}" />
+    </Style>
+
     <Style TargetType="Label" Class="chocoItemLabel">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric }}" />
     </Style>
 
     <Style TargetType="Label" Class="chocoItemDateLabel">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource LightGray }}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource TitleDark }}" />
     </Style>
 
 
@@ -25,6 +30,37 @@
         <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric}}" />
         <Setter Property="BorderWidth" Value="{AppThemeBinding Light=0, Dark=4}" />
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric}}" />
+
+        <!-- VisualStates -->
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup Name="CommonStates">
+                    <VisualState Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Bric}, Dark=Black}" />
+                            <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+
+                    <VisualState Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightGray}, Dark={StaticResource DarkGray}}" />
+                            <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource TitleDark}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource DarkGray}, Dark={StaticResource LightGray}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+
+                    <!-- Etat Pressed -->
+                    <VisualState Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource OrangeLight}, Dark={StaticResource OrangeVeryDark}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light=White, Dark=Black}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
 
     <Style TargetType="Button" Class="chocoAbsent">
@@ -33,6 +69,39 @@
         <Setter Property="BorderWidth" Value="{AppThemeBinding Light=0, Dark=1}" />
         <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark={StaticResource Orange}}" />
         <Setter Property="FontSize" Value="10" />
+
+        <!-- VisualStates -->
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup Name="CommonStates">
+
+                    <!-- Etat Normal -->
+                    <VisualState Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Orange}, Dark={StaticResource Black}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark={StaticResource Orange}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+
+                    <!-- Etat Disabled -->
+                    <VisualState Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightGray}, Dark={StaticResource DarkGray}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource DarkGray}, Dark={StaticResource LightGray}}" />
+                            <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource DarkGray}, Dark={StaticResource DarkGray}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+
+                    <!-- Etat Pressed -->
+                    <VisualState Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource OrangeLight}, Dark={StaticResource OrangeVeryDark}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
 
 
@@ -42,13 +111,33 @@
         <Setter Property="StrokeThickness" Value="{AppThemeBinding Light=0, Dark=4}" />
         <Setter Property="StrokeShape" Value="RoundRectangle 10" />
         <Setter Property="Padding" Value="10" />
+
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup Name="CommonStates">
+                    <VisualState Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource Black}}"/>
+                            <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric}}" />
+
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState Name="Selected">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightGray}, Dark={StaticResource Black}} "/>
+                            <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource BorderDark}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
 
 
     <Style TargetType="Border" Class="chocoOuterBorderCollectionView">
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="Stroke" Value="{AppThemeBinding Light=Transparent, Dark={StaticResource BorderDark}}" />
-        <Setter Property="StrokeThickness" Value="{AppThemeBinding Light=0, Dark=1}" />
+        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource BorderDark}}" />
+        <Setter Property="StrokeThickness" Value="{AppThemeBinding Light=1, Dark=1}" />
         <Setter Property="StrokeShape" Value="RoundRectangle 20" />
         <Setter Property="Padding" Value="10" />
     </Style>
@@ -72,5 +161,65 @@
     <Style TargetType="Label" Class="chocoLabelShell">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource TitleDark}}" />
     </Style>
+
+
+    <Style TargetType="Label" Class="chocoLabelPopup">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource TitleDark}}" />
+    </Style>
+
+
+    <Style TargetType="Button" Class="chocoButtonPopup">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark=Black}" />
+        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric}}" />
+        <Setter Property="BorderWidth" Value="{AppThemeBinding Light=0, Dark=4}" />
+        <Setter Property="TextColor" Value="{StaticResource Bric}" />
+
+        <!-- VisualStates -->
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup Name="CommonStates">
+                    <VisualState Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark=Black}" />
+                            <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric}}" />
+                            <Setter Property="TextColor" Value="{StaticResource Bric}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+
+                    <VisualState Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightGray}, Dark={StaticResource NiceBlack}}" />
+                            <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource TitleDark}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource DarkGray}, Dark={StaticResource TitleDark}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+
+                    <!-- Etat Pressed -->
+                    <VisualState Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource OrangeLight}, Dark={StaticResource OrangeVeryDark}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light=White, Dark=Black}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+
+    <Style TargetType="Entry" Class="chocoEntryPopup">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource NiceBlack}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource TitleDark}}" />
+    </Style>
+
+
+    <Style TargetType="Border" Class="chocoBorderCollectionViewItem">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Bric}, Dark=Black}" />
+        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric}}" />
+        <Setter Property="StrokeThickness" Value="{AppThemeBinding Light=0, Dark=4}" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+        <Setter Property="Padding" Value="10" />
+    </Style>
+
 
 </ResourceDictionary>

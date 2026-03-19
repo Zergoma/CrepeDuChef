@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Maui.Core.Platform;
-
-namespace CrepeDuChef.Maui
+﻿namespace CrepeDuChef.Maui
 {
     public partial class App : Microsoft.Maui.Controls.Application
     {

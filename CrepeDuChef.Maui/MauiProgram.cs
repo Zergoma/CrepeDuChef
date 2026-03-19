@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Views;
 using CrepeDuChef.Application.Services;
 using CrepeDuChef.Common;
 using CrepeDuChef.Common.DTOs;
@@ -14,9 +15,8 @@ using CrepeDuChef.Maui.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using SQLitePCL;
 using UraniumUI;
-using UXDivers.Popups.Maui;
-using UXDivers.Popups.Maui.Controls;
 
 namespace CrepeDuChef.Maui
 {
@@ -24,12 +24,12 @@ namespace CrepeDuChef.Maui
     {
         public static MauiApp CreateMauiApp()
         {
+            Batteries_V2.Init();  // <-- ici
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
                 .UseUraniumUI()
                 .UseUraniumUIMaterial()
-                .UseUXDiversPopups()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -60,10 +60,14 @@ namespace CrepeDuChef.Maui
             builder.Services.AddTransient<IRandomProvider, DefaultRandomProvider>();
             builder.Services.AddTransient<IChefRotationService, ChefRotationService>();
 
-            builder.Services.AddSingleton<IUserDialogService, UserDialogService>();
+            builder.Services.AddSingleton<IUserDialogService, CrepeDuChefViewDialogService>();
             builder.Services.AddSingleton<IUserDtoPopupService, UserDtoPopupService>();
 
-            builder.Services.AddTransient<IUserPopupFactory<FormPopup, UserDto>, UserPopupFactory>();
+            builder.Services.AddTransient<IUserPopupFactory<Popup, UserDto>, UserPopCommunautyFactory>();
+
+            builder.Services.AddTransient<ITradCrepePartyDefault, LocalizedCrepePartySession>();
+            builder.Services.AddTransient<ICrepePartyService, CrepePartyService>();
+
 
             builder.Services.AddTransient<UserFormResultMapper>();
             builder.Services.AddTransient<IUserFormResultMapper>(sp =>

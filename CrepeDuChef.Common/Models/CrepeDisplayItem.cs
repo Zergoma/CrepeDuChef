@@ -1,6 +1,6 @@
-﻿namespace CrepeDuChef.Common.DTOs
+﻿namespace CrepeDuChef.Common.Models
 {
-    public class CrepeDisplay
+    public class CrepeDisplayItem
     {
         public string  Name { get; set; } = string.Empty;
         public DateTime Date { get; set; }

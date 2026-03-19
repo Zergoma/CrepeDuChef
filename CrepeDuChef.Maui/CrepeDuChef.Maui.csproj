@@ -17,6 +17,7 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
 
 		<!-- Display name -->
 		<ApplicationTitle>CrepeDuChef.Maui</ApplicationTitle>
@@ -47,7 +48,7 @@
 		<!-- Splash Screen -->
 		<!--<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />-->
 		<!--<MauiSplashScreen Include="Resources\Splash\kraken.svg" Color="#FFAC00" BaseSize="128,128" />-->
-		<MauiSplashScreen Include="Resources\Splash\crepeduchef.svg" Color="#FFAC00" Resize="false" />
+		<MauiSplashScreen Include="Resources\Splash\crepeduchef.svg" Color="#000000" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -69,7 +70,6 @@
 		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="3.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" version="10.0.3" />
 		<PackageReference Include="UraniumUI.Material" Version="2.14.0" />
-		<PackageReference Include="UXDivers.Popups.Maui" Version="0.9.2" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -81,6 +81,9 @@
 	<ItemGroup>
 	  <Compile Update="MVVM\Views\CrepeDuChefView.xaml.cs">
 	    <DependentUpon>CrepeDuChefView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="PopupElements\TitledMessagePopup.xaml.cs">
+	    <DependentUpon>TitledMessagePopup.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Resources\languages\traduction.Designer.cs">
 	    <DesignTime>True</DesignTime>
@@ -103,6 +106,12 @@
 	  <MauiXaml Update="MVVM\Views\UserSettingView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="PopupElements\TitledMessagePopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="PopupElements\UserFormPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\CrepeDuChefColors.xaml">
 	    <Generator></Generator>
 	  </MauiXaml>
@@ -112,12 +121,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="Resources\Splash\crepeduchef.svg" Color="#FFAC00" BaseSize="128,128" />
 	  <None Update="Resources\Splash\kraken.svg" Color="#FF0400" BaseSize="128,128" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="MVVM\Models\" />
+	  <Folder Include="Gui Design\v1\" />
 	</ItemGroup>
 
 </Project>

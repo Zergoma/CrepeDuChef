@@ -1,4 +1,5 @@
 ﻿using CrepeDuChef.Common.DTOs;
+using CrepeDuChef.Common.Models;
 
 namespace CrepeDuChef.Common.Interfaces
 {

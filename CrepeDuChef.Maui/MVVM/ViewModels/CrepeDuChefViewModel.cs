@@ -1,19 +1,38 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CrepeDuChef.Common;
 using CrepeDuChef.Common.DTOs;
 using CrepeDuChef.Common.Exceptions;
-using CrepeDuChef.Common.Extensions;
 using CrepeDuChef.Common.Interfaces;
+using CrepeDuChef.Common.Models;
+using CrepeDuChef.Maui.Mappers;
+using CrepeDuChef.Maui.MVVM.Models;
 using CrepeDuChef.Maui.Resources.languages;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 
 namespace CrepeDuChef.Maui.MVVM.ViewModels
 {
     public partial class CrepeDuChefViewModel : ObservableObject
     {
+        private bool _isInitialized = false;
+
         [ObservableProperty]
-        public partial ObservableCollection<CrepeDisplay> CrepeHistory { get; set; } = new();
+        public partial ObservableCollection<CrepePartyGroup> CrepeSessions { get; set; } = new();
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(TextSwitchMessage))]
+        public partial bool ShowOnlyCurrent { get; set; } = true;
+
+
+        public string TextSwitchMessage =>
+            ShowOnlyCurrent
+                ? Traduction.ShowOnlyCurrentSession
+                : Traduction.ShowAllSession;
+
+
+        private List<CrepePartyGroup> _allSessions = [];
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(CanUpdate))]
@@ -21,14 +40,26 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
 
         public bool CanUpdate => !IsUpdating;
 
-        public List<UserDto>? ChefsAvailable { get; set; } = null;
+        [ObservableProperty]
+        private partial ObservableCollection<UserDto> ChefsAvailable { get; set; } = [];
+
+        partial void OnChefsAvailableChanged(ObservableCollection<UserDto> value)
+        {
+            GetNewChefCommand.NotifyCanExecuteChanged();
+        }
+
+        [ObservableProperty]
+        private partial ObservableCollection<UserDto> AllChefs { get; set; } = [];
+        partial void OnAllChefsChanged(ObservableCollection<UserDto> value)
+        {
+            SelectAvailableUsersCommand.NotifyCanExecuteChanged();
+            OnPropertyChanged(nameof(IsMoreThanOneChef));
+        }
 
         public ICrepePartyRepository CrepePartyRepo { get; }
         public IChefRotationService ChefRotationService { get; }
-
-
-        public IUserDialogService _dialogService { get; }
-
+        public IUserDialogService DialogService { get; }
+        public ICrepePartyService CrepService { get; }
 
         private readonly SemaphoreSlim _updateLock = new(1, 1);
 
@@ -36,20 +67,42 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
         public CrepeDuChefViewModel(
             ICrepePartyRepository crepePartyRepo,
             IChefRotationService chefRotationService,
-            IUserDialogService dial)
+            IUserDialogService dial,
+            ICrepePartyService crepService)
         {
             CrepePartyRepo = crepePartyRepo;
             ChefRotationService = chefRotationService;
-            _dialogService = dial;
+            DialogService = dial;
+            CrepService = crepService;
         }
 
         public async Task OnAppearingAsync()
         {
-            await UpdateDataAsync();
+            if (_isInitialized)
+            {
+                return;
+            }
+
+            await InitializeAsync();
+            _isInitialized = true;
+
+            await RefreshSessionsAsync();
+            ApplyFilter();
         }
 
-        [RelayCommand]
-        private async Task UpdateDataAsync()
+        private async Task InitializeAsync()
+        {
+            AllChefs =
+                [.. await CrepePartyRepo.GetAllChefsAsync()];
+
+            ChefsAvailable.Clear();
+            foreach (var chef in AllChefs)
+            {
+                ChefsAvailable.Add(chef);
+            }
+        }
+
+        private async Task RefreshSessionsAsync()
         {
             if (!await _updateLock.WaitAsync(0))
             {
@@ -65,27 +118,17 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
 
             try
             {
-                List<CrepesPartyDto> allCrepe = await CrepePartyRepo.GetAllCrepePartiesAsync();
-                List<UserDto> chefs = await CrepePartyRepo.GetAllChefsAsync();
-                Dictionary<int, UserDto> chefsById = chefs.ToDictionary(c => c.Id);
+                IEnumerable<CrepePartySession> sessions =
+                    await CrepService.GetSessionsAsync();
 
-                var result = allCrepe.Select(cp =>
-                {
-                    // get user just for the name, don't care if it doesn't exist
-                    chefsById.TryGetValue(cp.UserId, out var chef);
+                IEnumerable<CrepePartyGroup> groups =
+                    CrepePartySessionToPartyGroup.MapToGroups(sessions);
 
-                    return new CrepeDisplay()
-                    {
-                        Date = cp.Date,
-                        Name = chef?.FullName() ?? Traduction.NoName,
-                    };
-                }).OrderByDescending(c => c.Date);
-
-                CrepeHistory.Clear();
-                foreach (var item in result)
-                {
-                    CrepeHistory.Add(item);
-                }
+                _allSessions = [.. groups];
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
             }
             finally
             {
@@ -94,12 +137,36 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
             }
         }
 
-        [RelayCommand]
+        partial void OnShowOnlyCurrentChanged(bool value)
+        {
+            ApplyFilter();
+        }
+
+        private void ApplyFilter()
+        {
+            ObservableCollection<CrepePartyGroup> newlist = [.. FilterSessions()];
+            CrepeSessions = newlist;
+        }
+
+        private IEnumerable<CrepePartyGroup> FilterSessions()
+        {
+            if (ShowOnlyCurrent)
+                return _allSessions.OrderByDescending(s => s.SessionNumber).Take(1);
+
+            return _allSessions.OrderByDescending(s => s.SessionNumber);
+        }
+
+
+        private bool CanGetNewChef() => ChefsAvailable?.Count > 0;
+
+        [RelayCommand(CanExecute = nameof(CanGetNewChef))]
         public async Task GetNewChef()
         {
             try
             {
-                var (selectedUser, sessionNumber) = await ChefRotationService.SelectNextChefAsync(ChefsAvailable);
+                var chefsCopy = ChefsAvailable.ToList();
+                var (selectedUser, sessionNumber) =
+                    await ChefRotationService.SelectNextChefAsync(chefsCopy);
 
                 await CrepePartyRepo.AddCrepePartyAsync(
                     new CrepesPartyDto
@@ -110,82 +177,91 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
                     });
 
                 await CrepePartyRepo.CommitAsync();
-                await UpdateDataAsync();
-                await _dialogService.ShowMessageAsync(Traduction.Today_s_Chef, $"{selectedUser.FirstName} {selectedUser.LastName}");
-
+                await RefreshSessionsAsync();
+                ApplyFilter();
+                await DialogService.ShowMessageAsync(Traduction.Today_s_Chef, $"{selectedUser.FirstName} {selectedUser.LastName}");
             }
             catch (NoChefException)
             {
-                await _dialogService.ShowWarningAsync(Traduction.NoChefInDB, Traduction.NeedAtLeastOneChef);
+                await DialogService.ShowWarningAsync(Traduction.NoChefInDB, Traduction.NeedAtLeastOneChef);
             }
             catch (NoChefSelectionException)
             {
-                await _dialogService.ShowWarningAsync(Traduction.Error, Traduction.NoChefSelectionExceptionMessage);
+                await DialogService.ShowWarningAsync(Traduction.Error, Traduction.NoChefSelectionExceptionMessage);
             }
             catch (Exception ex)
             {
-                await _dialogService.ShowWarningAsync(Traduction.Error, $"{ex.Message}");
+                await DialogService.ShowWarningAsync(Traduction.Error, $"{ex.Message}");
+            }
+        }
+        public bool IsMoreThanOneChef => AllChefs?.Count > 1;
+
+        private bool CanSelectAvailable() => IsMoreThanOneChef;
+        [RelayCommand(CanExecute = nameof(CanSelectAvailable))]
+        public async Task SelectAvailableUsers()
+        {
+            try
+            {
+                if (AllChefs == null
+                    || AllChefs.Count == 0)
+                {
+                    await DialogService.ShowWarningAsync(
+                        Traduction.NoChefInDB,
+                        Traduction.NeedAtLeastOneChef);
+
+                    return;
+                }
+
+                HashSet<int> availableIds = [.. ChefsAvailable.Select(c => c.Id)];
+                List<UserDto> availableChefs = [.. AllChefs.Where(c => availableIds.Contains(c.Id))];
+
+                DialogResult<IEnumerable<UserDto>> result;
+
+                try
+                {
+                    result =
+                        await DialogService.SelectUsersAsync(
+                            title: Traduction.ChefsPresent,
+                            allUsers: AllChefs,
+                            selectedUsers: availableChefs);
+                }
+                catch (Exception)
+                {
+                    return;
+                }
+
+
+                if (result == null
+                    || result.Status != DialogResultStatus.Success
+                    || result.Data == null)
+                {
+                    await Task.Yield(); // UI stabilization
+                    return;
+                }
+
+                List<UserDto> selectedUsers = [.. result.Data];
+
+                if (!selectedUsers.Any())
+                {
+                    await DialogService.ShowWarningAsync(
+                        Traduction.NoChefSelected,
+                        Traduction.SelectAtLeastOneChef);
+                    return;
+                }
+
+                // use it
+                ChefsAvailable = [.. selectedUsers];
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"SelectAvailableUsers error: {ex}");
             }
         }
 
         [RelayCommand]
-        public async Task SelectAvailableUsers()
+        public async Task ToggleSwitch()
         {
-            List<UserDto> allChefs = 
-                await CrepePartyRepo.GetAllChefsAsync();
-
-            if (allChefs.Count == 0)
-            {
-                await _dialogService.ShowWarningAsync(
-                    Traduction.NoChefInDB,
-                    Traduction.NeedAtLeastOneChef);
-
-                return;
-            }
-
-            if (ChefsAvailable is null)
-            {
-                ChefsAvailable = allChefs;
-            }
-
-            HashSet<int> availableIds =
-                [.. ChefsAvailable.Select(c => c.Id)];
-
-            // build the selected ones list
-            List<UserDto> availableChefs =
-                [.. allChefs.Where(c => availableIds.Contains(c.Id))];
-
-            IEnumerable<UserDto>? result =
-                await _dialogService.SelectUsersAsync(
-                    title: Traduction.ChefsPresent,
-                    allUsers: allChefs,
-                    selectedUsers: availableChefs,
-                    propertyToDisplay: "FirstName");
-
-            // dialog canceled
-            if (result is null)
-            {
-                return;
-            }
-
-            if (result.Any() is false)
-            {
-                try
-                {
-                    await _dialogService.ShowWarningAsync(
-                        Traduction.NoChefSelected,
-                        Traduction.SelectAtLeastOneChef);
-                }
-                catch (Exception)
-                {
-
-                }
-
-                return;
-            }
-
-            // use it
-            ChefsAvailable = [.. result];
+            ShowOnlyCurrent = !ShowOnlyCurrent;
         }
     }
 }

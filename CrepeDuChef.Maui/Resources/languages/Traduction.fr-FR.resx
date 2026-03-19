@@ -136,7 +136,7 @@
     <value>Il vous faut au moins un(e) chef(fe)</value>
   </data>
   <data name="NoChefInDB" xml:space="preserve">
-    <value>Il n'y a aucun chef renseigné</value>
+    <value>Il n'y a aucun(e) chef(fe) renseigné(e)</value>
   </data>
   <data name="NoChefSelected" xml:space="preserve">
     <value>Aucun(e) chef(fe) sélectionné(e)</value>
@@ -203,5 +203,20 @@
   </data>
   <data name="NoChefSelectionExceptionMessage" xml:space="preserve">
     <value>Échec lors de la sélection d'un(e) chef(fe)...</value>
+  </data>
+  <data name="Session" xml:space="preserve">
+    <value>session</value>
+  </data>
+  <data name="ShowOnlyCurrentSession" xml:space="preserve">
+    <value>Afficher uniquement la session courante</value>
+  </data>
+  <data name="ShowAllSession" xml:space="preserve">
+    <value>Afficher toutes les sessions</value>
+  </data>
+  <data name="NoSessionInDb" xml:space="preserve">
+    <value>Aucune session enregistrées.</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Annuler</value>
   </data>
 </root>

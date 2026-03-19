@@ -7,10 +7,10 @@ namespace CrepeDuChef.Common.Interfaces
         Task ShowWarningAsync(string title, string message);
         Task ShowMessageAsync(string title, string message);
 
-        Task<IEnumerable<UserDto>?> SelectUsersAsync(
+        Task<DialogResult<IEnumerable<UserDto>>> SelectUsersAsync(
             string title,
             IEnumerable<UserDto> allUsers,
             IEnumerable<UserDto> selectedUsers,
-            string propertyToDisplay);
+            string? propertyToDisplay = null);
     }
 }

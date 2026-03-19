@@ -20,33 +20,23 @@ Si vous aimez l’application, vous pouvez même **m’offrir une bière ou une 
 
 ---
 
-## 📂 Structure de la solution
+## 🧩 Architecture de la solution
 
-- CrepeDuChef.sln
-  - CrepeDuChef.Common
-    - DTOs
-    - Interfaces
-    - Mappers
-  - CrepeDuChef.Common.Tests
-    - Tests unitaires pour la logique métier (xUnit + FluentAssertions)
-  - CrepeDuChef.Maui
-    - Views
-    - ViewModels
-    - Resources
-    - Services (UserDtoPopupService, DialogService, etc.)
-  - CrepeDuChef.Maui.Tests
-    - Tests MAUI pour services dépendants de la plateforme (Roadmap)
+- 📦 **Common**  
+  DTOs, Models, Interfaces, Mappers, Extensions, Exceptions  
 
----
+- 🧠 **Application**  
+  Logique applicative et cas d’usage (Services)  
 
-## 🛠 Principaux projets
+- 🗄️ **Infrastructure**  
+  Accès aux données (Entities, Migrations, Extensions)  
 
-| Projet | Description |
-|--------|------------|
-| CrepeDuChef.Common | Logique métier, DTOs, interfaces, mappers |
-| CrepeDuChef.Common.Tests | Tests unitaires pour Common |
-| CrepeDuChef.Maui | Projet MAUI multiplateforme, UI, popups, ressources |
-| CrepeDuChef.Maui.Tests | Tests pour services MAUI – à ajouter plus tard |
+- 🖥️ **Maui**  
+  UI MAUI avec MVVM (Models, ViewModels, Views),  
+  Behaviors, Converters, Services, PopupElements, Resources, Platforms  
+
+- 🧪 **Tests**  
+  Tests unitaires par couche : Application, Common, Infrastructure 
 
 ---
 
@@ -54,17 +44,16 @@ Si vous aimez l’application, vous pouvez même **m’offrir une bière ou une 
 
 - **.NET 10 / MAUI**  
 - **MAUI Toolkit** : `CommunityToolkit.Maui`, `CommunityToolkit.Mvvm`  
-- **UX & UI** : `UXDivers.Popups.Maui`, `UraniumUI.Material`, `SkiaSharp.Extended.UI.Maui`  
+- **UX & UI** : `UraniumUI.Material`, `SkiaSharp.Extended.UI.Maui`  
 - **Persistence locale** : `Microsoft.EntityFrameworkCore`, `Microsoft.EntityFrameworkCore.Sqlite`  
 - **Logging / Essentials** : `Microsoft.Maui.Controls`, `Microsoft.Maui.Essentials`, `Microsoft.Extensions.Logging.Debug`  
 
-> ✅ Les versions exactes sont gérées via NuGet.
 
 ---
 
 ## 📐 Conventions / bonnes pratiques
 
-- Mapper / validation dans `Common` → testable sans MAUI  
+- Mapper / validation dans `Common` → testable sans MAUI (planifié dans les prochaines versions)  
 - Services dépendants de MAUI → testables via `Class Library MAUI` avec mocks  
 - SemaphoreSlim pour séquentialiser les popups  
 - Décorateurs et localisations injectées via DI  
@@ -91,12 +80,3 @@ Si vous aimez l’application, vous pouvez même **m’offrir une bière ou une 
 
 - Ajouter tests MAUI pour services dépendants de la plateforme  
 - Version avec persistance WebAPI  
-- Amélioration des popups et UI  
-- Possibilité d’ajouter d’autres types de “sélections équitables” pour les chefs  
-
----
-
-## 🎉 Fun
-
-Le but est simple : savoir **qui aura la crêpe du chef** tout en se faisant plaisir à coder.  
-Amusez-vous, explorez MAUI, et n’hésitez pas à me **payer une bière ou une pizza** si vous aimez l’app ! 🍕🍺
