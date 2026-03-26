@@ -1,4 +1,4 @@
-﻿namespace CrepeDuChef.Common.DTOs
+﻿namespace CrepeDuChef.Common.Models
 {
     public class UserDataResult
     {

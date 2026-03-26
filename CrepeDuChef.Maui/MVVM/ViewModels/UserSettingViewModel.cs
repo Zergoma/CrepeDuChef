@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CrepeDuChef.Common;
 using CrepeDuChef.Common.DTOs;
 using CrepeDuChef.Common.Interfaces;
+using CrepeDuChef.Common.Models;
 using System.Collections.ObjectModel;
 
 
@@ -27,11 +28,16 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
         [RelayCommand]
         private async Task UpdateUser()
         {
-            Users.Clear();
-            var allchefs = await CrepePartyRepo.GetAllChefsAsync();
+            List<UserDto> allchefs =
+                await CrepePartyRepo.GetAllChefsAsync();
+            
+            var existingIds = new HashSet<int>(Users.Select(u => u.Id));
             foreach (var chef in allchefs)
             {
-                Users.Add(chef);
+                if (!existingIds.Contains(chef.Id))
+                {
+                    Users.Add(chef);
+                }
             }
         }
 

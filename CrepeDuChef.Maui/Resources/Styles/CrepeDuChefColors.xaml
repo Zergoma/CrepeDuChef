@@ -18,6 +18,13 @@
 
 
     <Color x:Key="Orange">#f08c00</Color>
-    
-    
+
+    <Color x:Key="TodayLight">#FFD700</Color>
+
+    <Color x:Key="TodayDark">#B8860B</Color>
+
+    <Color x:Key="OrangeVeryDark">#755407</Color>
+
+
+
 </ResourceDictionary>

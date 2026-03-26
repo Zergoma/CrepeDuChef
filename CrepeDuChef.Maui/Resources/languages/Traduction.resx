@@ -204,4 +204,19 @@
   <data name="NoChefSelectionExceptionMessage" xml:space="preserve">
     <value>Unable to select a chief.</value>
   </data>
+  <data name="Session" xml:space="preserve">
+    <value>session</value>
+  </data>
+  <data name="ShowOnlyCurrentSession" xml:space="preserve">
+    <value>Show only current session</value>
+  </data>
+  <data name="ShowAllSession" xml:space="preserve">
+    <value>Show all sessions</value>
+  </data>
+  <data name="NoSessionInDb" xml:space="preserve">
+    <value>No sessions saved.</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
 </root>

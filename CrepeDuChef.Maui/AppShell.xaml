@@ -8,10 +8,11 @@
     xmlns:trad="clr-namespace:CrepeDuChef.Maui.Resources.languages"
     xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
     Title="CrepeDuChef.Maui"
-    FlyoutWidth="150"
+    FlyoutWidth="200"
     FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource Black}}"
     Shell.BackgroundColor="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource Black}}"
     Shell.ForegroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric}}"
+    Shell.FlyoutBehavior="{OnIdiom Desktop=Locked, Default=Flyout}"
     >
 
     <Shell.FlyoutHeader>
@@ -20,8 +21,8 @@
 
     <Shell.ItemTemplate>
         <DataTemplate>
-
             <Label Text="{Binding Title}"
+                   WidthRequest="200"
                    class="chocoLabelShell"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
@@ -34,19 +35,19 @@
 
 
     <FlyoutItem Title="{Static trad:Traduction.CrepeDuChef_title}">
-        <!--<Tab>-->
+        <Tab>
         <ShellContent Title="{Static trad:Traduction.CrepeDuChef_title}"
                       Route="CrepeDuChefView"
                       ContentTemplate="{DataTemplate view:CrepeDuChefView}"/>
-        <!--</Tab>-->
+        </Tab>
     </FlyoutItem>
 
     <FlyoutItem Title="{Static trad:Traduction.UserSetting}">
-        <!--<Tab>-->
+        <Tab>
         <ShellContent Title="{Static trad:Traduction.UserSetting}"
                       Route="UserSettingView"
                       ContentTemplate="{DataTemplate view:UserSettingView}"/>
-        <!--</Tab>-->
+        </Tab>
     </FlyoutItem>
 
 

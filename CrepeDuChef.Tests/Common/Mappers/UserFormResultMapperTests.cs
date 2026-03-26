@@ -1,6 +1,6 @@
 ﻿using CrepeDuChef.Common;
-using CrepeDuChef.Common.DTOs;
 using CrepeDuChef.Common.Mappers;
+using CrepeDuChef.Common.Models;
 using FluentAssertions;
 
 namespace CrepeDuChef.Tests.Common.Mappers

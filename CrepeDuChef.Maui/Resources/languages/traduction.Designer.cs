@@ -88,6 +88,15 @@ namespace CrepeDuChef.Maui.Resources.languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to chefs in attendance:.
         /// </summary>
         internal static string ChefsPresent {
@@ -205,6 +214,15 @@ namespace CrepeDuChef.Maui.Resources.languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No sessions saved..
+        /// </summary>
+        internal static string NoSessionInDb {
+            get {
+                return ResourceManager.GetString("NoSessionInDb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operation Canceled.
         /// </summary>
         internal static string OperationCanceled {
@@ -219,6 +237,33 @@ namespace CrepeDuChef.Maui.Resources.languages {
         internal static string SelectAtLeastOneChef {
             get {
                 return ResourceManager.GetString("SelectAtLeastOneChef", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to session.
+        /// </summary>
+        internal static string Session {
+            get {
+                return ResourceManager.GetString("Session", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show all sessions.
+        /// </summary>
+        internal static string ShowAllSession {
+            get {
+                return ResourceManager.GetString("ShowAllSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show only current session.
+        /// </summary>
+        internal static string ShowOnlyCurrentSession {
+            get {
+                return ResourceManager.GetString("ShowOnlyCurrentSession", resourceCulture);
             }
         }
         
