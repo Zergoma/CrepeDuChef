@@ -1,14 +1,15 @@
-﻿using CrepeDuChef.Common.DTOs;
+﻿using CrepeDuChef.Application.Interfaces;
+using CrepeDuChef.Common.DTOs;
 using CrepeDuChef.Common.Interfaces;
 
 namespace CrepeDuChef.Application.Services
 {
     public class ChefRotationService : IChefRotationService
     {
-        private readonly ICrepePartyRepository _repo;
+        private readonly ICrepePartyRepositoryApplication _repo;
         private readonly IRandomProvider _random;
 
-        public ChefRotationService(ICrepePartyRepository Repo, IRandomProvider random)
+        public ChefRotationService(ICrepePartyRepositoryApplication Repo, IRandomProvider random)
         {
             _repo = Repo;
             _random = random;

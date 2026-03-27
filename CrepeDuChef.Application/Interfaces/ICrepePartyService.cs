@@ -1,6 +1,6 @@
 ﻿using CrepeDuChef.Common.Models;
 
-namespace CrepeDuChef.Common.Interfaces
+namespace CrepeDuChef.Application.Interfaces
 {
     public interface ICrepePartyService
     {

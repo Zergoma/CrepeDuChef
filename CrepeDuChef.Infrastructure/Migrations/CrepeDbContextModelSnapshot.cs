@@ -17,7 +17,7 @@ namespace CrepeDuChef.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.3");
 
-            modelBuilder.Entity("CrepeDuChef.Infrastructure.Entities.CrepesParty", b =>
+            modelBuilder.Entity("CrepeDuChef.Domain.Entities.CrepesParty", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,7 +42,7 @@ namespace CrepeDuChef.Infrastructure.Migrations
                     b.ToTable("CrepesParty");
                 });
 
-            modelBuilder.Entity("CrepeDuChef.Infrastructure.Entities.User", b =>
+            modelBuilder.Entity("CrepeDuChef.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -61,9 +61,9 @@ namespace CrepeDuChef.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CrepeDuChef.Infrastructure.Entities.CrepesParty", b =>
+            modelBuilder.Entity("CrepeDuChef.Domain.Entities.CrepesParty", b =>
                 {
-                    b.HasOne("CrepeDuChef.Infrastructure.Entities.User", "User")
+                    b.HasOne("CrepeDuChef.Domain.Entities.User", "User")
                         .WithMany("CrepesParties")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -72,7 +72,7 @@ namespace CrepeDuChef.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CrepeDuChef.Infrastructure.Entities.User", b =>
+            modelBuilder.Entity("CrepeDuChef.Domain.Entities.User", b =>
                 {
                     b.Navigation("CrepesParties");
                 });

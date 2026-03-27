@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CrepeDuChef.Application.Interfaces;
 using CrepeDuChef.Common;
 using CrepeDuChef.Common.DTOs;
 using CrepeDuChef.Common.Interfaces;
@@ -13,13 +14,13 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
     {
         [ObservableProperty]
         public partial ObservableCollection<UserDto> Users { get; set; } = new();
-        private ICrepePartyRepository CrepePartyRepo { get; }
+        private ICrepePartyRepositoryApplication CrepePartyRepo { get; }
         public IUserDtoPopupService UserDtoPopupService { get; }
         [ObservableProperty]
         public partial object? SelectedUser { get; set; } = null;
 
 
-        public UserSettingViewModel(ICrepePartyRepository CrepePartyRepo, IUserDtoPopupService userDtoPopupService)
+        public UserSettingViewModel(ICrepePartyRepositoryApplication CrepePartyRepo, IUserDtoPopupService userDtoPopupService)
         {
             this.CrepePartyRepo = CrepePartyRepo;
             UserDtoPopupService = userDtoPopupService;
@@ -28,17 +29,7 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
         [RelayCommand]
         private async Task UpdateUser()
         {
-            List<UserDto> allchefs =
-                await CrepePartyRepo.GetAllChefsAsync();
-            
-            var existingIds = new HashSet<int>(Users.Select(u => u.Id));
-            foreach (var chef in allchefs)
-            {
-                if (!existingIds.Contains(chef.Id))
-                {
-                    Users.Add(chef);
-                }
-            }
+            Users = [.. (await CrepePartyRepo.GetAllChefsAsync())];
         }
 
         [RelayCommand]
@@ -47,7 +38,7 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
             UserDataResult fromPopup =
                 await UserDtoPopupService.ShowAddUserFormAsync();
 
-            switch(fromPopup.Status)
+            switch (fromPopup.Status)
             {
                 case FormResultStatus.Cancelled:
                     return;
@@ -66,7 +57,6 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
                 };
 
             await CrepePartyRepo.AddChefAsync(newChef);
-            await CrepePartyRepo.CommitAsync();
 
             UpdateUserCommand.Execute(null);
         }
@@ -79,45 +69,37 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
                 return;
             }
 
-            try
+            // Unselect the user
+            SelectedUser = null;
+
+            UserDataResult formResults =
+                await UserDtoPopupService.ShowUpdateUserFormAsync(usr);
+
+            switch (formResults.Status)
             {
-                UserDataResult formResults =
-                    await UserDtoPopupService.ShowUpdateUserFormAsync(usr);
-
-
-                switch(formResults.Status)
-                {
-                    case FormResultStatus.Cancelled:
-                        return;
-
-                    case FormResultStatus.Invalid:
-                        await UserDtoPopupService.ShowAbortedOperationAsync(formResults.ErrorMessage);
-                        return;
-
-                    default:
-                        break;
-                }
-
-                if (formResults.FirstNameUpdate == usr.FirstName
-                    && formResults.LastNameUpdate == usr.LastName)
-                {
+                case FormResultStatus.Cancelled:
                     return;
-                }
 
-                usr.FirstName = formResults.FirstNameUpdate;
-                usr.LastName = formResults.LastNameUpdate;
-                await CrepePartyRepo.UpdateChefAsync(usr);
-                await CrepePartyRepo.CommitAsync();
+                case FormResultStatus.Invalid:
+                    await UserDtoPopupService.ShowAbortedOperationAsync(formResults.ErrorMessage);
+                    return;
 
-                await UserDtoPopupService.ShowUpdateSuccessedOperationAsync();
-
-                UpdateUserCommand.Execute(null);
+                default:
+                    break;
             }
-            finally
+
+            if (formResults.FirstNameUpdate == usr.FirstName
+                && formResults.LastNameUpdate == usr.LastName)
             {
-                // Unselect the user
-                SelectedUser = null;
+                return;
             }
+
+            usr.FirstName = formResults.FirstNameUpdate;
+            usr.LastName = formResults.LastNameUpdate;
+            await CrepePartyRepo.UpdateChefAsync(usr);
+
+            UpdateUserCommand.Execute(null);
+            await UserDtoPopupService.ShowUpdateSuccessedOperationAsync();
         }
     }
 }

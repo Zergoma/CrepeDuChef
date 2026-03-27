@@ -1,15 +1,16 @@
-﻿using CrepeDuChef.Common.Interfaces;
+﻿using CrepeDuChef.Application.Interfaces;
+using CrepeDuChef.Common.Interfaces;
 using CrepeDuChef.Common.Mappers;
 using CrepeDuChef.Common.Models;
 
-namespace CrepeDuChef.Maui.Services
+namespace CrepeDuChef.Application.Services
 {
     public class CrepePartyService : ICrepePartyService
     {
-        private readonly ICrepePartyRepository _repo;
+        private readonly ICrepePartyRepositoryApplication _repo;
         private readonly ITradCrepePartyDefault _trad;
 
-        public CrepePartyService(ICrepePartyRepository repo, ITradCrepePartyDefault trad)
+        public CrepePartyService(ICrepePartyRepositoryApplication repo, ITradCrepePartyDefault trad)
         {
             _repo = repo;
             this._trad = trad;

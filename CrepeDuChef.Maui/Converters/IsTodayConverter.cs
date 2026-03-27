@@ -8,9 +8,11 @@ namespace CrepeDuChef.Maui.Converters
         {
             if (value is DateTime dt)
             {
+#if DEBUG
                 return DateTime.Now - dt < TimeSpan.FromMinutes(2);
-
-                //return dt.Date == DateTime.Now.Date;
+#else
+                return dt.Date == DateTime.Now.Date;
+#endif
             }
             return false;
         }

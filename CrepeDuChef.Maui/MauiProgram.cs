@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Views;
+using CrepeDuChef.Application.Extensions;
+using CrepeDuChef.Application.Interfaces;
 using CrepeDuChef.Application.Services;
 using CrepeDuChef.Common;
 using CrepeDuChef.Common.DTOs;
@@ -24,7 +26,7 @@ namespace CrepeDuChef.Maui
     {
         public static MauiApp CreateMauiApp()
         {
-            Batteries_V2.Init();  // <-- ici
+            Batteries_V2.Init();
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -55,7 +57,13 @@ namespace CrepeDuChef.Maui
             builder.Services.AddTransient<UserSettingViewModel>();
             builder.Services.AddTransient<UserSettingView>();
 
-            builder.Services.UseCrepeDuChefSqliteDb();
+            string dbPath = 
+                Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "CrepeDuChef.db3"
+                    );
+            builder.Services.AddCrepeDuChefInfrastructure(dbPath);
+            builder.Services.AddCrepeDuChefApplication();
 
             builder.Services.AddTransient<IRandomProvider, DefaultRandomProvider>();
             builder.Services.AddTransient<IChefRotationService, ChefRotationService>();

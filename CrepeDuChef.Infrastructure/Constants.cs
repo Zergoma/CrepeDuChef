@@ -8,11 +8,7 @@
         {
             string path =
                 Path.Combine(
-#if WINDOWS
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-#else
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-#endif
                     DbFileName
                     );
             return path;
