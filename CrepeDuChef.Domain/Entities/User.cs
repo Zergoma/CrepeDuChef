@@ -1,4 +1,4 @@
-﻿namespace CrepeDuChef.Infrastructure.Entities
+﻿namespace CrepeDuChef.Domain.Entities
 {
     public class User
     {

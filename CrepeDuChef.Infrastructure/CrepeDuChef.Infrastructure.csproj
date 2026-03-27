@@ -20,7 +20,8 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CrepeDuChef.Common\CrepeDuChef.Common.csproj" />
+    <ProjectReference Include="..\CrepeDuChef.Application\CrepeDuChef.Application.csproj" />
+    <ProjectReference Include="..\CrepeDuChef.Domain\CrepeDuChef.Domain.csproj" />
   </ItemGroup>
 
 </Project>

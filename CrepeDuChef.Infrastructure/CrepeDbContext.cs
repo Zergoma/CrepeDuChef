@@ -1,5 +1,6 @@
-﻿using CrepeDuChef.Infrastructure.Entities;
+﻿using CrepeDuChef.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace CrepeDuChef.Infrastructure
 {
@@ -20,9 +21,14 @@ namespace CrepeDuChef.Infrastructure
         {
             if (!optionsBuilder.IsConfigured)
             {
-                string path = Constants.GetDbPath();
+                string path =
+                    Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "CrepeDuChef.db");
+                
                 string connection = $"Data Source={path}";
-                Console.WriteLine($"Connection string for db is : {connection}");
+                Debug.WriteLine($"Connection string for db is : {connection}");
+                
                 optionsBuilder.UseSqlite(connection);
             }
         }

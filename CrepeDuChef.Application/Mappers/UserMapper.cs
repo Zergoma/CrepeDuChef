@@ -1,9 +1,9 @@
 ﻿using CrepeDuChef.Common.DTOs;
-using CrepeDuChef.Infrastructure.Entities;
+using CrepeDuChef.Domain.Entities;
 
-namespace CrepeDuChef.Infrastructure.Extensions
+namespace CrepeDuChef.Application.Mappers
 {
-    public static class UserExtension
+    public static class UserMapper
     {
         extension(User user)
         {
@@ -19,6 +19,19 @@ namespace CrepeDuChef.Infrastructure.Extensions
                     Id = user.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                };
+            }
+        }
+
+        extension(UserDto userDto)
+        {
+            public User ToEntity()
+            {
+                return new()
+                {
+                    Id = userDto.Id,
+                    FirstName = userDto.FirstName,
+                    LastName = userDto.LastName,
                 };
             }
         }

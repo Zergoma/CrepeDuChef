@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CrepeDuChef.Application.Interfaces;
 using CrepeDuChef.Common;
 using CrepeDuChef.Common.DTOs;
 using CrepeDuChef.Common.Exceptions;
@@ -56,7 +57,7 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
             OnPropertyChanged(nameof(IsMoreThanOneChef));
         }
 
-        public ICrepePartyRepository CrepePartyRepo { get; }
+        public ICrepePartyRepositoryApplication CrepePartyRepo { get; }
         public IChefRotationService ChefRotationService { get; }
         public IUserDialogService DialogService { get; }
         public ICrepePartyService CrepService { get; }
@@ -65,7 +66,7 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
 
 
         public CrepeDuChefViewModel(
-            ICrepePartyRepository crepePartyRepo,
+            ICrepePartyRepositoryApplication crepePartyRepo,
             IChefRotationService chefRotationService,
             IUserDialogService dial,
             ICrepePartyService crepService)
@@ -176,7 +177,6 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
                         Date = DateTime.UtcNow
                     });
 
-                await CrepePartyRepo.CommitAsync();
                 await RefreshSessionsAsync();
                 ApplyFilter();
                 await DialogService.ShowMessageAsync(Traduction.Today_s_Chef, $"{selectedUser.FirstName} {selectedUser.LastName}");

@@ -1,6 +1,6 @@
 ﻿using CrepeDuChef.Common.DTOs;
 
-namespace CrepeDuChef.Common.Interfaces
+namespace CrepeDuChef.Application.Interfaces
 {
     public interface IChefRotationService
     {

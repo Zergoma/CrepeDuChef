@@ -23,21 +23,30 @@ Si vous aimez l’application, vous pouvez même **m’offrir une bière ou une 
 ## 🧩 Architecture de la solution
 
 - 📦 **Common**  
-  DTOs, Models, Interfaces, Mappers, Extensions, Exceptions  
+  DTOs, Exceptions, Interfaces transverses (sans dépendances),  
+  Helpers/utilitaires purs (Extensions simples, Random, etc.)
 
 - 🧠 **Application**  
-  Logique applicative et cas d’usage (Services)  
+  Logique applicative et cas d’usage (Services),  
+  Interfaces métier (Repositories, Services),  
+  Mappers (DTO ↔ Domain), Extensions métier  
+
+- 🧬 **Domain**  
+  Entités métier (Entities),  
+  Logique métier pure (sans dépendance externe)
 
 - 🗄️ **Infrastructure**  
-  Accès aux données (Entities, Migrations, Extensions)  
+  Accès aux données (DbContext, Repositories),  
+  Migrations, configuration EF Core, Extensions liées à la persistence  
 
 - 🖥️ **Maui**  
   UI MAUI avec MVVM (Models, ViewModels, Views),  
-  Behaviors, Converters, Services, PopupElements, Resources, Platforms  
+  Services UI, PopupElements, Factories,  
+  Behaviors, Converters, Resources, Platforms  
 
 - 🧪 **Tests**  
-  Tests unitaires par couche : Application, Common, Infrastructure 
-
+  Tests unitaires par couche : Application, Domain, Infrastructure, Common  
+ 
 ---
 
 ## ⚡ Technologies & dépendances clés

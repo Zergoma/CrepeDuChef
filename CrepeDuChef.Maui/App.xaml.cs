@@ -12,7 +12,12 @@
         protected override Window CreateWindow(IActivationState? activationState)
         {
             var appshell = ServiceProvider.GetRequiredService<AppShell>();
-            return new Window(appshell);
+            var win = new Window(appshell);
+#if WINDOWS
+            win.Width = 800;
+            win.Height = 800;
+#endif
+            return win;
         }
     }
 }
