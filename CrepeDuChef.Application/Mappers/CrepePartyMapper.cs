@@ -1,24 +1,14 @@
-﻿using CrepeDuChef.Common.DTOs;
+﻿using CrepeDuChef.Application.DTOs;
+using CrepeDuChef.Application.Extensions;
+using CrepeDuChef.Application.Models;
+using CrepeDuChef.Application.Resources;
 using CrepeDuChef.Domain.Entities;
+using Microsoft.Extensions.Localization;
 
 namespace CrepeDuChef.Application.Mappers
 {
     public static class CrepePartyMapper
     {
-        extension(CrepesParty crepeParty)
-        {
-            public CrepesPartyDto ToDto()
-            {
-                return new()
-                {
-                    Id = crepeParty.Id,
-                    Date = crepeParty.Date,
-                    SessionNumber = crepeParty.SessionNumber,
-                    UserId = crepeParty.UserId,
-                };
-            }
-        }
-
         extension(CrepesPartyDto crepesPartyDto)
         {
             public CrepesParty ToEntity()
@@ -31,6 +21,40 @@ namespace CrepeDuChef.Application.Mappers
                     UserId = crepesPartyDto.UserId,
                 };
             }
+        }
+
+
+
+        public static CrepePartySession ToSession(
+           IGrouping<int, CrepesParty> group,
+           Dictionary<int, User> chefsById,
+           IStringLocalizer<CrepePartyResources> localizer)
+        {
+            IEnumerable<CrepeDisplayItem> items = group
+                .OrderByDescending(c => c.Date)
+                .Select(dto => ToDisplayItem(dto, chefsById, localizer));
+
+            return new CrepePartySession()
+            {
+                SessionNumber = group.Key,
+                Title = $"{localizer["Session"]} {group.Key}",
+                Items = [.. items],
+            };
+        }
+
+
+        public static CrepeDisplayItem ToDisplayItem(
+            CrepesParty dto,
+            Dictionary<int, User> chefsById,
+            IStringLocalizer<CrepePartyResources> localizer)
+        {
+            chefsById.TryGetValue(dto.UserId, out var chef);
+
+            return new CrepeDisplayItem
+            {
+                Date = dto.Date,
+                Name = chef?.FullName() ?? localizer["NoName"],
+            };
         }
     }
 }

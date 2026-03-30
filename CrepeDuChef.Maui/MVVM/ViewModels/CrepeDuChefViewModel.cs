@@ -1,14 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CrepeDuChef.Application.DTOs;
 using CrepeDuChef.Application.Interfaces;
-using CrepeDuChef.Common;
-using CrepeDuChef.Common.DTOs;
-using CrepeDuChef.Common.Exceptions;
-using CrepeDuChef.Common.Interfaces;
-using CrepeDuChef.Common.Models;
+using CrepeDuChef.Domain.Exceptions;
 using CrepeDuChef.Maui.Mappers;
-using CrepeDuChef.Maui.MVVM.Models;
+using CrepeDuChef.Maui.Models.UI;
 using CrepeDuChef.Maui.Resources.languages;
+using CrepeDuChef.Maui.UI.Dialogs;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -20,7 +18,7 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
         private bool _isInitialized = false;
 
         [ObservableProperty]
-        public partial ObservableCollection<CrepePartyGroup> CrepeSessions { get; set; } = new();
+        public partial ObservableCollection<CrepePartyGroup> CrepeSessions { get; set; } = [];
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(TextSwitchMessage))]
@@ -57,23 +55,20 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
             OnPropertyChanged(nameof(IsMoreThanOneChef));
         }
 
-        public ICrepePartyRepositoryApplication CrepePartyRepo { get; }
         public IChefRotationService ChefRotationService { get; }
-        public IUserDialogService DialogService { get; }
+        public IDialogPresenter DialogPresenter { get; }
         public ICrepePartyService CrepService { get; }
 
         private readonly SemaphoreSlim _updateLock = new(1, 1);
 
 
         public CrepeDuChefViewModel(
-            ICrepePartyRepositoryApplication crepePartyRepo,
             IChefRotationService chefRotationService,
-            IUserDialogService dial,
+            IDialogPresenter DialogPresenter,
             ICrepePartyService crepService)
         {
-            CrepePartyRepo = crepePartyRepo;
             ChefRotationService = chefRotationService;
-            DialogService = dial;
+            this.DialogPresenter = DialogPresenter;
             CrepService = crepService;
         }
 
@@ -93,14 +88,8 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
 
         private async Task InitializeAsync()
         {
-            AllChefs =
-                [.. await CrepePartyRepo.GetAllChefsAsync()];
-
-            ChefsAvailable.Clear();
-            foreach (var chef in AllChefs)
-            {
-                ChefsAvailable.Add(chef);
-            }
+            AllChefs = new ObservableCollection<UserDto> ( await CrepService.GetAllChefsAsync() );
+            ChefsAvailable = new ObservableCollection<UserDto>(AllChefs);
         }
 
         private async Task RefreshSessionsAsync()
@@ -110,22 +99,16 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
                 return;
             }
 
-            if (IsUpdating)
-            {
-                return;
-            }
-
             IsUpdating = true;
 
             try
             {
-                IEnumerable<CrepePartySession> sessions =
-                    await CrepService.GetSessionsAsync();
+                var sessions = await CrepService.GetSessionsAsync();
 
-                IEnumerable<CrepePartyGroup> groups =
-                    CrepePartySessionToPartyGroup.MapToGroups(sessions);
-
-                _allSessions = [.. groups];
+                _allSessions = CrepePartySessionToGroupMapper
+                    .MapToGroups(sessions)
+                    .OrderByDescending(s => s.SessionNumber)
+                    .ToList();
             }
             catch (Exception ex)
             {
@@ -145,18 +128,13 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
 
         private void ApplyFilter()
         {
-            ObservableCollection<CrepePartyGroup> newlist = [.. FilterSessions()];
-            CrepeSessions = newlist;
+            IEnumerable<CrepePartyGroup> filtered =
+                ShowOnlyCurrent
+                    ? _allSessions.Take(1)
+                    : _allSessions;
+
+            CrepeSessions = new ObservableCollection<CrepePartyGroup>(filtered);
         }
-
-        private IEnumerable<CrepePartyGroup> FilterSessions()
-        {
-            if (ShowOnlyCurrent)
-                return _allSessions.OrderByDescending(s => s.SessionNumber).Take(1);
-
-            return _allSessions.OrderByDescending(s => s.SessionNumber);
-        }
-
 
         private bool CanGetNewChef() => ChefsAvailable?.Count > 0;
 
@@ -165,11 +143,12 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
         {
             try
             {
-                var chefsCopy = ChefsAvailable.ToList();
-                var (selectedUser, sessionNumber) =
-                    await ChefRotationService.SelectNextChefAsync(chefsCopy);
+                List<UserDto> chefsCopy = [.. ChefsAvailable];
+                
+                (UserDto? selectedUser, int sessionNumber) =
+                    await ChefRotationService.GetNextChefAsync(chefsCopy);
 
-                await CrepePartyRepo.AddCrepePartyAsync(
+                await CrepService.AddCrepePartyAsync(
                     new CrepesPartyDto
                     {
                         UserId = selectedUser.Id,
@@ -179,19 +158,28 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
 
                 await RefreshSessionsAsync();
                 ApplyFilter();
-                await DialogService.ShowMessageAsync(Traduction.Today_s_Chef, $"{selectedUser.FirstName} {selectedUser.LastName}");
+
+                await DialogPresenter.ShowMessageAsync(
+                    Traduction.Today_s_Chef,
+                    $"{selectedUser.FirstName} {selectedUser.LastName}");
             }
             catch (NoChefException)
             {
-                await DialogService.ShowWarningAsync(Traduction.NoChefInDB, Traduction.NeedAtLeastOneChef);
+                await DialogPresenter.ShowWarningAsync(
+                    Traduction.NoChefInDB,
+                    Traduction.NeedAtLeastOneChef);
             }
             catch (NoChefSelectionException)
             {
-                await DialogService.ShowWarningAsync(Traduction.Error, Traduction.NoChefSelectionExceptionMessage);
+                await DialogPresenter.ShowWarningAsync(
+                    Traduction.Error,
+                    Traduction.NoChefSelectionExceptionMessage);
             }
             catch (Exception ex)
             {
-                await DialogService.ShowWarningAsync(Traduction.Error, $"{ex.Message}");
+                await DialogPresenter.ShowWarningAsync(
+                    Traduction.Error,
+                    $"{ex.Message}");
             }
         }
         public bool IsMoreThanOneChef => AllChefs?.Count > 1;
@@ -205,45 +193,36 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
                 if (AllChefs == null
                     || AllChefs.Count == 0)
                 {
-                    await DialogService.ShowWarningAsync(
+                    await DialogPresenter.ShowWarningAsync(
                         Traduction.NoChefInDB,
                         Traduction.NeedAtLeastOneChef);
 
                     return;
                 }
 
+                ChefsAvailable ??= [.. AllChefs];
+
                 HashSet<int> availableIds = [.. ChefsAvailable.Select(c => c.Id)];
                 List<UserDto> availableChefs = [.. AllChefs.Where(c => availableIds.Contains(c.Id))];
 
-                DialogResult<IEnumerable<UserDto>> result;
-
-                try
-                {
-                    result =
-                        await DialogService.SelectUsersAsync(
+                DialogResult<List<UserDto>> dialogResult =
+                        await DialogPresenter.SelectUsersAsync(
                             title: Traduction.ChefsPresent,
-                            allUsers: AllChefs,
+                            allUsers: [.. AllChefs],
                             selectedUsers: availableChefs);
-                }
-                catch (Exception)
+                
+
+                if (dialogResult.Status != DialogResultStatus.Success
+                    || dialogResult.Data == null)
                 {
                     return;
                 }
 
-
-                if (result == null
-                    || result.Status != DialogResultStatus.Success
-                    || result.Data == null)
-                {
-                    await Task.Yield(); // UI stabilization
-                    return;
-                }
-
-                List<UserDto> selectedUsers = [.. result.Data];
+                List<UserDto> selectedUsers = [.. dialogResult.Data];
 
                 if (!selectedUsers.Any())
                 {
-                    await DialogService.ShowWarningAsync(
+                    await DialogPresenter.ShowWarningAsync(
                         Traduction.NoChefSelected,
                         Traduction.SelectAtLeastOneChef);
                     return;

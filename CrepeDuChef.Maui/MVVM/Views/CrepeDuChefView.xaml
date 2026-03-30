@@ -5,8 +5,8 @@
              xmlns:trad="clr-namespace:CrepeDuChef.Maui.Resources.languages"
              xmlns:converter="clr-namespace:CrepeDuChef.Maui.Converters"
              xmlns:vm="clr-namespace:CrepeDuChef.Maui.MVVM.ViewModels"
-             xmlns:model_ui="clr-namespace:CrepeDuChef.Maui.MVVM.Models"
-             xmlns:model_common="clr-namespace:CrepeDuChef.Common.Models;assembly=CrepeDuChef.Common"
+             xmlns:model_ui="clr-namespace:CrepeDuChef.Maui.Models.UI"
+             xmlns:model_application="clr-namespace:CrepeDuChef.Application.Models;assembly=CrepeDuChef.Application"
              xmlns:behaviors="clr-namespace:CrepeDuChef.Maui.Behaviors"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
@@ -118,7 +118,7 @@
                     </CollectionView.GroupHeaderTemplate>
 
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="model_common:CrepeDisplayItem">
+                        <DataTemplate x:DataType="model_application:CrepeDisplayItem">
 
                             <Border class="chocoBorderCollectionViewItem">
                                 <Border.Triggers>

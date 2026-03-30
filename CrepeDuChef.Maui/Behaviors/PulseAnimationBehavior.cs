@@ -32,39 +32,75 @@ namespace CrepeDuChef.Maui.Behaviors
             BindingContext = bindable.BindingContext;
             bindable.BindingContextChanged += OnBindingContextChanged;
 
-            if (IsToday)
+            // IMPORTANT : waiting label is ready
+            bindable.Loaded += OnLabelLoaded;
+        }
+
+        private void OnLabelLoaded(object? sender, EventArgs e)
+        {
+            if (_label == null)
+                return;
+
+            try
             {
-                PulseManager.Register(_label);
+                if (IsToday)
+                {
+                    PulseManager.Register(_label);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"PulseBehavior loaded error: {ex}");
             }
         }
 
         private void OnBindingContextChanged(object? sender, EventArgs e)
         {
+            if (_label == null)
+                return;
+
             BindingContext = _label?.BindingContext;
         }
 
         protected override void OnDetachingFrom(Label bindable)
         {
-            if (_label != null)
-                PulseManager.Unregister(_label);
-
+            bindable.Loaded -= OnLabelLoaded;
             bindable.BindingContextChanged -= OnBindingContextChanged;
+            try
+            {
+                if (_label != null)
+                {
+                    PulseManager.Unregister(_label);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"PulseBehavior detach error: {ex}");
+            }
+
             _label = null;
         }
 
         private static void OnIsTodayChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            if (bindable is PulseAnimationBehavior behavior
-                && behavior._label != null)
+            if (bindable is not PulseAnimationBehavior behavior)
+                return;
+
+            var label = behavior._label;
+
+            if (label == null || !label.IsLoaded)
+                return;
+
+            try
             {
                 if ((bool)newValue)
-                {
-                    PulseManager.Register(behavior._label);
-                }
+                    PulseManager.Register(label);
                 else
-                {
-                    PulseManager.Unregister(behavior._label);
-                }
+                    PulseManager.Unregister(label);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"PulseBehavior property change error: {ex}");
             }
         }
     }

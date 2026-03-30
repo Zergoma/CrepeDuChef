@@ -1,4 +1,4 @@
-﻿using CrepeDuChef.Common.Interfaces;
+﻿using CrepeDuChef.Domain.Interfaces;
 
 namespace CrepeDuChef.Tests.Fakes
 {

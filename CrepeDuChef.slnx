@@ -1,6 +1,25 @@
 <Solution>
   <Folder Name="/Solution Items/">
+    <File Path="Docs/Design/GUI/v1/GUI_v1.png" />
+    <File Path="LICENSE.txt" />
     <File Path="README.md" />
+  </Folder>
+  <Folder Name="/Solution Items/Doc/" />
+  <Folder Name="/Solution Items/Doc/Design/" />
+  <Folder Name="/Solution Items/Doc/Design/V1/">
+    <File Path="Docs/Design/GUI/v1/GUI_v1.png" />
+  </Folder>
+  <Folder Name="/Solution Items/Doc/Design/V2/">
+    <File Path="Docs/Design/GUI/v2/GUI_v2.png" />
+  </Folder>
+  <Folder Name="/Solution Items/Doc/Migrations/">
+    <File Path="Docs/Migrations/Migrations.md" />
+  </Folder>
+  <Folder Name="/Solution Items/Doc/Tests/">
+    <File Path="Docs/Tests/domain_chef_rotation.md" />
+    <File Path="Docs/Tests/mappers.md" />
+    <File Path="Docs/Tests/services.md" />
+    <File Path="Docs/Tests/validators.md" />
   </Folder>
   <Folder Name="/UI/">
     <Project Path="CrepeDuChef.Maui/CrepeDuChef.Maui.csproj">
@@ -8,7 +27,6 @@
     </Project>
   </Folder>
   <Project Path="CrepeDuChef.Application/CrepeDuChef.Application.csproj" Id="ec9b46f5-0191-4571-a3ce-3e564ba6fd3c" />
-  <Project Path="CrepeDuChef.Common/CrepeDuChef.Common.csproj" Id="819b2f3d-15cb-42d0-8d05-65ee47b58841" />
   <Project Path="CrepeDuChef.Domain/CrepeDuChef.Domain.csproj" Id="19a09558-70eb-40c3-8ef6-8e9afc832f9d" />
   <Project Path="CrepeDuChef.Infrastructure/CrepeDuChef.Infrastructure.csproj" Id="3bed3790-52e5-4308-9963-84c0f12cc63c" />
   <Project Path="CrepeDuChef.Tests/CrepeDuChef.Tests.csproj" Id="8cf615a1-73c7-4f32-91b9-46b067a1f287" />

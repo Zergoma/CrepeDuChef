@@ -1,9 +1,10 @@
-﻿using CrepeDuChef.Common.DTOs;
+﻿using CrepeDuChef.Application.DTOs;
+using CrepeDuChef.Application.ValueObjects;
 
 namespace CrepeDuChef.Application.Interfaces
 {
     public interface IChefRotationService
     {
-        Task<(UserDto User, int SessionNumber)> SelectNextChefAsync(List<UserDto>? availableChefs = null);
+        Task<ChefSelectionResult> GetNextChefAsync(List<UserDto>? availableChefs = null);
     }
 }

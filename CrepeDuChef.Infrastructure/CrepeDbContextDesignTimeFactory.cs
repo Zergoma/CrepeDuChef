@@ -9,10 +9,10 @@ namespace CrepeDuChef.Infrastructure
         {
             var optionsBuilder = new DbContextOptionsBuilder<CrepeDbContext>();
 
-            string path = Constants.GetDbPath();
-            string connection = $"Data Source={path}";
+            // Path used only for migrations
+            var dbPath = Path.Combine(Directory.GetCurrentDirectory(), "CrepeDuChef.design.db3");
 
-            optionsBuilder.UseSqlite(connection);
+            optionsBuilder.UseSqlite($"Data Source={dbPath}");
 
             return new CrepeDbContext(optionsBuilder.Options);
         }

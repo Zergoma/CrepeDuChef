@@ -51,6 +51,17 @@ namespace CrepeDuChef.Infrastructure
                 entity.HasIndex(cp => new { cp.SessionNumber, cp.UserId })
                       .IsUnique();
             });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(u => u.FirstName)
+                      .IsRequired()
+                      .HasMaxLength(100);
+
+                entity.Property(u => u.LastName)
+                      .IsRequired()
+                      .HasMaxLength(100);
+            });
         }
     }
 }

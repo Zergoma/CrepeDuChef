@@ -1,35 +1,47 @@
-﻿using CrepeDuChef.Application.Interfaces;
-using CrepeDuChef.Common.DTOs;
-using CrepeDuChef.Common.Interfaces;
+﻿using CrepeDuChef.Application.DTOs;
+using CrepeDuChef.Application.Interfaces;
+using CrepeDuChef.Application.Mappers;
+using CrepeDuChef.Application.ValueObjects;
+using CrepeDuChef.Domain.Entities;
+using CrepeDuChef.Domain.Interfaces;
+using CrepeDuChef.Domain.Services;
 
 namespace CrepeDuChef.Application.Services
 {
     public class ChefRotationService : IChefRotationService
     {
-        private readonly ICrepePartyRepositoryApplication _repo;
+        private readonly ICrepePartyRepository _repo;
         private readonly IRandomProvider _random;
 
-        public ChefRotationService(ICrepePartyRepositoryApplication Repo, IRandomProvider random)
+        public ChefRotationService(ICrepePartyRepository repo, IRandomProvider random)
         {
-            _repo = Repo;
+            _repo = repo;
             _random = random;
         }
 
-        public async Task<(UserDto User, int SessionNumber)> SelectNextChefAsync(List<UserDto>? availableChefs = null)
+        public async Task<ChefSelectionResult> GetNextChefAsync(List<UserDto>? availableChefs = null)
         {
-            List<UserDto> allChefs = await _repo.GetAllChefsAsync();
+            List<User>? availableChefsEntities =
+                availableChefs?.Select(u => u.ToEntity()).ToList();
 
-            int lastSessionId = await _repo.GetLastSessionNumberAsync();
+            List<User> allChefs =
+                await _repo.GetAllChefsAsync();
 
-            List<CrepesPartyDto> sessionCrepes =
+            int lastSessionId =
+                await _repo.GetLastSessionNumberAsync();
+
+            List<CrepesParty> sessionCrepes =
                 await _repo.GetCrepePartiesFromSessionAsync(lastSessionId);
 
-            return ChefRotationAlgorithm.SelectNextChef(
-                allChefs,
-                lastSessionId,
-                sessionCrepes,
-                _random,
-                availableChefs);
+            (User user, int sessionNumber) =
+                ChefRotationAlgorithm.SelectNextChef(
+                    allChefs,
+                    lastSessionId,
+                    sessionCrepes,
+                    _random,
+                    availableChefsEntities);
+            
+            return new ChefSelectionResult(user.ToDto(), sessionNumber);
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CrepeDuChef.Application.DTOs;
 using CrepeDuChef.Application.Interfaces;
-using CrepeDuChef.Common;
-using CrepeDuChef.Common.DTOs;
-using CrepeDuChef.Common.Interfaces;
-using CrepeDuChef.Common.Models;
+using CrepeDuChef.Application.ValueObjects;
 using System.Collections.ObjectModel;
+using CrepeDuChef.Maui.UI.Popups.Presenters;
+using CrepeDuChef.Application.Extensions;
 
 
 namespace CrepeDuChef.Maui.MVVM.ViewModels
@@ -14,52 +14,64 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
     {
         [ObservableProperty]
         public partial ObservableCollection<UserDto> Users { get; set; } = new();
-        private ICrepePartyRepositoryApplication CrepePartyRepo { get; }
-        public IUserDtoPopupService UserDtoPopupService { get; }
         [ObservableProperty]
         public partial object? SelectedUser { get; set; } = null;
 
+        private IChefManagementService ChefManagementService { get; }
+        private IUserApplicationOrchestrator UserApplicationOrchestrator { get; }
+        public IUserPopupPresenter UserPopupPresenter { get; }
 
-        public UserSettingViewModel(ICrepePartyRepositoryApplication CrepePartyRepo, IUserDtoPopupService userDtoPopupService)
+        public UserSettingViewModel(
+            IChefManagementService chefManagementService,
+            IUserApplicationOrchestrator userApplicationOrchestrator,
+            IUserPopupPresenter userPopupPresenter)
         {
-            this.CrepePartyRepo = CrepePartyRepo;
-            UserDtoPopupService = userDtoPopupService;
+            ChefManagementService = chefManagementService;
+            UserApplicationOrchestrator = userApplicationOrchestrator;
+            UserPopupPresenter = userPopupPresenter;
         }
 
         [RelayCommand]
         private async Task UpdateUser()
         {
-            Users = [.. (await CrepePartyRepo.GetAllChefsAsync())];
+            Users = [.. await ChefManagementService.GetAllUsersAsync()];
         }
 
         [RelayCommand]
         public async Task AddUser()
         {
-            UserDataResult fromPopup =
-                await UserDtoPopupService.ShowAddUserFormAsync();
+            UserFormData? formData =
+                await UserPopupPresenter.ShowAddUserFormAsync();
 
-            switch (fromPopup.Status)
+            // User cancel operation
+            if(formData is null)
             {
-                case FormResultStatus.Cancelled:
-                    return;
-                case FormResultStatus.Invalid:
-                    await UserDtoPopupService.ShowAbortedOperationAsync(fromPopup.ErrorMessage);
-                    return;
-                default:
-                    break;
+                return;
             }
 
-            UserDto newChef =
-                new()
-                {
-                    FirstName = fromPopup.FirstNameUpdate,
-                    LastName = fromPopup.LastNameUpdate,
-                };
+            UserOperationResult result =
+                await UserApplicationOrchestrator.AddUserAsync(formData);
 
-            await CrepePartyRepo.AddChefAsync(newChef);
+            if (result.Status == OperationStatus.Failure)
+            {
+                await UserPopupPresenter.ShowAbortedOperationAsync(result.ErrorMessage ?? "");
+                return;
+            }
 
             UpdateUserCommand.Execute(null);
         }
+
+        private async Task HandleSuccessAsync()
+        {
+            await UserPopupPresenter.ShowUpdateSuccessedOperationAsync();
+            UpdateUserCommand.Execute(null);
+        }
+
+        private async Task HandleFailureAsync(string error)
+        {
+            await UserPopupPresenter.ShowAbortedOperationAsync(error);
+        }
+
 
         [RelayCommand]
         public async Task UserUpdate()
@@ -69,37 +81,27 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
                 return;
             }
 
-            // Unselect the user
+            // UI --> remove selected the user in the CollectionView
             SelectedUser = null;
 
-            UserDataResult formResults =
-                await UserDtoPopupService.ShowUpdateUserFormAsync(usr);
+            UserFormData? formData =
+                await UserPopupPresenter.ShowUpdateUserFormAsync(usr);
 
-            switch (formResults.Status)
-            {
-                case FormResultStatus.Cancelled:
-                    return;
-
-                case FormResultStatus.Invalid:
-                    await UserDtoPopupService.ShowAbortedOperationAsync(formResults.ErrorMessage);
-                    return;
-
-                default:
-                    break;
-            }
-
-            if (formResults.FirstNameUpdate == usr.FirstName
-                && formResults.LastNameUpdate == usr.LastName)
+            if (formData is null)
             {
                 return;
             }
 
-            usr.FirstName = formResults.FirstNameUpdate;
-            usr.LastName = formResults.LastNameUpdate;
-            await CrepePartyRepo.UpdateChefAsync(usr);
+            UserOperationResult result =
+                await UserApplicationOrchestrator.UpdateUserAsync(usr, formData);
 
-            UpdateUserCommand.Execute(null);
-            await UserDtoPopupService.ShowUpdateSuccessedOperationAsync();
+            await (result.Status switch
+            {
+                OperationStatus.Success => HandleSuccessAsync(),
+                OperationStatus.Failure => HandleFailureAsync(result.ErrorMessage),
+                OperationStatus.Canceled => Task.CompletedTask,
+                _ => Task.CompletedTask
+            });
         }
     }
 }
