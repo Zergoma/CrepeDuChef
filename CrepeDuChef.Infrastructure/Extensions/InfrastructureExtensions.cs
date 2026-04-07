@@ -1,4 +1,5 @@
-﻿using CrepeDuChef.Application.Interfaces;
+﻿using CrepeDuChef.Domain.Interfaces;
+using CrepeDuChef.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
@@ -16,7 +17,7 @@ namespace CrepeDuChef.Infrastructure.Extensions
             services.AddDbContextFactory<CrepeDbContext>(options =>
                 options.UseSqlite(connectionString));
 
-            services.AddTransient<ICrepePartyRepositoryInfrastructure, CrepePartyRepositoryInfrastructure>();
+            services.AddTransient<ICrepePartyRepository, CrepePartyRepository>();
 
             return services;
         }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="CrepeDuChef.Maui.UI.Popups.Views.UserFormPopup"
+               xmlns:vm="clr-namespace:CrepeDuChef.Maui.UI.Popups.ViewModels"
+               x:DataType="vm:UserFormPopupViewModel"
+               xmlns:valueObject="clr-namespace:CrepeDuChef.Application.ValueObjects;assembly=CrepeDuChef.Application"
+               x:TypeArguments="valueObject:UserFormData"
+               xmlns:trad="clr-namespace:CrepeDuChef.Maui.Resources.languages"
+               BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
+               MinimumWidthRequest="350"
+               MinimumHeightRequest="400"
+               Margin="0"
+               Padding="0">
+
+
+    <Border class="chocoBorder"
+            Margin="0">
+
+        <Grid RowDefinitions="auto,auto,auto"
+              HorizontalOptions="Fill"
+              VerticalOptions="Fill">
+
+            <Label Grid.ColumnSpan="2"
+                   class="chocoItemLabel"
+                   FontSize="Large"
+                   FontAttributes="Bold"
+                   FontFamily="SalonDuChocolat"
+                   LineBreakMode="WordWrap"
+                   MaxLines="2"
+                   Text="{Binding Title}"
+                   Margin="10,0,10,40"/>
+
+
+            <Grid Grid.Row="1" RowDefinitions="auto,auto"
+                    ColumnDefinitions="auto,auto"
+                    ColumnSpacing="10"
+                    RowSpacing="10"
+                    HorizontalOptions="Center">
+
+                <Label class="chocoItemLabel" Grid.Row="0"
+                            Text="{Static trad:Traduction.FirstName}" 
+                            VerticalOptions="Center" 
+                            HorizontalOptions="Fill"/>
+
+                <Entry Grid.Row="0" Grid.Column="1"
+                            Placeholder=""
+                            Text="{Binding FirstName}"
+                            class="chocoEntryPopup"
+                            x:Name="FirstNameEntry"
+                            TextChanged="FirstNameEntry_TextChanged"/>
+
+                <Label class="chocoItemLabel" 
+                            Grid.Row="1" 
+                            Text="{Static trad:Traduction.LastName}"
+                            VerticalOptions="Center"/>
+
+                <Entry Grid.Row="1" Grid.Column="1"
+                            Placeholder=""
+                            WidthRequest="120"    
+                            Text="{Binding LastName}"
+                            class="chocoEntryPopup"
+                            x:Name="LastNameEntry"
+                            TextChanged="LastNameEntry_TextChanged"/>
+            </Grid>
+
+
+
+            <Grid Grid.Row="2" Grid.ColumnSpan="2"
+                  ColumnDefinitions="auto,auto" 
+                  HorizontalOptions="End"
+                  Margin="40"
+                  ColumnSpacing="5">
+
+                <Button IsEnabled="{Binding CanValidate}" Text="{Binding ValidateButtonText}" class="chocoButtonPopup" FontAttributes="Bold" Clicked="ButtonOk_Clicked"/>
+
+                <Button Grid.Column="1" Text="{Static trad:Traduction.Cancel}" class="chocoButtonPopup" Clicked="ButtonCancel_Clicked"/>
+
+            </Grid>
+
+        </Grid>
+    </Border>
+
+</toolkit:Popup>

@@ -26,8 +26,8 @@
 		<ApplicationId>com.companyname.crepeduchef.maui</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>1</ApplicationVersion>
+		<ApplicationDisplayVersion>0.2.0</ApplicationDisplayVersion>
+		<ApplicationVersion>2</ApplicationVersion>
 
 		<LangVersion>preview</LangVersion>
 
@@ -62,8 +62,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Gui Design\**" />
+	  <Compile Remove="Gui Design\**" />
+	  <EmbeddedResource Remove="Gui Design\**" />
+	  <MauiCss Remove="Gui Design\**" />
+	  <MauiXaml Remove="Gui Design\**" />
+	  <None Remove="Gui Design\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="13.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+		<PackageReference Include="FluentValidation" Version="12.1.1" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.3" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.30" />
 		<PackageReference Include="Microsoft.Maui.Essentials" Version="10.0.30" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.2" />
@@ -74,7 +85,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\CrepeDuChef.Application\CrepeDuChef.Application.csproj" />
-	  <ProjectReference Include="..\CrepeDuChef.Common\CrepeDuChef.Common.csproj" />
 	  <ProjectReference Include="..\CrepeDuChef.Infrastructure\CrepeDuChef.Infrastructure.csproj" />
 	</ItemGroup>
 
@@ -82,7 +92,7 @@
 	  <Compile Update="MVVM\Views\CrepeDuChefView.xaml.cs">
 	    <DependentUpon>CrepeDuChefView.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="PopupElements\TitledMessagePopup.xaml.cs">
+	  <Compile Update="UI\Popups\Views\TitledMessagePopup.xaml.cs">
 	    <DependentUpon>TitledMessagePopup.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Resources\languages\traduction.Designer.cs">
@@ -106,10 +116,10 @@
 	  <MauiXaml Update="MVVM\Views\UserSettingView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="PopupElements\TitledMessagePopup.xaml">
+	  <MauiXaml Update="UI\Popups\Views\TitledMessagePopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="PopupElements\UserFormPopup.xaml">
+	  <MauiXaml Update="UI\Popups\Views\UserFormPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\CrepeDuChefColors.xaml">
@@ -122,10 +132,6 @@
 
 	<ItemGroup>
 	  <None Update="Resources\Splash\kraken.svg" Color="#FF0400" BaseSize="128,128" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Gui Design\v1\" />
 	</ItemGroup>
 
 </Project>

@@ -1,91 +1,258 @@
 # 🥞 CrepeDuChef
 
-[![.NET](https://img.shields.io/badge/.NET-10.0-blue?logo=dotnet)](https://dotnet.microsoft.com/)
-[![MAUI](https://img.shields.io/badge/MAUI-10.0.30-brightgreen?logo=dotnet)](https://learn.microsoft.com/dotnet/maui/)
-[![xUnit](https://img.shields.io/badge/xUnit-2.4-orange?logo=xunit)](https://xunit.net/)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+![.NET](https://img.shields.io/badge/.NET-10.0-blue?logo=dotnet)
+![MAUI](https://img.shields.io/badge/MAUI-10.0-brightgreen?logo=dotnet)
+![xUnit](https://img.shields.io/badge/xUnit-tests-orange)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
-## 🎯 Concept  & Fun
+# 🎯 Concept & Fun
 
-CrepeDuChef est une application MAUI, le but est simple : savoir **qui aura la crêpe du chef** tout en se faisant plaisir à coder.  
-L'app permet de gérer les “chefs” et de décider de manière **aléatoire et équitable** qui aura la fameuse `crêpe du chef` (aka : la dernière qui a été faite, plus petite et avec une forme aléatoire).  
-L’application garde en mémoire locale (sqlite) qui a déjà été choisi pour assurer une rotation juste.  
+**CrepeDuChef** est une application **.NET MAUI** qui répond à une question essentielle :
 
-C’est surtout un **prétexte pour faire de la belle programmation** avec un framework moderne et puissant (MAUI 😎). Amusez-vous, explorez MAUI !!  
-Si vous aimez l’application, vous pouvez même **m’offrir une bière ou une pizza** 🍺🍕 !
+> **Qui aura la crêpe du chef ?**
 
-💡 À terme, une version avec **persistance via WebAPI** est prévue.
+La dernière crêpe est souvent :
+- plus petite  
+- difforme  
+- mais étrangement… la plus convoitée  
 
----
+L’application sélectionne **équitablement et aléatoirement** le prochain chef grâce à un **algorithme de rotation** garantissant que tout le monde passe à tour de rôle.
 
-## 🧩 Architecture de la solution
-
-- 📦 **Common**  
-  DTOs, Exceptions, Interfaces transverses (sans dépendances),  
-  Helpers/utilitaires purs (Extensions simples, Random, etc.)
-
-- 🧠 **Application**  
-  Logique applicative et cas d’usage (Services),  
-  Interfaces métier (Repositories, Services),  
-  Mappers (DTO ↔ Domain), Extensions métier  
-
-- 🧬 **Domain**  
-  Entités métier (Entities),  
-  Logique métier pure (sans dépendance externe)
-
-- 🗄️ **Infrastructure**  
-  Accès aux données (DbContext, Repositories),  
-  Migrations, configuration EF Core, Extensions liées à la persistence  
-
-- 🖥️ **Maui**  
-  UI MAUI avec MVVM (Models, ViewModels, Views),  
-  Services UI, PopupElements, Factories,  
-  Behaviors, Converters, Resources, Platforms  
-
-- 🧪 **Tests**  
-  Tests unitaires par couche : Application, Domain, Infrastructure, Common  
- 
----
-
-## ⚡ Technologies & dépendances clés
-
-- **.NET 10 / MAUI**  
-- **MAUI Toolkit** : `CommunityToolkit.Maui`, `CommunityToolkit.Mvvm`  
-- **UX & UI** : `UraniumUI.Material`, `SkiaSharp.Extended.UI.Maui`  
-- **Persistence locale** : `Microsoft.EntityFrameworkCore`, `Microsoft.EntityFrameworkCore.Sqlite`  
-- **Logging / Essentials** : `Microsoft.Maui.Controls`, `Microsoft.Maui.Essentials`, `Microsoft.Extensions.Logging.Debug`  
-
+L’historique est stocké en **SQLite**, assurant une rotation juste au fil des sessions.
 
 ---
 
-## 📐 Conventions / bonnes pratiques
+# 🧩 Architecture
 
-- Mapper / validation dans `Common` → testable sans MAUI (planifié dans les prochaines versions)  
-- Services dépendants de MAUI → testables via `Class Library MAUI` avec mocks  
-- SemaphoreSlim pour séquentialiser les popups  
-- Décorateurs et localisations injectées via DI  
-- Tests unitaires **Common** séparés de tests **MAUI**, pour rester CI-friendly  
+Architecture inspirée de **Clean Architecture**, adaptée à MAUI.
 
----
-
-## 🚀 Build & Run
-
-1. Ouvrir la solution dans Visual Studio 2026  
-2. Définir `CrepeDuChef.Maui` comme projet de démarrage  
-3. Sélectionner la plateforme souhaitée (Android, Windows, [je n'ai pas pu tester pour iOS, et Catalys])  
+```mermaid
+flowchart LR
+UI[UI / MAUI / MVVM] --> APP[Application]
+    APP --> DOMAIN[Domain]
+    INFRA[Infrastructure] --> DOMAIN[Domain]
+```
 
 ---
 
-## ✅ Tests
+# 📂 Structure du projet
 
-- **Common** : `CrepeDuChef.Common.Tests` → tests rapides, CI-friendly  
-- **MAUI** : `CrepeDuChef.Maui.Tests` → tests pour services MAUI, mock Popups/Dialogs (à ajouter plus tard)  
+```
+CrepeDuChef
+│
+├── Domain
+├── Application
+├── Infrastructure
+├── Maui
+└── Tests
+```
 
 ---
 
-## 🛣 Roadmap
+# 🏷️ Version actuelle
 
-- Ajouter tests MAUI pour services dépendants de la plateforme  
-- Version avec persistance WebAPI  
+**0.2.0 (pré-release)**
+
+---
+
+# 📦 Détails des projets
+
+## 🧬 Domain
+
+Le **cœur métier pur**, sans dépendance externe.
+
+Contient :
+- Entities : `User`, `CrepesParty`
+- Domain Services : `ChefRotationAlgorithm`
+- ValueObjects : `ChefSelection`, etc.
+- Exceptions métier
+- Interfaces : `IRandomProvider`, `ICrepePartyRepository`
+
+➡️ **Aucune dépendance vers Application, Infrastructure ou MAUI**
+
+---
+
+## 🧠 Application
+
+La couche **cas d’usage**.  
+Elle orchestre le métier et les implémentations techniques.
+
+Contient :
+- Services applicatifs  
+  - `ChefManagementService`  
+  - `ChefRotationService`  
+  - `CrepePartyService`  
+- Orchestor
+  - `UserApplicationOrchestor`
+- DTOs
+- Mappers
+- ValueObjects  
+  - `OperationStatus`  
+  - `UserOperationResult`  
+  - `UserFormData`
+- Validation (FluentValidation)
+- Ressources (localisation métier)
+
+➡️ **Ne dépend que du Domain**
+
+---
+
+## 🗄 Infrastructure
+
+La couche technique.
+
+Contient :
+- EF Core  
+- SQLite  
+- `CrepeDbContext`
+- Repositories
+- Migrations
+- Implémentations techniques (`DefaultRandomProvider`)
+
+➡️ **Implémente les interfaces du Domain**
+
+---
+
+## 🖥 MAUI (UI)
+
+La couche interface utilisateur.
+
+Organisation principale :
+
+### MVVM
+- `ViewModels`
+- `Views`
+- `Models`
+
+### UI Logic
+- Behaviors (`PulseAnimationBehavior`, `PulseManager`)
+- Converters
+- Mappers
+
+### Popups (organisation modulaire)
+
+```
+UI/Popups/
+│
+├── Views/
+├── ViewModels/
+├── Presenters/
+├── Factories/
+└── Models/
+```
+
+Inclut :
+- `UserFormPopup`
+- `UserPopupPresenter`
+- `DialogPresenter`
+- `DialogResult<T>`
+- `DialogResultStatus`
+- `DialogResultExtensions`
+
+### Resources
+- Styles
+- Fonts
+- Images
+- Localisation (`Traduction.resx`)
+
+➡️ **Ne dépend que de Application et Infrastructure**
+
+---
+
+## 🧪 Tests
+
+Tests unitaires couvrant :
+
+- Domain  
+- Application  
+- Mappers  
+- Validators  
+- Services  
+- ViewModels  
+
+Technos :
+- **xUnit**
+- **FluentAssertions**
+- **NSubstitute**
+
+---
+
+# ⚙️ Technologies
+
+| Tech | Usage |
+|------|-------|
+| .NET 10 | plateforme principale |
+| .NET MAUI | UI cross-platform |
+| EF Core | ORM |
+| SQLite | stockage local |
+| CommunityToolkit.MVVM | MVVM moderne |
+| CommunityToolkit.Maui | UI helpers |
+| UraniumUI | composants UI |
+| SkiaSharp | rendu graphique |
+| FluentAssertions | assertions |
+| NSubstitute | mocking |
+
+---
+
+# 🚀 Build & Run
+
+1. Ouvrir la solution :
+
+```
+CrepeDuChef.slnx
+```
+
+2. Définir :
+
+```
+CrepeDuChef.Maui
+```
+
+comme projet de démarrage.
+
+3. Lancer sur la plateforme souhaitée :
+- Windows  
+- Android  
+- iOS (non testé)  
+- MacCatalyst (non testé)
+
+---
+
+# 🧪 Exécuter les tests
+
+```
+dotnet test
+```
+
+Couvre :
+- Algorithme de rotation  
+- Services applicatifs  
+- Mappers  
+- Validators  
+- ViewModels  
+
+---
+
+# 🛣 Roadmap
+
+- [ ] API Web pour synchronisation multi-appareils  
+- [ ] Ajout d’autres tests  
+- [ ] Amélioration UI/UX  
+- [ ] Ajout d'une version Avalonia
+
+---
+
+# 🍺 Support
+
+Si ce projet t’a amusé ou inspiré :
+
+**offre-moi une bière ou une pizza** 🍺🍕
+
+---
+
+# 📜 License
+
+MIT License  
+Voir `LICENSE.txt`.
