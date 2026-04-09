@@ -26,8 +26,8 @@
 		<ApplicationId>com.companyname.crepeduchef.maui</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>0.2.0</ApplicationDisplayVersion>
-		<ApplicationVersion>2</ApplicationVersion>
+		<ApplicationDisplayVersion>0.3.0</ApplicationDisplayVersion>
+		<ApplicationVersion>3</ApplicationVersion>
 
 		<LangVersion>preview</LangVersion>
 
@@ -86,6 +86,8 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\CrepeDuChef.Application\CrepeDuChef.Application.csproj" />
 	  <ProjectReference Include="..\CrepeDuChef.Infrastructure\CrepeDuChef.Infrastructure.csproj" />
+	  <ProjectReference Include="..\CrepeDuChef.Localization\CrepeDuChef.Localization.csproj" />
+	  <ProjectReference Include="..\CrepeDuChef.ViewModels\CrepeDuChef.ViewModels.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -95,18 +97,6 @@
 	  <Compile Update="UI\Popups\Views\TitledMessagePopup.xaml.cs">
 	    <DependentUpon>TitledMessagePopup.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Resources\languages\traduction.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>Traduction.resx</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <EmbeddedResource Update="Resources\languages\Traduction.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>traduction.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -114,6 +104,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="MVVM\Views\UserSettingView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="UI\Popups\Views\SelectUsersPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="UI\Popups\Views\TitledMessagePopup.xaml">

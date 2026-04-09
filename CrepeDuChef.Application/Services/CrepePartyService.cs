@@ -2,7 +2,7 @@
 using CrepeDuChef.Application.Interfaces;
 using CrepeDuChef.Application.Mappers;
 using CrepeDuChef.Application.Models;
-using CrepeDuChef.Application.Resources;
+using CrepeDuChef.Localization.Resources;
 using CrepeDuChef.Domain.Entities;
 using CrepeDuChef.Domain.Interfaces;
 using Microsoft.Extensions.Localization;

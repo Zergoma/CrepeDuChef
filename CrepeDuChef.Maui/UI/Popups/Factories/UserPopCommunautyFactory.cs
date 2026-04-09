@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Maui.Views;
 using CrepeDuChef.Application.DTOs;
-using CrepeDuChef.Maui.Resources.languages;
+using CrepeDuChef.Localization.Resources.languages;
 using CrepeDuChef.Maui.UI.Popups.Views;
 
 namespace CrepeDuChef.Maui.UI.Popups.Factories

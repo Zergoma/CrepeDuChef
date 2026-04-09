@@ -1,0 +1,22 @@
+<Application xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:av="clr-namespace:Avalonia.Markup.Xaml;assembly=Avalonia.Markup.Xaml"
+			 xmlns:views="using:CrepeDuChef.Avalonia.Views"
+			 xmlns:vm="using:CrepeDuChef.Avalonia.ViewModels"
+			 x:Class="CrepeDuChef.Avalonia.App"
+			 RequestedThemeVariant="Default">
+	<!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+	
+
+	<Application.Styles>
+		<FluentTheme />
+		<StyleInclude Source="avares://CrepeDuChef.Avalonia/Styles/ControlsStyles.axaml" />
+
+		<!-- dialogs are center to owner -->
+		<Style Selector="Window.dialog">
+			<Setter Property="WindowStartupLocation" Value="CenterOwner"/>
+		</Style>
+
+	</Application.Styles>
+</Application>

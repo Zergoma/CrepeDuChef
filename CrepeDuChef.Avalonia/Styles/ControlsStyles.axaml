@@ -1,0 +1,57 @@
+<Styles xmlns="https://github.com/avaloniaui"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:anim="using:Avalonia.Animation">
+
+	<Design.PreviewWith>
+		<Border Padding="20">
+			<!-- Add Controls for Previewer Here -->
+		</Border>
+	</Design.PreviewWith>
+
+	<Style Selector="Button">
+		<Setter Property="Background" Value="#EEE" />
+		<Setter Property="Foreground" Value="#333" />
+		<Setter Property="CornerRadius" Value="6" />
+		<Setter Property="Padding" Value="10 6" />
+		<Setter Property="BorderBrush" Value="#CCC" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Transitions">
+			<anim:Transitions>
+				<anim:DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+			</anim:Transitions>
+		</Setter>
+
+		<Style Selector="^:pointerover">
+			<Setter Property="Background" Value="#DDD" />
+			<Setter Property="BorderBrush" Value="#BBB" />
+		</Style>
+
+		<Style Selector="^:pressed">
+			<Setter Property="Background" Value="#CCC" />
+			<Setter Property="BorderBrush" Value="#AAA" />
+		</Style>
+
+		<Style Selector="^:disabled">
+			<Setter Property="Opacity" Value="0.5" />
+		</Style>
+	</Style>
+
+	<Style Selector="Button.menu-button">
+		<Setter Property="HorizontalAlignment" Value="Stretch" />
+		<Setter Property="Background" Value="#3A86FF" />   <!-- bleu profond -->
+		<Setter Property="Foreground" Value="White" />
+		<Setter Property="CornerRadius" Value="0" />
+		<Setter Property="Padding" Value="14 10" />
+
+		<Style Selector="^:pointerover">
+			<Setter Property="Background" Value="#5CA0FF" />
+		</Style>
+
+		<Style Selector="^:pressed">
+			<Setter Property="Background" Value="#1F6DE0" />
+		</Style>
+	</Style>
+
+
+
+</Styles>

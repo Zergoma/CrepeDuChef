@@ -1,4 +1,4 @@
-using CrepeDuChef.Maui.MVVM.ViewModels;
+using CrepeDuChef.ViewModels.ViewModels;
 
 namespace CrepeDuChef.Maui.MVVM.Views;
 

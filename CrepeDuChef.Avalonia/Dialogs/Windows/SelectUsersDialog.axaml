@@ -1,0 +1,49 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="CrepeDuChef.Avalonia.Dialogs.Windows.SelectUsersDialog"
+        xmlns:vm="using:CrepeDuChef.Avalonia.ViewModels"
+        xmlns:model_ui="using:CrepeDuChef.Avalonia.Models.UI"
+        xmlns:conv="using:CrepeDuChef.Avalonia.Converters"
+        x:DataType="vm:SelectUsersDialogViewModelAvaloniaAdapter"
+        Width="400"
+        Height="400"
+        WindowStartupLocation="CenterOwner"
+        Title="{Binding Shared.TitleMsg}">
+
+    <Window.Resources>
+		<conv:SelectedUsersContainsConverter x:Key="ContainsConverter"/>
+    </Window.Resources>
+
+    <StackPanel Margin="20" Spacing="20">
+        <TextBlock Text="{Binding Shared.Message}"
+                   TextWrapping="Wrap"
+                   FontSize="16"/>
+
+        <ScrollViewer Height="200">
+            <ItemsControl ItemsSource="{Binding Users}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="model_ui:SelectableUser">
+                        <CheckBox
+                            Content="{Binding User.FullName}"
+                            IsChecked="{Binding IsSelected, Mode=TwoWay}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+
+        <StackPanel Orientation="Horizontal" Margin="20" Spacing="20">
+            <Button Content="{Binding Shared.ValidateMsg}"
+                    Command="{Binding ValidateCommand}"/>
+
+
+            <Button Content="{Binding Shared.CloseMsg}"
+                    Command="{Binding CancelCommand}"/>
+        </StackPanel>
+
+    </StackPanel>
+
+</Window>

@@ -1,5 +1,5 @@
 ﻿using CrepeDuChef.Application.DTOs;
-using CrepeDuChef.Application.Resources;
+using CrepeDuChef.Localization.Resources;
 using FluentValidation;
 using Microsoft.Extensions.Localization;
 

@@ -30,7 +30,7 @@ namespace CrepeDuChef.Application.Services
         public async Task<UserDto?> AddUserAsync(UserDtoAdd userDtoAdd)
         {
             ValidationResult validation = _addValidator.Validate(userDtoAdd);
-            
+
             if (!validation.IsValid)
             {
                 throw new ValidationException(validation.Errors);

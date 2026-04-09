@@ -7,7 +7,7 @@
                x:DataType="vm:UserFormPopupViewModel"
                xmlns:valueObject="clr-namespace:CrepeDuChef.Application.ValueObjects;assembly=CrepeDuChef.Application"
                x:TypeArguments="valueObject:UserFormData"
-               xmlns:trad="clr-namespace:CrepeDuChef.Maui.Resources.languages"
+               xmlns:trad="clr-namespace:CrepeDuChef.Localization.Resources.languages;assembly=CrepeDuChef.Localization"
                BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
                MinimumWidthRequest="350"
                MinimumHeightRequest="400"

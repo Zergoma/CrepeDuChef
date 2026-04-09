@@ -1,5 +1,5 @@
 ﻿using CrepeDuChef.Application.DTOs;
-using CrepeDuChef.Application.Resources;
+using CrepeDuChef.Localization.Resources;
 using CrepeDuChef.Application.Validation;
 using CrepeDuChef.Tests.Helpers;
 using FluentAssertions;
