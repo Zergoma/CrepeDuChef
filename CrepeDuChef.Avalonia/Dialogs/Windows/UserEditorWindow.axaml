@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="CrepeDuChef.Avalonia.Dialogs.Windows.UserEditorWindow"
+        xmlns:vm="using:CrepeDuChef.ViewModels.ViewModels"
+        x:DataType="vm:UserEditorViewModel"
+        Width="400"
+        Height="300"
+        WindowStartupLocation="CenterOwner"
+        Title="{Binding UserEditorMsg}">
+
+  <StackPanel Margin="20" Spacing="10">
+        <TextBox PlaceholderText="{Binding FirstNameMsg}" Text="{Binding FirstName}" />
+        <TextBox PlaceholderText="{Binding LastNameMsg}" Text="{Binding LastName}" />
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+            <Button Content="{Binding CancelMsg}"
+                    Command="{Binding CancelCommand}"/>
+
+            <Button Content="{Binding ValidateMsg}"
+                    IsEnabled="{Binding CanValidate}"
+                    Command="{Binding SaveCommand}"/>
+        </StackPanel>
+    </StackPanel>
+
+</Window>

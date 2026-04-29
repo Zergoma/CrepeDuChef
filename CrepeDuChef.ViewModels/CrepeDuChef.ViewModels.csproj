@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+	</ItemGroup>
+
+	
+
+	<ItemGroup>
+	  <ProjectReference Include="..\CrepeDuChef.Application\CrepeDuChef.Application.csproj" />
+	  <ProjectReference Include="..\CrepeDuChef.Localization\CrepeDuChef.Localization.csproj" />
+	</ItemGroup>
+		
+</Project>

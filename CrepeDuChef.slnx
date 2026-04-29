@@ -22,6 +22,7 @@
     <File Path="Docs/Tests/validators.md" />
   </Folder>
   <Folder Name="/UI/">
+    <Project Path="CrepeDuChef.Avalonia/CrepeDuChef.Avalonia.csproj" Id="13532009-440c-450f-b51d-442c0c5e7b55" />
     <Project Path="CrepeDuChef.Maui/CrepeDuChef.Maui.csproj">
       <Deploy />
     </Project>
@@ -29,5 +30,7 @@
   <Project Path="CrepeDuChef.Application/CrepeDuChef.Application.csproj" Id="ec9b46f5-0191-4571-a3ce-3e564ba6fd3c" />
   <Project Path="CrepeDuChef.Domain/CrepeDuChef.Domain.csproj" Id="19a09558-70eb-40c3-8ef6-8e9afc832f9d" />
   <Project Path="CrepeDuChef.Infrastructure/CrepeDuChef.Infrastructure.csproj" Id="3bed3790-52e5-4308-9963-84c0f12cc63c" />
+  <Project Path="CrepeDuChef.Localization/CrepeDuChef.Localization.csproj" Id="0ad83296-ec54-4b5c-b8a8-3d3f8f04d8f8" />
   <Project Path="CrepeDuChef.Tests/CrepeDuChef.Tests.csproj" Id="8cf615a1-73c7-4f32-91b9-46b067a1f287" />
+  <Project Path="CrepeDuChef.ViewModels/CrepeDuChef.ViewModels.csproj" Id="17e9a965-e6b8-4d59-a091-25d3e1e19b4e" />
 </Solution>

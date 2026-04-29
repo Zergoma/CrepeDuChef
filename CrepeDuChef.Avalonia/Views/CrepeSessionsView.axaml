@@ -1,0 +1,83 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:Class="CrepeDuChef.Avalonia.CrepeSessionsView"
+			 xmlns:vm="using:CrepeDuChef.Avalonia.ViewModels"
+			 x:DataType="vm:CrepeSessionsViewModelAvaloniaAdapter"
+			 xmlns:model_ui="using:CrepeDuChef.Avalonia.Models.UI">
+	<Grid RowDefinitions="Auto, Auto, *" Margin="20">
+
+		<StackPanel>
+
+			<!-- Header -->
+			<TextBlock
+			Text="{Binding Shared.CrepeDuChef_title}"
+			FontSize="24"
+			FontWeight="Bold"
+			Margin="0 0 0 20" />
+
+			<Button
+			Content="{Binding Shared.WhoIsTheChef}"
+			Command="{Binding Shared.GetNewChefCommand}"
+			Width="240"
+			Height="100"
+			CornerRadius="30"
+			HorizontalContentAlignment="Center"
+			VerticalContentAlignment="Center"
+			HorizontalAlignment="Center"/>
+		</StackPanel>
+
+
+		<StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+			<ToggleSwitch IsChecked="{Binding Shared.ShowOnlyCurrent}"
+						  OnContent="{Binding Shared.OnContentOnlyCurrentSession}"
+						  OffContent="{Binding Shared.OffOnContentAllSession}"/>
+		</StackPanel>
+
+
+		<!-- Content -->
+		<Grid Grid.Row="2" ColumnDefinitions="*, Auto">
+
+			<!-- Liste des sessions -->
+			<ListBox ItemsSource="{Binding CrepeSessions}"
+					 Margin="0 0 20 0">
+				<ListBox.ItemTemplate>
+					<DataTemplate x:DataType="model_ui:CrepePartyGroup_Ava">
+						<StackPanel Margin="0 0 0 20">
+
+							<!-- Header du groupe -->
+							<TextBlock Text="{Binding Title}" FontSize="20" FontWeight="Bold" />
+
+							<!-- Items du groupe -->
+							<ItemsControl ItemsSource="{Binding Items}">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate x:DataType="model_ui:CrepePartyItem_Ava">
+										<StackPanel Orientation="Horizontal" Margin="10 0 0 5">
+											<TextBlock Text="{Binding ChefName}" />
+											<TextBlock Text=" - " />
+											<TextBlock Text="{Binding DateLocal}" />
+										</StackPanel>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+
+						</StackPanel>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+
+			<!-- Actions -->
+			<StackPanel Grid.Column="1" Spacing="10" VerticalAlignment="Top">
+
+				<Button Content="{Binding Shared.UsersAway}"
+						Command="{Binding Shared.SelectAvailableUsersCommand}"
+						IsEnabled="{Binding Shared.IsMoreThanOneChef}" />
+
+			</StackPanel>
+
+
+		</Grid>
+	</Grid>
+</UserControl>

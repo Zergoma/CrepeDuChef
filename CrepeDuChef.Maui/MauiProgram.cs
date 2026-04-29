@@ -1,24 +1,13 @@
 ﻿using CommunityToolkit.Maui;
-using CrepeDuChef.Application.DTOs;
-using CrepeDuChef.Application.Interfaces;
-using CrepeDuChef.Application.Ochestrators;
-using CrepeDuChef.Application.Services;
-using CrepeDuChef.Application.Validation;
-using CrepeDuChef.Domain.Interfaces;
-using CrepeDuChef.Infrastructure;
+using CrepeDuChef.Application.Extensions;
 using CrepeDuChef.Infrastructure.Extensions;
-using CrepeDuChef.Infrastructure.Services;
-using CrepeDuChef.Maui.MVVM.ViewModels;
-using CrepeDuChef.Maui.MVVM.Views;
-using CrepeDuChef.Maui.UI.Dialogs;
-using CrepeDuChef.Maui.UI.Popups.Factories;
-using CrepeDuChef.Maui.UI.Popups.Presenters;
-using FluentValidation;
+using CrepeDuChef.Maui.DI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using SQLitePCL;
 using UraniumUI;
+using AppInfra = CrepeDuChef.Infrastructure;
 
 namespace CrepeDuChef.Maui
 {
@@ -47,53 +36,40 @@ namespace CrepeDuChef.Maui
             builder
                 .UseSkiaSharp()
                 .UseMauiCommunityToolkit();
-                
             
             builder.Services.AddLocalization();
 
-
-
+            // Views & Shell
             builder.Services.AddTransient<App>();
             builder.Services.AddTransient<AppShell>();
-            builder.Services.AddTransient<CrepeDuChefViewModel>();
-            builder.Services.AddTransient<CrepeDuChefView>();
 
-            builder.Services.AddTransient<UserSettingViewModel>();
-            builder.Services.AddTransient<UserSettingView>();
 
             string dbPath = 
                 Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                     "CrepeDuChef.db3"
                     );
+
             builder.Services.AddCrepeDuChefInfrastructure(dbPath);
-
-            builder.Services.AddTransient<IRandomProvider, DefaultRandomProvider>();
-            builder.Services.AddTransient<IChefRotationService, ChefRotationService>();
-
-            builder.Services.AddSingleton<IDialogPresenter, DialogPresenter>();
-            builder.Services.AddSingleton<IUserPopupPresenter, UserPopupPresenter>();
-
-            builder.Services.AddTransient<IUserFormPopupFactory, UserPopCommunautyFactory>();
-
-            builder.Services.AddTransient<ICrepePartyService, CrepePartyService>();
-
-            builder.Services.AddTransient<IChefManagementService, ChefManagementService>();
-            builder.Services.AddTransient<IUserApplicationOrchestrator, UserApplicationOrchestrator>();
+            builder.Services.AddCrepeDuChefApplication();
 
 
-            builder.Services.AddTransient<IValidator<UserDtoAdd>, UserDtoAddValidator>();
-            builder.Services.AddTransient<IValidator<UserDtoUpdate>, UserDtoUpdateValidator>();
+            // MAUI Modules
+            builder.Services.AddMauiViews();
+            builder.Services.AddMauiViewModels();
+            builder.Services.AddMauiPopups();
+            builder.Services.AddMauiPresenters();
 
-
-
+#if DEBUG
+            DIValidator.Validate(builder.Services);
+#endif
 
             #region Infrastructure Update
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
             {
-                var db = scope.ServiceProvider.GetRequiredService<CrepeDbContext>();
+                var db = scope.ServiceProvider.GetRequiredService<AppInfra.CrepeDbContext>();
                 db.Database.Migrate();
             }
             #endregion

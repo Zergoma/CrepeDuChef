@@ -1,8 +1,8 @@
 ﻿using CrepeDuChef.Application.DTOs;
 using CrepeDuChef.Application.Extensions;
 using CrepeDuChef.Application.Models;
-using CrepeDuChef.Application.Resources;
 using CrepeDuChef.Domain.Entities;
+using CrepeDuChef.Localization.Resources;
 using Microsoft.Extensions.Localization;
 
 namespace CrepeDuChef.Application.Mappers

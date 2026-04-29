@@ -1,5 +1,6 @@
 ﻿using CrepeDuChef.Domain.Interfaces;
 using CrepeDuChef.Infrastructure.Repositories;
+using CrepeDuChef.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
@@ -18,6 +19,8 @@ namespace CrepeDuChef.Infrastructure.Extensions
                 options.UseSqlite(connectionString));
 
             services.AddTransient<ICrepePartyRepository, CrepePartyRepository>();
+
+            services.AddTransient<IRandomProvider, DefaultRandomProvider>();
 
             return services;
         }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="CrepeDuChef.Maui.UI.Popups.Views.SelectUsersPopup"
+    xmlns:ValObj="clr-namespace:CrepeDuChef.Application.ValueObjects;assembly=CrepeDuChef.Application"
+    x:TypeArguments="ValObj:UserSelectionResult"
+    CanBeDismissedByTappingOutsideOfPopup="False">
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+
+        <Label x:Name="TitleLabel"
+               FontSize="20"
+               FontAttributes="Bold" />
+
+        <Label x:Name="MessageLabel"
+               FontSize="14"
+               TextColor="Gray" />
+
+        <CollectionView x:Name="UsersList"
+                        SelectionMode="Multiple"
+                        HeightRequest="350">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Label Text="{Binding FullName}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <HorizontalStackLayout Spacing="10" HorizontalOptions="End">
+
+            <Button Text="Annuler"
+                    Clicked="OnCancelClicked" />
+
+            <Button Text="Valider"
+                    Clicked="OnValidateClicked" />
+        </HorizontalStackLayout>
+
+    </VerticalStackLayout>
+</toolkit:Popup>
