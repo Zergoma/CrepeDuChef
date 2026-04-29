@@ -71,16 +71,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Maui" Version="13.0.0" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="FluentValidation" Version="12.1.1" />
-		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.3" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.30" />
-		<PackageReference Include="Microsoft.Maui.Essentials" Version="10.0.30" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.2" />
-		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="3.0.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" version="10.0.3" />
-		<PackageReference Include="UraniumUI.Material" Version="2.14.0" />
+		<PackageReference Include="CommunityToolkit.Maui" />
+		<PackageReference Include="CommunityToolkit.Mvvm" />
+		<PackageReference Include="FluentValidation" />
+		<PackageReference Include="Microsoft.Extensions.Localization" />
+		<PackageReference Include="Microsoft.Maui.Controls"  />
+		<PackageReference Include="Microsoft.Maui.Essentials"  />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug"  />
+		<PackageReference Include="SkiaSharp.Extended.UI.Maui" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore"  />
+		<PackageReference Include="UraniumUI.Material"  />
 	</ItemGroup>
 
 	<ItemGroup>
