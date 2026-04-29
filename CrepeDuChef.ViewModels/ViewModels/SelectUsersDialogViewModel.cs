@@ -15,8 +15,8 @@ namespace CrepeDuChef.ViewModels.ViewModels
         public ObservableCollection<AppDto.UserDto> SelectedUsers { get; }
 
         public string TitleMsg { get; }
-        public static string CloseMsg => Loca.Traduction.Cancel;
-        public static string ValidateMsg => Loca.Traduction.Validate;
+        public string CloseMsg => Loca.Traduction.Cancel;
+        public string ValidateMsg => Loca.Traduction.Validate;
 
         public string Message { get; }
         public SelectUsersDialogViewModel(

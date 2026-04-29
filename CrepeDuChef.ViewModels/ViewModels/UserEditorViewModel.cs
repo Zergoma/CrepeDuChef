@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CrepeDuChef.Application.ValueObjects;
-using CrepeDuChef.Localization.Resources.languages;
+using Loca = CrepeDuChef.Localization.Resources.languages;
 
 
 namespace CrepeDuChef.ViewModels.ViewModels
@@ -25,11 +25,11 @@ namespace CrepeDuChef.ViewModels.ViewModels
         [ObservableProperty]
         public partial string LastName { get; set; } = string.Empty;
 
-        public string FirstNameMsg => Traduction.FirstName;
-        public string LastNameMsg => Traduction.LastName;
-        public string CancelMsg => Traduction.Cancel;
-        public string ValidateMsg => Traduction.Validate;
-        public string UserEditorMsg => Traduction.Title_UserEditor;
+        public string FirstNameMsg => Loca.Traduction.FirstName;
+        public string LastNameMsg => Loca.Traduction.LastName;
+        public string CancelMsg => Loca.Traduction.Cancel;
+        public string ValidateMsg => Loca.Traduction.Validate;
+        public string UserEditorMsg => Loca.Traduction.Title_UserEditor;
 
         public UserEditorViewModel(
             string firstName = "",
