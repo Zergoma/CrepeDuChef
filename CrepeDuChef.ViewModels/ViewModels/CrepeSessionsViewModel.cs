@@ -27,10 +27,10 @@ namespace CrepeDuChef.ViewModels.ViewModels
         #endregion
 
         #region Traduction
-        public static string CrepeDuChef_title => Loca.Traduction.CrepeDuChef_title;
-        public static string WhoIsTheChef => Loca.Traduction.WhoIsTheChef;
-        public static string UsersAway => Loca.Traduction.UsersAway;
-        public static string NoSessionInDb => Loca.Traduction.NoSessionInDb;
+        public string CrepeDuChef_title => Loca.Traduction.CrepeDuChef_title;
+        public string WhoIsTheChef => Loca.Traduction.WhoIsTheChef;
+        public string UsersAway => Loca.Traduction.UsersAway;
+        public string NoSessionInDb => Loca.Traduction.NoSessionInDb;
 
         #endregion
 
