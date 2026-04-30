@@ -1,6 +1,9 @@
 <Solution>
   <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
     <File Path="Docs/Design/GUI/v1/GUI_v1.png" />
+    <File Path="global.json" />
     <File Path="LICENSE.txt" />
     <File Path="README.md" />
   </Folder>

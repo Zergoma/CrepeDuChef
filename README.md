@@ -93,7 +93,17 @@ CrepeDuChef
 # 🏷️ Version actuelle
 
 **0.3.0 (pré-release)**  
-Architecture multi‑UI (MAUI + Avalonia 12) avec ViewModels partagés.
+Architecture multi‑UI (MAUI + Avalonia 12) avec ViewModels partagés.  
+
+### 🧱 Directory.Packages.props  
+Gère les versions NuGet de manière centralisée (CPM).
+
+### 🧱 Directory.Build.props  
+Définit les propriétés MSBuild communes à tous les projets (TFM des libs, nullable, analyzers…).
+
+### 🧱 global.json  
+Verrouille la version du SDK .NET utilisée pour compiler le repo, afin d’éviter les conflits et garantir la reproductibilité.
+ 
 
 ---
 

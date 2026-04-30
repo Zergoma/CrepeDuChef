@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CrepeDuChef.Avalonia.Services;
 using CrepeDuChef.Avalonia.Views;
-using CrepeDuChef.Localization.Resources.languages;
+using Loca = CrepeDuChef.Localization.Resources.languages;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
@@ -16,8 +16,8 @@ namespace CrepeDuChef.Avalonia.ViewModels
 
         private readonly INavigationService _nav;
 
-        public string UsersMsg => Traduction.Users;
-        public string CrepePartyMsg => Traduction.CrepeDuChef_title;
+        public string UsersMsg => Loca.Traduction.Users;
+        public string CrepePartyMsg => Loca.Traduction.CrepeDuChef_title;
 
 
 
