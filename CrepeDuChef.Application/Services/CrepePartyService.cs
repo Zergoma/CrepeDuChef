@@ -38,7 +38,23 @@ namespace CrepeDuChef.Application.Services
             return crepes
                 .GroupBy(cp => cp.SessionNumber)
                 .OrderByDescending(cp => cp.Key)
-                .Select(group => CrepePartyMapper.ToSession(group, chefsById, _localizer));
+                .Select(group =>
+                {
+                    CrepePartySession session =
+                        CrepePartyMapper.ToSession(group, chefsById);
+
+                    session.Title = $"{_localizer["Session"]} {session.SessionNumber}";
+
+                    foreach (var item in session.Items)
+                    {
+                        if (string.IsNullOrWhiteSpace(item.Name))
+                        {
+                            item.Name = _localizer["NoName"];
+                        }
+                    }
+
+                    return session;
+                });
         }
 
         public async Task AddCrepePartyAsync(CrepesPartyDto dto)
