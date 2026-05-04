@@ -1,22 +1,55 @@
 ﻿using CrepeDuChef.Application.DTOs;
+using CrepeDuChef.Application.Interfaces;
 using CrepeDuChef.Application.Services;
 using CrepeDuChef.Domain.Entities;
-using CrepeDuChef.Domain.Interfaces;
+
 using FluentAssertions;
+
 using FluentValidation;
 using FluentValidation.Results;
+
 using NSubstitute;
 
 namespace CrepeDuChef.Tests.Application.Services
 {
     public class ChefManagementServiceTests
     {
-        private readonly ICrepePartyRepository _repo = Substitute.For<ICrepePartyRepository>();
-        private readonly IValidator<UserDtoAdd> _addValidator = Substitute.For<IValidator<UserDtoAdd>>();
-        private readonly IValidator<UserDtoUpdate> _updateValidator = Substitute.For<IValidator<UserDtoUpdate>>();
+        private readonly ICrepePartyRepository _repo;
+        private readonly IValidator<UserDtoAdd> _addValidator;
+        private readonly IValidator<UserDtoUpdate> _updateValidator;
+        private readonly IDeviceIdProvider _deviceIdProvider;
+        private readonly IDateTimeProvider _dateTimeProvider;
+
+        Guid Id01Test;
+        Guid Id02Test;
+        Guid Id42Test;
+
+        Guid DeviceIdTest;
+        DateTime FixedNow;
 
         private ChefManagementService CreateService()
-            => new(_repo, _addValidator, _updateValidator);
+            => new(_repo, _addValidator, _updateValidator, _deviceIdProvider, _dateTimeProvider);
+
+
+        public ChefManagementServiceTests()
+        {
+            _repo = Substitute.For<ICrepePartyRepository>();
+            _addValidator = Substitute.For<IValidator<UserDtoAdd>>();
+            _updateValidator = Substitute.For<IValidator<UserDtoUpdate>>();
+            
+            DeviceIdTest = Guid.Parse("00000000-0000-0000-9999-000000000001");
+            FixedNow = new(2026, 05, 04, 12, 00, 00);
+
+            Id01Test = Guid.Parse("00000000-0000-0000-0000-000000000001");
+            Id02Test = Guid.Parse("00000000-0000-0000-0000-000000000002");
+            Id42Test = Guid.Parse("00000000-0000-0000-0000-000000000042");
+            
+            _deviceIdProvider = Substitute.For<IDeviceIdProvider>();
+            _deviceIdProvider.DeviceId.Returns(DeviceIdTest);
+
+            _dateTimeProvider = Substitute.For<IDateTimeProvider>();
+            _dateTimeProvider.UtcNow.Returns(FixedNow);
+        }
 
         // -------------------------------------------------------
         // GET ALL
@@ -43,8 +76,8 @@ namespace CrepeDuChef.Tests.Application.Services
             // Arrange
             _repo.GetAllChefsAsync().Returns(
             [
-                new User { Id = 1, FirstName = "John", LastName = "Doe" },
-                new User { Id = 2, FirstName = "Jane", LastName = "Smith" }
+                new User { Id = Id01Test, FirstName = "John", LastName = "Doe" },
+                new User { Id = Id02Test, FirstName = "Jane", LastName = "Smith" }
             ]);
 
             var service = CreateService();
@@ -112,7 +145,7 @@ namespace CrepeDuChef.Tests.Application.Services
         public async Task UpdateUserAsync_Should_Throw_When_Validation_Fails()
         {
             // Arrange
-            UserDto existing = new() { Id = 1, FirstName = "Old", LastName = "Name" };
+            UserDto existing = new() { Id = Id01Test, FirstName = "Old", LastName = "Name" };
             UserDtoUpdate update = new() { FirstName = "", LastName = "" };
 
             _updateValidator.Validate(update).Returns(new ValidationResult([
@@ -133,7 +166,7 @@ namespace CrepeDuChef.Tests.Application.Services
         public async Task UpdateUserAsync_Should_Update_User_And_Return_Updated_Dto()
         {
             // Arrange
-            UserDto existing = new() { Id = 1, FirstName = "Old", LastName = "Name" };
+            UserDto existing = new() { Id = Id01Test, FirstName = "Old", LastName = "Name" };
             UserDtoUpdate update = new() { FirstName = "New", LastName = "Value" };
 
             _updateValidator.Validate(update).Returns(new ValidationResult());
@@ -149,7 +182,7 @@ namespace CrepeDuChef.Tests.Application.Services
             result.LastName.Should().Be("Value");
 
             await _repo.Received(1).UpdateChefAsync(Arg.Is<User>(u =>
-                u.Id == 1 &&
+                u.Id == Id01Test &&
                 u.FirstName == "New" &&
                 u.LastName == "Value"
             ));
@@ -160,8 +193,8 @@ namespace CrepeDuChef.Tests.Application.Services
         public async Task UpdateUserAsync_Should_Update_User_And_Return_Updated_Dto_With_Fixed_ID()
         {
             // Arrange
-            UserDto existing = new() { Id = 1, FirstName = "Old", LastName = "Name" };
-            UserDtoUpdate update = new() { Id=42, FirstName = "New", LastName = "Value" };
+            UserDto existing = new() { Id = Id01Test, FirstName = "Old", LastName = "Name" };
+            UserDtoUpdate update = new() { Id= Id42Test, FirstName = "New", LastName = "Value" };
 
             _updateValidator.Validate(update).Returns(new ValidationResult());
 
@@ -174,10 +207,10 @@ namespace CrepeDuChef.Tests.Application.Services
             result.Should().NotBeNull();
             result!.FirstName.Should().Be("New");
             result.LastName.Should().Be("Value");
-            result.Id.Should().Be(1);
+            result.Id.Should().Be(Id01Test);
 
             await _repo.Received(1).UpdateChefAsync(Arg.Is<User>(u =>
-                u.Id == 1 &&
+                u.Id == Id01Test &&
                 u.FirstName == "New" &&
                 u.LastName == "Value"
             ));

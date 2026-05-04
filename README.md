@@ -58,6 +58,7 @@ flowchart LR
 
     %% Dépendances
     Infrastructure --> Domain
+    Infrastructure --> Application
     Application --> Domain
     Application --> Localization
     

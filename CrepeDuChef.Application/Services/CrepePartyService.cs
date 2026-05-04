@@ -4,7 +4,7 @@ using CrepeDuChef.Application.Mappers;
 using CrepeDuChef.Application.Models;
 using CrepeDuChef.Localization.Resources;
 using CrepeDuChef.Domain.Entities;
-using CrepeDuChef.Domain.Interfaces;
+
 using Microsoft.Extensions.Localization;
 
 namespace CrepeDuChef.Application.Services
@@ -13,13 +13,19 @@ namespace CrepeDuChef.Application.Services
     {
         private readonly ICrepePartyRepository _repo;
         private readonly IStringLocalizer<CrepePartyResources> _localizer;
+        private readonly IDeviceIdProvider _deviceId;
+        private readonly IDateTimeProvider _dateTime;
 
         public CrepePartyService(
             ICrepePartyRepository repo,
-            IStringLocalizer<CrepePartyResources> localizer)
+            IStringLocalizer<CrepePartyResources> localizer,
+            IDeviceIdProvider deviceId,
+            IDateTimeProvider dateTime)
         {
             _repo = repo;
             _localizer = localizer;
+            _deviceId = deviceId;
+            _dateTime = dateTime;
         }
 
         public async Task<IEnumerable<CrepePartySession>> GetSessionsAsync()
@@ -36,7 +42,16 @@ namespace CrepeDuChef.Application.Services
         }
 
         public async Task AddCrepePartyAsync(CrepesPartyDto dto)
-        => await _repo.AddCrepePartyAsync(dto.ToEntity());
+        {
+            CrepesParty entity =
+                dto.ToEntity();
+
+            entity.Id = Guid.NewGuid();
+            entity.UpdatedAt = _dateTime.UtcNow;
+            entity.OriginDeviceId = _deviceId.DeviceId;
+
+            await _repo.AddCrepePartyAsync(entity);
+        }
 
         public async Task<List<UserDto>> GetAllChefsAsync()
         {

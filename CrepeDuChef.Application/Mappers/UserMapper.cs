@@ -20,13 +20,14 @@ namespace CrepeDuChef.Application.Mappers
 
         extension(UserDto userDto)
         {
-            public User ToEntity()
+            public User ToEntity(Guid deviceOrigin)
             {
                 return new()
                 {
                     Id = userDto.Id,
                     FirstName = userDto.FirstName,
                     LastName = userDto.LastName,
+                    OriginDeviceId = deviceOrigin
                 };
             }
         }

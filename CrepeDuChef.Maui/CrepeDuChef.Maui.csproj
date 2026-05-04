@@ -80,12 +80,12 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" />
 		<PackageReference Include="FluentValidation" />
 		<PackageReference Include="Microsoft.Extensions.Localization" />
-		<PackageReference Include="Microsoft.Maui.Controls"  />
-		<PackageReference Include="Microsoft.Maui.Essentials"  />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug"  />
+		<PackageReference Include="Microsoft.Maui.Controls" />
+		<PackageReference Include="Microsoft.Maui.Essentials" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" />
 		<PackageReference Include="SkiaSharp.Extended.UI.Maui" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore"  />
-		<PackageReference Include="UraniumUI.Material"  />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" />
+		<PackageReference Include="UraniumUI.Material" />
 	</ItemGroup>
 
 	<ItemGroup>

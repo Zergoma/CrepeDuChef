@@ -3,17 +3,19 @@ using CrepeDuChef.Application.Interfaces;
 using CrepeDuChef.Application.Mappers;
 using CrepeDuChef.Application.ValueObjects;
 using CrepeDuChef.Domain.Entities;
-using CrepeDuChef.Domain.Interfaces;
-using CrepeDuChef.Domain.Services;
+using DomainInterface = CrepeDuChef.Domain.Interfaces;
+using DomainServices = CrepeDuChef.Domain.Services;
 
 namespace CrepeDuChef.Application.Services
 {
     public class ChefRotationService : IChefRotationService
     {
         private readonly ICrepePartyRepository _repo;
-        private readonly IRandomProvider _random;
+        private readonly DomainInterface.IRandomProvider _random;
 
-        public ChefRotationService(ICrepePartyRepository repo, IRandomProvider random)
+        public ChefRotationService(
+            ICrepePartyRepository repo,
+            DomainInterface.IRandomProvider random)
         {
             _repo = repo;
             _random = random;
@@ -21,11 +23,15 @@ namespace CrepeDuChef.Application.Services
 
         public async Task<ChefSelectionResult> GetNextChefAsync(List<UserDto>? availableChefs = null)
         {
-            List<User>? availableChefsEntities =
-                availableChefs?.Select(u => u.ToEntity()).ToList();
-
             List<User> allChefs =
                 await _repo.GetAllChefsAsync();
+
+            List<Guid>? allowedIds =
+                availableChefs?.Select(u => u.Id).ToList();
+
+            List<User>? availableChefsEntities =
+                allowedIds == null ? null
+                                   : [.. allChefs.Where(u => allowedIds.Contains(u.Id))];
 
             int lastSessionId =
                 await _repo.GetLastSessionNumberAsync();
@@ -34,7 +40,7 @@ namespace CrepeDuChef.Application.Services
                 await _repo.GetCrepePartiesFromSessionAsync(lastSessionId);
 
             (User user, int sessionNumber) =
-                ChefRotationAlgorithm.SelectNextChef(
+                DomainServices.ChefRotationAlgorithm.SelectNextChef(
                     allChefs,
                     lastSessionId,
                     sessionCrepes,

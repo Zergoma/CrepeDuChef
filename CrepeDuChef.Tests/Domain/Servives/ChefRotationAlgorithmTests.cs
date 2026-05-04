@@ -156,7 +156,7 @@ namespace CrepeDuChef.Tests.Domain.Servives
                     random);
 
             // Assert
-            User.Id.Should().Be(expectedChefId);
+            User.Id.Should().Be(TestData.IntToGuid(expectedChefId));
             SessionNumber.Should().Be(expectedSessionId);
         }
 
@@ -229,7 +229,7 @@ namespace CrepeDuChef.Tests.Domain.Servives
                     available);
 
             // Assert
-            User.Id.Should().Be(expectedChefId);
+            User.Id.Should().Be(TestData.IntToGuid(expectedChefId));
             SessionNumber.Should().Be(expectedSessionId);
         }
 
@@ -246,7 +246,7 @@ namespace CrepeDuChef.Tests.Domain.Servives
                 chefs, 5, session, random, null);
 
             // Assert
-            chef.Id.Should().Be(1);
+            chef.Id.Should().Be(TestData.IntToGuid(1));
             sessionId.Should().Be(5);
         }
 
@@ -263,7 +263,7 @@ namespace CrepeDuChef.Tests.Domain.Servives
                 chefs, 5, session, random, []);
 
             // Assert
-            chef.Id.Should().Be(2);
+            chef.Id.Should().Be(TestData.IntToGuid(2));
             sessionId.Should().Be(5);
         }
 
@@ -280,7 +280,7 @@ namespace CrepeDuChef.Tests.Domain.Servives
                 chefs, 5, session, random);
 
             // Assert
-            chef.Id.Should().Be(3);
+            chef.Id.Should().Be(TestData.IntToGuid(3));
             sessionId.Should().Be(5);
         }
 
@@ -313,7 +313,7 @@ namespace CrepeDuChef.Tests.Domain.Servives
                 chefs, 5, session, random);
 
             // Assert
-            chef.Id.Should().Be(3);
+            chef.Id.Should().Be(TestData.IntToGuid(3));
         }
 
         [Fact]
@@ -330,7 +330,7 @@ namespace CrepeDuChef.Tests.Domain.Servives
                 chefs, 5, session, random, available);
 
             // Assert
-            chef.Id.Should().Be(2);
+            chef.Id.Should().Be(TestData.IntToGuid(2));
         }
 
         [Fact]

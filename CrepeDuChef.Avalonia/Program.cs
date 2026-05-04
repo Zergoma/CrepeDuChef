@@ -1,17 +1,22 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using CrepeDuChef.Application.Extensions;
-using CrepeDuChef.Avalonia.DI;
-using CrepeDuChef.Avalonia.Services;
-using CrepeDuChef.Infrastructure.Extensions;    // for db Migrate
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
+﻿using System;
 using System.Globalization;
 using System.IO;
 using System.Threading;
+
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+
+using CrepeDuChef.Application.Extensions;
+using CrepeDuChef.Application.Interfaces;
+using CrepeDuChef.Avalonia.DI;
+using CrepeDuChef.Avalonia.Services;
+using CrepeDuChef.Infrastructure.Extensions;    // for db Migrate
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 using AppInfra = CrepeDuChef.Infrastructure;
 using avaApp = Avalonia.Application;
 
@@ -54,13 +59,16 @@ namespace CrepeDuChef.Avalonia
                         services.AddAvaloniaDialogs();
                         services.AddAvaloniaPresenters();
 
+                        // Device GUID
+                        services.AddSingleton<IDeviceIdProvider, AvaloniaDeviceIdProvider>();
+
 
                         // Database
                         string dbPath =
-                        Path.Combine(
-                            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                            "CrepeDuChef.db3"
-                            );
+                            Path.Combine(
+                                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                                "CrepeDuChef.db3"
+                                );
 
                         services.AddCrepeDuChefInfrastructure(dbPath);
                         services.AddCrepeDuChefApplication();

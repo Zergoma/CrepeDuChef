@@ -27,7 +27,7 @@ namespace CrepeDuChef.Application.Mappers
 
         public static CrepePartySession ToSession(
            IGrouping<int, CrepesParty> group,
-           Dictionary<int, User> chefsById,
+           Dictionary<Guid, User> chefsById,
            IStringLocalizer<CrepePartyResources> localizer)
         {
             IEnumerable<CrepeDisplayItem> items = group
@@ -45,7 +45,7 @@ namespace CrepeDuChef.Application.Mappers
 
         public static CrepeDisplayItem ToDisplayItem(
             CrepesParty dto,
-            Dictionary<int, User> chefsById,
+            Dictionary<Guid, User> chefsById,
             IStringLocalizer<CrepePartyResources> localizer)
         {
             chefsById.TryGetValue(dto.UserId, out var chef);

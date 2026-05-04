@@ -1,6 +1,6 @@
 ﻿using CrepeDuChef.Domain.Entities;
 
-namespace CrepeDuChef.Domain.Interfaces
+namespace CrepeDuChef.Application.Interfaces
 {
     public interface ICrepePartyRepository
     {
@@ -8,7 +8,7 @@ namespace CrepeDuChef.Domain.Interfaces
         Task UpdateChefAsync(User user);
         Task AddCrepePartyAsync(CrepesParty crepeParty);
         Task<List<User>> GetAllChefsAsync();
-        Task<User?> GetChefAsync(int id);
+        Task<User?> GetChefAsync(Guid id);
         Task<List<CrepesParty>> GetAllCrepePartiesAsync();
         Task<List<CrepesParty>> GetCrepePartiesFromSessionAsync(int SessionNumber);
         Task<int> GetLastSessionNumberAsync();

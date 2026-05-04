@@ -2,7 +2,7 @@
 using CrepeDuChef.Application.Extensions;
 using CrepeDuChef.Application.Interfaces;
 using CrepeDuChef.Application.Mappers;
-using CrepeDuChef.Domain.Interfaces;
+
 using FluentValidation;
 using FluentValidation.Results;
 
@@ -13,15 +13,21 @@ namespace CrepeDuChef.Application.Services
         private readonly ICrepePartyRepository _repo;
         private readonly IValidator<UserDtoAdd> _addValidator;
         private readonly IValidator<UserDtoUpdate> _updateValidator;
+        private readonly IDeviceIdProvider _deviceId;
+        private readonly IDateTimeProvider _dateTime;
 
         public ChefManagementService(
             ICrepePartyRepository repo,
             IValidator<UserDtoAdd> addValidator,
-            IValidator<UserDtoUpdate> updateValidator)
+            IValidator<UserDtoUpdate> updateValidator,
+            IDeviceIdProvider deviceId,
+            IDateTimeProvider dateTime)
         {
             _repo = repo;
             _addValidator = addValidator;
             _updateValidator = updateValidator;
+            _deviceId = deviceId;
+            _dateTime = dateTime;
         }
 
         public async Task<List<UserDto>> GetAllUsersAsync()
@@ -41,7 +47,12 @@ namespace CrepeDuChef.Application.Services
                 FirstName = userDtoAdd.FirstName,
                 LastName = userDtoAdd.LastName,
             };
-            await _repo.AddChefAsync(userDto.ToEntity());
+
+            var entity = userDto.ToEntity(_deviceId.DeviceId);
+            entity.Id = Guid.NewGuid();
+            entity.UpdatedAt = _dateTime.UtcNow;
+
+            await _repo.AddChefAsync(entity);
             return userDto;
         }
 
@@ -57,7 +68,10 @@ namespace CrepeDuChef.Application.Services
                 throw new ValidationException(validation.Errors);
             }
 
-            await _repo.UpdateChefAsync(userUpdate.ToDto().ToEntity());
+            var entity = userUpdate.ToDto().ToEntity(_deviceId.DeviceId);
+            entity.UpdatedAt = _dateTime.UtcNow;
+
+            await _repo.UpdateChefAsync(entity);
 
             // update fields
             user.FirstName = userUpdate.FirstName;

@@ -31,10 +31,9 @@ Valider les règles de mise à jour d’un utilisateur.
 
 | ID | Description | Input | Expected | Test automatisé |
 |----|-------------|--------|----------|------------------|
-| UPD-01 | Id non initialisé | Id = 0 | Erreur | Should_Fail_When_Id_Is_Non_Init |
-| UPD-02 | FirstName vide | "" | Erreur | Should_Fail_When_FirstName_Is_Empty_Or_Whitespace |
-| UPD-03 | FirstName whitespace | "   " | Erreur | Should_Fail_When_FirstName_Is_Empty_Or_Whitespace |
-| UPD-04 | LastName vide | "" | Erreur | Should_Fail_When_LastName_Is_Empty_Or_Whitespace |
-| UPD-05 | LastName whitespace | " " | Erreur | Should_Fail_When_LastName_Is_Empty_Or_Whitespace |
-| UPD-06 | FirstName + LastName invalides | "" + "" | 2 erreurs | Should_Fail_When_FirstName_And_LastName_Are_Invalid |
-| UPD-07 | Cas valide | Id=1, "John", "Doe" | OK | Should_Pass_When_Data_Is_Valid |
+| UPD-01 | FirstName vide | "" | Erreur | Should_Fail_When_FirstName_Is_Empty_Or_Whitespace |
+| UPD-02 | FirstName whitespace | "   " | Erreur | Should_Fail_When_FirstName_Is_Empty_Or_Whitespace |
+| UPD-03 | LastName vide | "" | Erreur | Should_Fail_When_LastName_Is_Empty_Or_Whitespace |
+| UPD-04 | LastName whitespace | " " | Erreur | Should_Fail_When_LastName_Is_Empty_Or_Whitespace |
+| UPD-05 | FirstName + LastName invalides | "" + "" | 2 erreurs | Should_Fail_When_FirstName_And_LastName_Are_Invalid |
+| UPD-06 | Cas valide | Id=1, "John", "Doe" | OK | Should_Pass_When_Data_Is_Valid |
