@@ -15,10 +15,12 @@ namespace CrepeDuChef.Infrastructure.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    FirstName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    LastName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    OriginDeviceId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,11 +31,13 @@ namespace CrepeDuChef.Infrastructure.Migrations
                 name: "CrepesParty",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
                     SessionNumber = table.Column<int>(type: "INTEGER", nullable: false),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    OriginDeviceId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,9 +51,9 @@ namespace CrepeDuChef.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CrepesParty_SessionNumber_UserId",
+                name: "IX_CrepesParty_SessionNumber_UserId_OriginDeviceId",
                 table: "CrepesParty",
-                columns: new[] { "SessionNumber", "UserId" },
+                columns: new[] { "SessionNumber", "UserId", "OriginDeviceId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

@@ -18,9 +18,6 @@ namespace CrepeDuChef.Application.Validation
                 .NotNull()
                 .NotEmpty().WithMessage(localizer["LastNameRequired"])
                 .MaximumLength(50).WithMessage(localizer["LastNameLengthRange"]);
-
-            RuleFor(u => u.Id).NotEqual(0)
-                .WithMessage(localizer["IDIsNotValid"]);
         }
     }
 }

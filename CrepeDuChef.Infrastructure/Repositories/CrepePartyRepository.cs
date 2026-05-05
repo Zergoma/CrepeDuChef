@@ -1,10 +1,10 @@
-﻿using CrepeDuChef.Domain.Entities;
-using CrepeDuChef.Domain.Interfaces;
+﻿using AppInterface = CrepeDuChef.Application.Interfaces;
+using CrepeDuChef.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CrepeDuChef.Infrastructure.Repositories
 {
-    public class CrepePartyRepository : ICrepePartyRepository
+    public class CrepePartyRepository : AppInterface.ICrepePartyRepository
     {
         private readonly IDbContextFactory<CrepeDbContext> _factory;
 
@@ -28,7 +28,7 @@ namespace CrepeDuChef.Infrastructure.Repositories
             await ctx.SaveChangesAsync();
         }
 
-        public async Task<User?> GetChefAsync(int id)
+        public async Task<User?> GetChefAsync(Guid id)
         {
             await using var ctx = await _factory.CreateDbContextAsync();
             return await ctx.Users.FirstOrDefaultAsync(u => u.Id == id);

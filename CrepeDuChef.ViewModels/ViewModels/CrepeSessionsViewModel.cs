@@ -8,6 +8,7 @@ using Loca = CrepeDuChef.Localization.Resources.languages;
 using CrepeDuChef.ViewModels.Presenters;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using CrepeDuChef.Application.ValueObjects;
 
 namespace CrepeDuChef.ViewModels.ViewModels
 {
@@ -161,14 +162,14 @@ namespace CrepeDuChef.ViewModels.ViewModels
             {
                 List<AppDto.UserDto> chefsCopy = [.. ChefsAvailable];
 
-                (AppDto.UserDto? selectedUser, int sessionNumber) =
+                ChefSelectionResult nextChefResult =
                     await ChefRotationService.GetNextChefAsync(chefsCopy);
 
                 await CrepService.AddCrepePartyAsync(
                     new AppDto.CrepesPartyDto
                     {
-                        UserId = selectedUser.Id,
-                        SessionNumber = sessionNumber,
+                        UserId = nextChefResult.User.Id,
+                        SessionNumber = nextChefResult.SessionNumber,
                         Date = DateTime.UtcNow
                     });
 
@@ -177,7 +178,7 @@ namespace CrepeDuChef.ViewModels.ViewModels
 
                 await UserDialogService.ShowSuccessAsync(
                     title: Loca.Traduction.Today_s_Chef,
-                    message: $"{selectedUser.FirstName} {selectedUser.LastName}");
+                    message: $"{nextChefResult.User.FullName}");
             }
             catch (DomainExceptions.NoChefException)
             {
@@ -219,7 +220,7 @@ namespace CrepeDuChef.ViewModels.ViewModels
 
                 ChefsAvailable ??= [.. AllChefs];
 
-                HashSet<int> availableIds = [.. ChefsAvailable.Select(c => c.Id)];
+                HashSet<Guid> availableIds = [.. ChefsAvailable.Select(c => c.Id)];
                 List<AppDto.UserDto> availableChefs = [.. AllChefs.Where(c => availableIds.Contains(c.Id))];
 
                 AppDto.UserDto[]? dialogResult =

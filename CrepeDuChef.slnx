@@ -18,6 +18,9 @@
   <Folder Name="/Solution Items/Doc/Migrations/">
     <File Path="Docs/Migrations/Migrations.md" />
   </Folder>
+  <Folder Name="/Solution Items/Doc/ProjectsDetails/">
+    <File Path="Docs/ProjectsDetails/ProjectsDetails.md" />
+  </Folder>
   <Folder Name="/Solution Items/Doc/Tests/">
     <File Path="Docs/Tests/domain_chef_rotation.md" />
     <File Path="Docs/Tests/mappers.md" />

@@ -26,9 +26,44 @@ L’historique est stocké en SQLite, assurant une rotation juste au fil des ses
 
 ---
 
+## 🎯 Objectifs techniques & bonnes pratiques mises en œuvre
+
+Au‑delà du côté fun du projet, l’objectif est de mettre en pratique des standards professionnels de développement moderne.  
+Ce repository me sert de terrain d’expérimentation pour appliquer des concepts que j’utilise ou que je souhaite renforcer dans un contexte réel.
+
+### 🧱 Architecture & organisation du code
+- Mise en place d’une **Clean Architecture** stricte (Domain / Application / Infrastructure / UI).
+- Séparation claire des responsabilités et dépendances unidirectionnelles.
+- Utilisation de **DTOs**, **mappers**, **services applicatifs**, et **entités métier** isolées.
+- Respect des principes **SOLID**, en particulier SRP et DIP.
+
+### 🗄️ Données & persistance
+- Utilisation d’**Entity Framework Core** avec migrations propres et modèle maîtrisé.
+- Conception d’un modèle pensé pour la **synchronisation multi‑device** (OriginDeviceId, UpdatedAt, DeletedAt).
+- Repositories testables et découplés de la logique métier.
+
+### 🧪 Qualité & testabilité
+- Tests unitaires structurés avec **NSubstitute** et providers mockés (DeviceId, DateTime).
+- Tests déterministes grâce à l’injection systématique des dépendances temporelles et contextuelles.
+- Préparation à des tests d’intégration SQLite pour valider le pipeline complet.
+
+### 🌍 Localisation & UI
+- Gestion propre de la **localisation** (IStringLocalizer).
+- UI MAUI + Avalonia avec ViewModels partagés et logique centralisée.
+- Préparation à un futur **Minimal API** pour la synchronisation et la gestion multi‑famille.
+
+### 🚀 Vision long terme
+- Architecture pensée pour évoluer vers un système multi‑groupe, multi‑utilisateur, avec invitations et permissions.
+- Préparation à un backend léger (Minimal API) pour la synchro offline‑first.
+- Projet conçu pour être un exemple concret de bonnes pratiques .NET modernes.
+
+
+
+---
+
 # 🧩 Architecture
 
-L’architecture suit une approche inspirée de Clean Architecture, adaptée pour supporter plusieurs interfaces utilisateur (MAUI + Avalonia) tout en partageant un cœur métier commun.
+L’architecture suit une approche Clean Architecture, adaptée pour supporter plusieurs interfaces utilisateur (MAUI + Avalonia) tout en partageant un cœur métier commun.
 
 - **Domain** : logique métier pure, sans dépendances externes  
 - **Application** : cas d’usage, orchestration métier, validation  
@@ -58,6 +93,7 @@ flowchart LR
 
     %% Dépendances
     Infrastructure --> Domain
+    Infrastructure --> Application
     Application --> Domain
     Application --> Localization
     
@@ -93,169 +129,28 @@ CrepeDuChef
 # 🏷️ Version actuelle
 
 **0.3.0 (pré-release)**  
-Architecture multi‑UI (MAUI + Avalonia 12) avec ViewModels partagés.  
 
-### 🧱 Directory.Packages.props  
-Gère les versions NuGet de manière centralisée (CPM).
+Cette version consolide l’architecture du projet et introduit une base technique stable pour la suite du développement.
 
-### 🧱 Directory.Build.props  
-Définit les propriétés MSBuild communes à tous les projets (TFM des libs, nullable, analyzers…).
+### 🧱 Gestion centralisée des dépendances
+- **Directory.Packages.props** : centralise toutes les versions NuGet via CPM (Central Package Management).
+- **Directory.Build.props** : définit les propriétés MSBuild communes (TFM, nullable, analyzers, conventions).
 
-### 🧱 global.json  
-Verrouille la version du SDK .NET utilisée pour compiler le repo, afin d’éviter les conflits et garantir la reproductibilité.
- 
+### 🧱 Reproductibilité de l’environnement
+- **global.json** : verrouille la version du SDK .NET pour garantir des builds identiques sur toutes les machines.
 
----
-
-# 📦 Détails des projets
-
-## 🧬 Domain (`CrepeDuChef.Domain`)
-
-Le **cœur métier pur**, sans dépendance externe.
-
-Contient :
-- Entities : `User`, `CrepesParty`
-- Domain Services : `ChefRotationAlgorithm`
-- ValueObjects : `ChefSelection`, etc.
-- Interfaces : `IRandomProvider`, `ICrepePartyRepository`
-- Exceptions : `EmptyFirstNameException`, `EmptyLastNameException`, `NoChefException`, `NoChefSelectionException`
-- Extensions : `RandomExtensions`
-
-➡️ **Aucune dépendance vers Application, Infrastructure ou MAUI**
+### 🔧 Intégration continue
+- Pipeline GitHub Actions configuré pour les branches `main` et `develop`.
+- Build + tests automatisés pour assurer la stabilité du projet.
 
 ---
 
-## 🧠 Application (`CrepeDuChef.Application`)
+# 📦 Détails des projets  
+Pour plus de détails techniques : voir la documentation dans
+[Doc/ProjectsDetails](Docs/ProjectsDetails/ProjectsDetails.md)
 
-La couche **cas d’usage**.  
-Elle orchestre le métier et les implémentations techniques.
+--- 
 
-Contient :
-- DTOs : `UserDto`, `UserDtoAdd`, `UserDtoUpdate`, `CrepesPartyDto`
-- Services : `ChefManagementService`, `ChefRotationService`, `CrepePartyService`
-- Orchestrator : `UserApplicationOrchestrator`
-- Interfaces : `IChefManagementService`, `IChefRotationService`, `ICrepePartyService`, `IUserApplicationOrchestrator`
-- Models : `CrepeDisplayItem`, `CrepePartySession`
-- ValueObjects : `ChefSelectionResult`, `UserSelectionResult`, `UserFormData`, `UserOperationResult`, `OperationStatus`
-- Validation : `UserDtoAddValidator`, `UserDtoUpdateValidator`
-- Mappers : `UserMapper`, `CrepePartyMapper`
-- Extensions : `ApplicationExtension`, `UserDtoExtension`, `UserDtoUpdateExtension`, `UserExtension`, `UserOperationResultExtensions`
-
-
-➡️ **Ne dépend que du Domain**
-
----
-
-## 🗄 Infrastructure (`CrepeDuChef.Infrastructure`)
-
-La couche technique.
-
-Contient :
-- EF Core : `CrepeDbContext`, `CrepeDbContextDesignTimeFactory`
-- Repositories : `CrepePartyRepository`
-- Services : `DefaultRandomProvider`
-- Migrations : `Init`, `SecureUserData`, `CrepeDbContextModelSnapshot`
-- Extensions : `InfrastructureExtensions`, `RandomExtensions`
-
-➡️ **Implémente les interfaces du Domain**
-
----
-## 🌍 Localization (`CrepeDuChef.Localization`)
-- `CrepePartyResources.resx` (+ `.fr`)
-- `ValidationResources.resx` (+ `.fr`)
-- `languages/Traduction.resx` (+ `.fr`)
----
-
-## 🖥 ViewModels partagés (`CrepeDuChef.ViewModels`)
-- ViewModels : `CrepeSessionsViewModel`, `SelectUsersDialogViewModel`, `UserEditorViewModel`, `UserSettingViewModel`
-- Presenters : `IDialogPresenter`, `IUserFormPresenter`, `IUserSelectionPresenter`
----
-
-## 🖥 MAUI (UI)
-
-Organisation principale :
-
-### MVVM
-- ViewModels : `CrepeSessionsViewModelMauiAdapter`
-- Views : `CrepeDuChefView`, `UserSettingView`, `MainPage`
-- Models UI : `CrepePartyGroup`
- 
-### UI Logic
-- Behaviors : `PulseAnimationBehavior`, `PulseManager`
-- Converters : `IsTodayConverter`
-- Mappers : `CrepePartySessionToGroupMapper`
-
-### DI
-- `MauiViewModelsModule`, `MauiViewsModule`, `MauiPresentersModule`, `MauiPopupsModule`, `DIValidator`
-
-### Popups
-
-UI/Popups/  
-│  
-├── Core/  
-│   ├── `PopupCoordinator`  
-│   └── `PopupOptionsFactory`  
-├── Factories/  
-│   ├── `IMessagePopupFactory`, `IUserFormPopupFactory`, `IUserSelectionPopupFactory`  
-│   ├── `MessagePopupFactory`, `UserPopCommunautyFactory`, `UserSelectionPopupFactory`  
-├── Presenters/  
-│   ├── `MauiDialogPresenter`  
-│   ├── `MauiUserFormPresenter`  
-│   └── `MauiUserSelectionPresenter`  
-├── ViewModels/  
-│   └── `UserFormPopupViewModel`  
-└── Views/  
-    ├── `SelectUsersPopup`  
-    ├── `TitledMessagePopup`  
-    └── `UserFormPopup`
-### Resources
-- Fonts, Styles (`Styles.xaml`, `CrepeDuChefStyles.xaml`, `CrepeDuChefColors.xaml`)
-- Images, Splash, Raw (`BingePanda.json`)
-
----
-## 🖥 Avalonia (`CrepeDuChef.Avalonia`)
-- App : `App.axaml`, `Program.cs`, `app.manifest`
-- DI : `AvaloniaDialogsModule`, `AvaloniaPresentersModule`, `AvaloniaViewModelsModule`, `AvaloniaViewsModule`, `AvaloniaWindowing`, `MainWindowHolder`
-- Dialogs :
-  - Interfaces : `IDialog`
-  - Factories : `AvaloniaMessageDialogFactory`, `AvaloniaUserFormDialogFactory`, `AvaloniaUserSelectionDialogFactory`
-  - Message dialogs : `BaseMessageDialogWindow`, `BaseMessageDialogViewModel`, `MessageDialog`, `ErrorDialog`, `WarningDialog`
-  - Windows : `SelectUsersDialog`, `UserEditorWindow`
-  - Presenters : `AvaloniaDialogPresenter`, `AvaloniaUserFormPresenter`, `AvaloniaUserSelectionPresenter`
-- Mappers : `CrepeDisplayToAvaMapper`, `CrepePartySessionToGroupMapper_Ava`
-- Models UI : `CrepePartyGroup_Ava`, `CrepePartyItem_Ava`, `SelectableUser`
-- Services : `DialogService`, `INavigationService`, `NavigationService`
-- Styles : `ControlsStyles.axaml`
-- ViewModels : `MainViewModel`, `CrepeSessionsViewModelAvaloniaAdapter`, `SelectUsersDialogViewModelAvaloniaAdapter`
-- Views : `MainWindow`, `CrepeSessionsView`, `UserSettingsView`
-
-
----
-
-## 🧪 Tests (`CrepeDuChef.Tests`)
-
-Le projet `CrepeDuChef.Tests` contient les tests unitaires organisés par couche :
-
-### Domain
-- `ChefRotationAlgorithmTests`
-
-### Application
-- Services : `ChefManagementServiceTests`
-- Mappers : `UserMapperTests`
-- Validation :  
-  - `UserDtoAddValidatorTests`  
-  - `UserDtoUpdateValidatorTests`
-
-### Fakes & Helpers
-- Fakes : `FakeRandomProvider`, `FakeLocalizer`
-- Helpers : `TestData`
-
-### Technos :
-- **xUnit**
-- **FluentAssertions**
-- **NSubstitute**
-
----
 
 ## 📄 Licence
 

@@ -13,13 +13,16 @@ namespace CrepeDuChef.Tests.Application.Mappers
         // User → UserDto
         // ---------------------------
 
+        Guid IdTest = Guid.Parse("00000000-0000-0000-0000-000000000042");
+        Guid DeviceIdTest = Guid.Parse("00000000-0000-0000-0000-100000000000");
+
         [Fact]
         public void ToDto_Should_Map_All_Fields_Correctly()
         {
             // Arrange
             User user = new()
             {
-                Id = 42,
+                Id = IdTest,
                 FirstName = "John",
                 LastName = "Doe"
             };
@@ -28,7 +31,7 @@ namespace CrepeDuChef.Tests.Application.Mappers
             UserDto dto = user.ToDto();
 
             // Assert
-            dto.Id.Should().Be(42);
+            dto.Id.Should().Be(IdTest);
             dto.FirstName.Should().Be("John");
             dto.LastName.Should().Be("Doe");
         }
@@ -43,16 +46,16 @@ namespace CrepeDuChef.Tests.Application.Mappers
             // Arrange
             UserDto dto = new()
             {
-                Id = 42,
+                Id = IdTest,
                 FirstName = "John",
                 LastName = "Doe"
             };
 
             // Act
-            User entity = dto.ToEntity();
+            User entity = dto.ToEntity(DeviceIdTest);
 
             // Assert
-            entity.Id.Should().Be(42);
+            entity.Id.Should().Be(IdTest);
             entity.FirstName.Should().Be("John");
             entity.LastName.Should().Be("Doe");
         }
@@ -68,13 +71,13 @@ namespace CrepeDuChef.Tests.Application.Mappers
             // Arrange
             UserDto dto = new()
             {
-                Id = 1,
+                Id = IdTest,
                 FirstName = invalid,
                 LastName = "Doe"
             };
 
             // Act
-            Action act = () => dto.ToEntity();
+            Action act = () => dto.ToEntity(DeviceIdTest);
 
             // Assert
             act.Should().Throw<EmptyFirstNameException>();
@@ -91,13 +94,13 @@ namespace CrepeDuChef.Tests.Application.Mappers
             // Arrange
             UserDto dto = new()
             {
-                Id = 1,
+                Id = IdTest,
                 FirstName = "John",
                 LastName = invalid
             };
 
             // Act
-            Action act = () => dto.ToEntity();
+            Action act = () => dto.ToEntity(DeviceIdTest);
 
             // Assert
             act.Should().Throw<EmptyLastNameException>();

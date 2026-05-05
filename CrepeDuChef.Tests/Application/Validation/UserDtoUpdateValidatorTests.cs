@@ -15,24 +15,7 @@ namespace CrepeDuChef.Tests.Application.Validation
             _validator = new UserDtoUpdateValidator(new FakeLocalizer<ValidationResources>());
         }
 
-        [Fact]
-        public void Should_Fail_When_Id_Is_Non_Init()
-        {
-            // Arrange
-            UserDtoUpdate dto = new()
-            {
-                Id = 0,
-                FirstName = "John",
-                LastName = "Doe"
-            };
-
-            // Act
-            var result = _validator.Validate(dto);
-
-            // Assert
-            result.IsValid.Should().BeFalse();
-            result.Errors.Should().Contain(e => e.PropertyName == nameof(dto.Id));
-        }
+        Guid IdTest = Guid.Parse("00000000-0000-0000-0000-000000000042");
 
 
         [Fact]
@@ -41,7 +24,7 @@ namespace CrepeDuChef.Tests.Application.Validation
             // Arrange
             UserDtoUpdate dto = new()
             {
-                Id = 1,
+                Id = IdTest,
                 FirstName = "John",
                 LastName = "Doe"
             };
@@ -65,7 +48,7 @@ namespace CrepeDuChef.Tests.Application.Validation
             // Arrange
             UserDtoUpdate dto = new()
             {
-                Id = 1,
+                Id = IdTest,
                 FirstName = invalidValue,
                 LastName = "Doe"
             };
@@ -89,7 +72,7 @@ namespace CrepeDuChef.Tests.Application.Validation
             // Arrange
             UserDtoUpdate dto = new()
             {
-                Id = 1,
+                Id = IdTest,
                 FirstName = "John",
                 LastName = invalidValue
             };
@@ -111,7 +94,7 @@ namespace CrepeDuChef.Tests.Application.Validation
             // Arrange
             UserDtoUpdate dto = new()
             {
-                Id = 1,
+                Id = IdTest,
                 FirstName = invalidFirst,
                 LastName = invalidLast
             };

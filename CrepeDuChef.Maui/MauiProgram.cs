@@ -1,12 +1,20 @@
 ﻿using CommunityToolkit.Maui;
+
 using CrepeDuChef.Application.Extensions;
+using CrepeDuChef.Application.Interfaces;
 using CrepeDuChef.Infrastructure.Extensions;
 using CrepeDuChef.Maui.DI;
+using CrepeDuChef.Maui.Services;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+
 using SkiaSharp.Views.Maui.Controls.Hosting;
+
 using SQLitePCL;
+
 using UraniumUI;
+
 using AppInfra = CrepeDuChef.Infrastructure;
 
 namespace CrepeDuChef.Maui
@@ -59,6 +67,10 @@ namespace CrepeDuChef.Maui
             builder.Services.AddMauiViewModels();
             builder.Services.AddMauiPopups();
             builder.Services.AddMauiPresenters();
+
+            // Device GUID
+            builder.Services.AddSingleton<IDeviceIdProvider, MauiDeviceIdProvider>();
+
 
 #if DEBUG
             DIValidator.Validate(builder.Services);

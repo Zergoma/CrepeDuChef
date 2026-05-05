@@ -35,25 +35,12 @@ namespace CrepeDuChef.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CrepesParty>(entity =>
-            {
-                entity.Property(cp => cp.Date)
-                      .IsRequired();
-
-                entity.HasOne(cp => cp.User)
-                      .WithMany(u => u.CrepesParties)
-                      .HasForeignKey(cp => cp.UserId)
-                      .IsRequired();
-
-                entity.Property(cp => cp.SessionNumber)
-                      .IsRequired();
-
-                entity.HasIndex(cp => new { cp.SessionNumber, cp.UserId })
-                      .IsUnique();
-            });
-
+            // USER
             modelBuilder.Entity<User>(entity =>
             {
+                entity.Property(u => u.Id)
+                      .ValueGeneratedOnAdd();
+                
                 entity.Property(u => u.FirstName)
                       .IsRequired()
                       .HasMaxLength(100);
@@ -61,7 +48,48 @@ namespace CrepeDuChef.Infrastructure
                 entity.Property(u => u.LastName)
                       .IsRequired()
                       .HasMaxLength(100);
+
+                entity.Property(u => u.UpdatedAt)
+                      .IsRequired();
+
+                entity.Property(u => u.DeletedAt);
+
+                entity.Property(u => u.OriginDeviceId)
+                      .IsRequired();
+
             });
+
+            // CREPES PARTY
+            modelBuilder.Entity<CrepesParty>(entity =>
+            {
+                entity.Property(cp => cp.Id)
+                      .ValueGeneratedOnAdd();
+
+                entity.Property(cp => cp.Date)
+                      .IsRequired();
+
+                entity.Property(cp => cp.SessionNumber)
+                      .IsRequired();
+
+                entity.HasOne(cp => cp.User)
+                      .WithMany(u => u.CrepesParties)
+                      .HasForeignKey(cp => cp.UserId)
+                      .IsRequired();
+
+
+                entity.HasIndex(cp => new { cp.SessionNumber, cp.UserId, cp.OriginDeviceId })
+                      .IsUnique();
+
+                entity.Property(cp => cp.UpdatedAt)
+                      .IsRequired();
+
+                entity.Property(cp => cp.DeletedAt);
+
+                entity.Property(cp => cp.OriginDeviceId)
+                      .IsRequired();
+            });
+
+            
         }
     }
 }

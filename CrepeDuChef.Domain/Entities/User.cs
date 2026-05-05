@@ -1,10 +1,12 @@
 ﻿using CrepeDuChef.Domain.Exceptions;
+using CrepeDuChef.Domain.Interfaces;
 
 namespace CrepeDuChef.Domain.Entities
 {
-    public class User
+    public class User : ISyncEntity
     {
-        public int Id { get; set; }
+        // 🔑 Global ID for synchro
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         private string _firstName = string.Empty;
         public string FirstName
@@ -24,6 +26,14 @@ namespace CrepeDuChef.Domain.Entities
                 : value;
         }
 
+        // 🔁 Relation
         public List<CrepesParty> CrepesParties { get; set; } = [];
+
+        // 🕒 Synchro
+        public DateTime UpdatedAt { get; set; }
+
+        public DateTime? DeletedAt { get; set; }
+
+        public Guid OriginDeviceId { get; set; }
     }
 }

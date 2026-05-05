@@ -62,7 +62,7 @@ namespace CrepeDuChef.Domain.Services
             if (sessionCompleted)
             {
                 // get previous session last chef
-                int lastChefId = sessionCrepes.Last().UserId;
+                Guid lastChefId = sessionCrepes.Last().UserId;
 
                 // get remaining chef
                 var remainingChefs = allChefs.Where(c => c.Id != lastChefId);
@@ -75,7 +75,7 @@ namespace CrepeDuChef.Domain.Services
 
             // Session not yet completed
             // Optimization : get session chefs id
-            HashSet<int> sessionChefIds = [.. sessionCrepes.Select(c => c.UserId) ];
+            HashSet<Guid> sessionChefIds = [.. sessionCrepes.Select(c => c.UserId) ];
 
             var remgChefs =
                 allChefs.Where(c => !sessionChefIds.Contains(c.Id));
@@ -110,11 +110,11 @@ namespace CrepeDuChef.Domain.Services
             List<User> availableChefs,
             IRandomProvider random)
         {
-            HashSet<int> availableChefIds = [.. availableChefs.Select(c => c.Id)];
-            HashSet<int> sessionChefIds = [.. sessionCrepes.Select(cp => cp.UserId)];
+            HashSet<Guid> availableChefIds = [.. availableChefs.Select(c => c.Id)];
+            HashSet<Guid> sessionChefIds = [.. sessionCrepes.Select(cp => cp.UserId)];
 
             // Filter already used chefs during this session
-            HashSet<int> remaining = [.. availableChefIds.Except(sessionChefIds)];
+            HashSet<Guid> remaining = [.. availableChefIds.Except(sessionChefIds)];
 
             // Just one, that our chef
             if (remaining.Count == 1)
@@ -123,7 +123,7 @@ namespace CrepeDuChef.Domain.Services
             }
             
             // 0 or >1
-            HashSet<int> workOn = remaining.Count switch
+            HashSet<Guid> workOn = remaining.Count switch
             {
                 0 => availableChefIds,  // no chef remaining -> use the full available list 
                 _ => remaining          // at least 2
@@ -134,7 +134,7 @@ namespace CrepeDuChef.Domain.Services
                 ? lastSessionId + 1
                 : lastSessionId;        // still in a session
 
-            int lastChefId = sessionCrepes.Last().UserId;
+            Guid lastChefId = sessionCrepes.Last().UserId;
 
             var candidates = workOn.Except([lastChefId]);
 

@@ -1,4 +1,5 @@
-﻿using CrepeDuChef.Domain.Interfaces;
+﻿using AppInterface = CrepeDuChef.Application.Interfaces;
+using DomainInterface = CrepeDuChef.Domain.Interfaces;
 using CrepeDuChef.Infrastructure.Repositories;
 using CrepeDuChef.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -18,9 +19,10 @@ namespace CrepeDuChef.Infrastructure.Extensions
             services.AddDbContextFactory<CrepeDbContext>(options =>
                 options.UseSqlite(connectionString));
 
-            services.AddTransient<ICrepePartyRepository, CrepePartyRepository>();
+            services.AddSingleton<AppInterface.IDateTimeProvider, SystemDateTimeProvider>();
+            services.AddTransient<AppInterface.ICrepePartyRepository, CrepePartyRepository>();
 
-            services.AddTransient<IRandomProvider, DefaultRandomProvider>();
+            services.AddTransient<DomainInterface.IRandomProvider, DefaultRandomProvider>();
 
             return services;
         }

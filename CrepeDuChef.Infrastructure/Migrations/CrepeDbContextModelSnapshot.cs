@@ -19,24 +19,33 @@ namespace CrepeDuChef.Infrastructure.Migrations
 
             modelBuilder.Entity("CrepeDuChef.Domain.Entities.CrepesParty", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("OriginDeviceId")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("SessionNumber")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("SessionNumber", "UserId")
+                    b.HasIndex("SessionNumber", "UserId", "OriginDeviceId")
                         .IsUnique();
 
                     b.ToTable("CrepesParty");
@@ -44,9 +53,12 @@ namespace CrepeDuChef.Infrastructure.Migrations
 
             modelBuilder.Entity("CrepeDuChef.Domain.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -56,6 +68,12 @@ namespace CrepeDuChef.Infrastructure.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("OriginDeviceId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
