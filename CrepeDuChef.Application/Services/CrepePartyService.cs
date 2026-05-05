@@ -13,18 +13,15 @@ namespace CrepeDuChef.Application.Services
     {
         private readonly ICrepePartyRepository _repo;
         private readonly IStringLocalizer<CrepePartyResources> _localizer;
-        private readonly IDeviceIdProvider _deviceId;
         private readonly IDateTimeProvider _dateTime;
 
         public CrepePartyService(
             ICrepePartyRepository repo,
             IStringLocalizer<CrepePartyResources> localizer,
-            IDeviceIdProvider deviceId,
             IDateTimeProvider dateTime)
         {
             _repo = repo;
             _localizer = localizer;
-            _deviceId = deviceId;
             _dateTime = dateTime;
         }
 
@@ -57,14 +54,14 @@ namespace CrepeDuChef.Application.Services
                 });
         }
 
-        public async Task AddCrepePartyAsync(CrepesPartyDto dto)
+        public async Task AddCrepePartyAsync(CrepesPartyDto dto, Guid deviceId)
         {
             CrepesParty entity =
                 dto.ToEntity();
 
             entity.Id = Guid.NewGuid();
             entity.UpdatedAt = _dateTime.UtcNow;
-            entity.OriginDeviceId = _deviceId.DeviceId;
+            entity.OriginDeviceId = deviceId;
 
             await _repo.AddCrepePartyAsync(entity);
         }

@@ -8,10 +8,10 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 
 using CrepeDuChef.Application.Extensions;
-using CrepeDuChef.Application.Interfaces;
+using AppInterfaces = CrepeDuChef.Application.Interfaces;
 using CrepeDuChef.Avalonia.DI;
 using CrepeDuChef.Avalonia.Services;
-using CrepeDuChef.Infrastructure.Extensions;    // for db Migrate
+using CrepeDuChef.Infrastructure.DI;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,7 +60,7 @@ namespace CrepeDuChef.Avalonia
                         services.AddAvaloniaPresenters();
 
                         // Device GUID
-                        services.AddSingleton<IDeviceIdProvider, AvaloniaDeviceIdProvider>();
+                        services.AddSingleton<AppInterfaces.IDeviceIdProvider, AvaloniaDeviceIdProvider>();
 
 
                         // Database
@@ -69,8 +69,11 @@ namespace CrepeDuChef.Avalonia
                                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                                 "CrepeDuChef.db3"
                                 );
+                        services.AddDbContextFactory<Infrastructure.CrepeDbContext>(
+                            options =>
+                                options.UseSqlite($"Data Source={dbPath}"));
 
-                        services.AddCrepeDuChefInfrastructure(dbPath);
+                        services.AddCrepeDuChefInfrastructure();
                         services.AddCrepeDuChefApplication();
 
                         services.AddSingleton<Window>(sp =>

@@ -33,6 +33,7 @@
       <Deploy />
     </Project>
   </Folder>
+  <Project Path="CrepeDuChef.Api/CrepeDuChef.Api.csproj" />
   <Project Path="CrepeDuChef.Application/CrepeDuChef.Application.csproj" Id="ec9b46f5-0191-4571-a3ce-3e564ba6fd3c" />
   <Project Path="CrepeDuChef.Domain/CrepeDuChef.Domain.csproj" Id="19a09558-70eb-40c3-8ef6-8e9afc832f9d" />
   <Project Path="CrepeDuChef.Infrastructure/CrepeDuChef.Infrastructure.csproj" Id="3bed3790-52e5-4308-9963-84c0f12cc63c" />

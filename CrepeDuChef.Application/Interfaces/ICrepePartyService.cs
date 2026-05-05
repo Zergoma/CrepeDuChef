@@ -6,7 +6,7 @@ namespace CrepeDuChef.Application.Interfaces
     public interface ICrepePartyService
     {
         Task<IEnumerable<CrepePartySession>> GetSessionsAsync();
-        Task AddCrepePartyAsync(CrepesPartyDto dto);
+        Task AddCrepePartyAsync(CrepesPartyDto dto, Guid deviceId);
         Task<List<UserDto>> GetAllChefsAsync();
     }
 }

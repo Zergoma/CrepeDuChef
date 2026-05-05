@@ -1,23 +1,18 @@
 ﻿using AppInterface = CrepeDuChef.Application.Interfaces;
 using DomainInterface = CrepeDuChef.Domain.Interfaces;
+
 using CrepeDuChef.Infrastructure.Repositories;
 using CrepeDuChef.Infrastructure.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System.Diagnostics;
 
-namespace CrepeDuChef.Infrastructure.Extensions
+using Microsoft.Extensions.DependencyInjection;
+
+namespace CrepeDuChef.Infrastructure.DI
 {
     public static class InfrastructureExtensions
     {
-        public static IServiceCollection AddCrepeDuChefInfrastructure(this IServiceCollection services, string dbPath)
+        public static IServiceCollection AddCrepeDuChefInfrastructure(this IServiceCollection services)
         {
-            string connectionString = $"Data Source={dbPath}";
-
-            Debug.WriteLine($"DI configuration --> Connection string for sqlite file is : {connectionString}");
-
-            services.AddDbContextFactory<CrepeDbContext>(options =>
-                options.UseSqlite(connectionString));
+            services.AddDbContext<CrepeDbContext>();
 
             services.AddSingleton<AppInterface.IDateTimeProvider, SystemDateTimeProvider>();
             services.AddTransient<AppInterface.ICrepePartyRepository, CrepePartyRepository>();

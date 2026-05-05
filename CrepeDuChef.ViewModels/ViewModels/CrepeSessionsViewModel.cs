@@ -1,14 +1,17 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
+
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using AppServices = CrepeDuChef.Application.Interfaces;
+
+using CrepeDuChef.ViewModels.Presenters;
+
 using AppDto = CrepeDuChef.Application.DTOs;
 using AppModel = CrepeDuChef.Application.Models;
+using AppServices = CrepeDuChef.Application.Interfaces;
+using AppValueObject = CrepeDuChef.Application.ValueObjects;
 using DomainExceptions = CrepeDuChef.Domain.Exceptions;
 using Loca = CrepeDuChef.Localization.Resources.languages;
-using CrepeDuChef.ViewModels.Presenters;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using CrepeDuChef.Application.ValueObjects;
 
 namespace CrepeDuChef.ViewModels.ViewModels
 {
@@ -16,6 +19,10 @@ namespace CrepeDuChef.ViewModels.ViewModels
     {
         private bool _isInitialized = false;
         private readonly SemaphoreSlim _updateLock = new(1, 1);
+        private readonly AppServices.IDeviceIdProvider _deviceId;
+        private readonly AppServices.IDateTimeProvider _dateTimeProvider;
+
+        private Guid DeviceId => _deviceId.DeviceId;
 
         #region Application Services
         private AppServices.IChefRotationService ChefRotationService { get; }
@@ -39,13 +46,16 @@ namespace CrepeDuChef.ViewModels.ViewModels
             AppServices.IChefRotationService chefRotationService,
             AppServices.ICrepePartyService crepService,
             IDialogPresenter userDialogService,
-            IUserSelectionPresenter userSelectService
-            )
+            IUserSelectionPresenter userSelectService,
+            AppServices.IDeviceIdProvider deviceId,
+            AppServices.IDateTimeProvider dateTimeProvider)
         {
             ChefRotationService = chefRotationService;
             CrepService = crepService;
             UserDialogService = userDialogService;
             UserSelectService = userSelectService;
+            _deviceId = deviceId;
+            _dateTimeProvider = dateTimeProvider;
         }
 
 
@@ -162,7 +172,7 @@ namespace CrepeDuChef.ViewModels.ViewModels
             {
                 List<AppDto.UserDto> chefsCopy = [.. ChefsAvailable];
 
-                ChefSelectionResult nextChefResult =
+                AppValueObject.ChefSelectionResult nextChefResult =
                     await ChefRotationService.GetNextChefAsync(chefsCopy);
 
                 await CrepService.AddCrepePartyAsync(
@@ -170,8 +180,9 @@ namespace CrepeDuChef.ViewModels.ViewModels
                     {
                         UserId = nextChefResult.User.Id,
                         SessionNumber = nextChefResult.SessionNumber,
-                        Date = DateTime.UtcNow
-                    });
+                        Date = _dateTimeProvider.UtcNow,
+                    },
+                    DeviceId);
 
                 await RefreshSessionsAsync();
                 ApplyFilter();

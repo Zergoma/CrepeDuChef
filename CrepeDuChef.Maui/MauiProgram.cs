@@ -1,21 +1,21 @@
 ﻿using CommunityToolkit.Maui;
 
 using CrepeDuChef.Application.Extensions;
-using CrepeDuChef.Application.Interfaces;
-using CrepeDuChef.Infrastructure.Extensions;
+using AppInterfaces = CrepeDuChef.Application.Interfaces;
+using Infrastructure = CrepeDuChef.Infrastructure;
+
+using CrepeDuChef.Infrastructure.DI;
 using CrepeDuChef.Maui.DI;
+
 using CrepeDuChef.Maui.Services;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-
-using SkiaSharp.Views.Maui.Controls.Hosting;
-
 using SQLitePCL;
 
+using SkiaSharp.Views.Maui.Controls.Hosting;
 using UraniumUI;
 
-using AppInfra = CrepeDuChef.Infrastructure;
 
 namespace CrepeDuChef.Maui
 {
@@ -58,7 +58,11 @@ namespace CrepeDuChef.Maui
                     "CrepeDuChef.db3"
                     );
 
-            builder.Services.AddCrepeDuChefInfrastructure(dbPath);
+            builder.Services.AddDbContextFactory<Infrastructure.CrepeDbContext>(
+                options =>
+                    options.UseSqlite($"Data Source={dbPath}"));
+
+            builder.Services.AddCrepeDuChefInfrastructure();
             builder.Services.AddCrepeDuChefApplication();
 
 
@@ -69,7 +73,7 @@ namespace CrepeDuChef.Maui
             builder.Services.AddMauiPresenters();
 
             // Device GUID
-            builder.Services.AddSingleton<IDeviceIdProvider, MauiDeviceIdProvider>();
+            builder.Services.AddSingleton<AppInterfaces.IDeviceIdProvider, MauiDeviceIdProvider>();
 
 
 #if DEBUG
@@ -81,7 +85,7 @@ namespace CrepeDuChef.Maui
 
             using (var scope = app.Services.CreateScope())
             {
-                var db = scope.ServiceProvider.GetRequiredService<AppInfra.CrepeDbContext>();
+                var db = scope.ServiceProvider.GetRequiredService<Infrastructure.CrepeDbContext>();
                 db.Database.Migrate();
             }
             #endregion
