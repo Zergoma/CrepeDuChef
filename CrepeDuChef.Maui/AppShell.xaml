@@ -21,7 +21,8 @@
     </Shell.FlyoutHeader>
 
     <Shell.ItemTemplate>
-        <DataTemplate>
+        <!-- Items are the flyout items, not the shell view model -->
+        <DataTemplate x:DataType="BaseShellItem">
             <Label Text="{Binding Title}"
                    WidthRequest="200"
                    class="chocoLabelShell"
