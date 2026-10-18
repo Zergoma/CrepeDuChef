@@ -61,6 +61,8 @@
                            Color="#FADE05"
                            HeightRequest="85"
                            WidthRequest="85"
+                           InputTransparent="True"
+                           IsVisible="{Binding IsUpdating}"
                            IsRunning="{Binding IsUpdating}"/>
 
         <Grid Grid.Row="2">
