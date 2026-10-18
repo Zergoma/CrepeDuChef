@@ -25,6 +25,7 @@ namespace CrepeDuChef.Infrastructure.Repositories
             User userToUpdate = await ctx.Users.FirstAsync(u => u.Id == user.Id);
             userToUpdate.FirstName = user.FirstName;
             userToUpdate.LastName = user.LastName;
+            userToUpdate.UpdatedAt = user.UpdatedAt;
             await ctx.SaveChangesAsync();
         }
 
@@ -58,9 +59,7 @@ namespace CrepeDuChef.Infrastructure.Repositories
         public async Task<int> GetLastSessionNumberAsync()
         {
             await using var ctx = await _factory.CreateDbContextAsync();
-            return await ctx.CrepesParty.AnyAsync()
-                         ? ctx.CrepesParty.Max(u => u.SessionNumber)
-                         : 0;
+            return await ctx.CrepesParty.MaxAsync(p => (int?)p.SessionNumber) ?? 0;
         }
 
         public async Task<List<CrepesParty>> GetCrepePartiesFromSessionAsync(int SessionNumber)

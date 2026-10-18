@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastructure\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CrepeDuChef.Application\CrepeDuChef.Application.csproj" />
     <ProjectReference Include="..\CrepeDuChef.Infrastructure\CrepeDuChef.Infrastructure.csproj" />
   </ItemGroup>
