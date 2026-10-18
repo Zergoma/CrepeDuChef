@@ -71,7 +71,7 @@
 			<!-- Actions -->
 			<StackPanel Grid.Column="1" Spacing="10" VerticalAlignment="Top">
 
-				<Button Content="{Binding UsersAway}"
+				<Button Content="{Binding ChefsAwayMsg}"
 						Command="{Binding SelectAvailableChefsCommand}"
 						IsEnabled="{Binding IsMoreThanOneChef}" />
 

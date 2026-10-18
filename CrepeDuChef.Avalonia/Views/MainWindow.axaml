@@ -15,7 +15,7 @@
 			<views:CrepeSessionsView />
 		</DataTemplate>
 		<DataTemplate DataType="sharedVm:ChefSettingsViewModel">
-			<views:UserSettingsView />
+			<views:ChefSettingsView />
 		</DataTemplate>
 	</Window.DataTemplates>
 
@@ -30,7 +30,7 @@
 						Classes="menu-button"
 						Command="{Binding GoToCrepePartyCommand}" />
 
-				<Button Content="{Binding UsersMsg}"
+				<Button Content="{Binding ChefsMsg}"
 						Classes="menu-button"
 						Command="{Binding GoToChefsCommand}" />
 			</StackPanel>

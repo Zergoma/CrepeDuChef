@@ -3,7 +3,7 @@ using CrepeDuChef.Application.DTOs;
 
 namespace CrepeDuChef.Maui.UI.Popups.Factories
 {
-    public interface IUserSelectionPopupFactory
+    public interface IChefSelectionPopupFactory
     {
         Popup CreateSelectionPopup(
             string title,

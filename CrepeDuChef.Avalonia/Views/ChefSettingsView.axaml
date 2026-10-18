@@ -5,7 +5,7 @@
 			 xmlns:i="using:Avalonia.Xaml.Interactivity"
 			 xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-			 x:Class="CrepeDuChef.Avalonia.Views.UserSettingsView"
+			 x:Class="CrepeDuChef.Avalonia.Views.ChefSettingsView"
 			 xmlns:vm="using:CrepeDuChef.ViewModels.ViewModels"
 			 x:DataType="vm:ChefSettingsViewModel"
 			 xmlns:dto="using:CrepeDuChef.Application.DTOs">
@@ -15,7 +15,7 @@
 	<StackPanel Margin="20" Spacing="10">
 
 		<!-- Title -->
-		<TextBlock Text="{Binding UserSettingMsg}"
+		<TextBlock Text="{Binding ChefsMsg}"
 				   FontSize="24"
 				   FontWeight="Bold"/>
 

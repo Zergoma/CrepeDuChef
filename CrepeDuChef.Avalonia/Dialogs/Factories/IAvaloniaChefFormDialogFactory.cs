@@ -3,7 +3,7 @@ using CrepeDuChef.ViewModels.Models;
 
 namespace CrepeDuChef.Avalonia.Dialogs.Factories
 {
-    public interface IAvaloniaUserFormDialogFactory
+    public interface IAvaloniaChefFormDialogFactory
     {
         IDialog<ChefFormData> CreateAddForm();
         IDialog<ChefFormData> CreateEditForm(ChefDto chef);

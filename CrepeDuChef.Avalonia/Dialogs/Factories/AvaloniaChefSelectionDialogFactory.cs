@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CrepeDuChef.Avalonia.Dialogs.Factories
 {
-    public class AvaloniaUserSelectionDialogFactory : IAvaloniaUserSelectionDialogFactory
+    public class AvaloniaChefSelectionDialogFactory : IAvaloniaChefSelectionDialogFactory
     {
         public IDialog<IReadOnlyList<ChefDto>> Create(
             string title,
@@ -13,7 +13,7 @@ namespace CrepeDuChef.Avalonia.Dialogs.Factories
             IReadOnlyList<ChefDto> allChefs,
             IReadOnlyList<ChefDto> selectedChefs)
         {
-            return new SelectUsersDialog(
+            return new SelectChefsDialog(
                 new SelectChefsDialogViewModel(title, message, allChefs, selectedChefs));
         }
     }

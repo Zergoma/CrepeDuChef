@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace CrepeDuChef.Avalonia.Dialogs.Presenters
 {
-    public class AvaloniaUserFormPresenter : IChefFormPresenter
+    public class AvaloniaChefFormPresenter : IChefFormPresenter
     {
-        private readonly IAvaloniaUserFormDialogFactory _factory;
+        private readonly IAvaloniaChefFormDialogFactory _factory;
         private readonly MainWindowHolder _holder;
 
-        public AvaloniaUserFormPresenter(MainWindowHolder holder, IAvaloniaUserFormDialogFactory factory)
+        public AvaloniaChefFormPresenter(MainWindowHolder holder, IAvaloniaChefFormDialogFactory factory)
         {
             _holder = holder;
             _factory = factory;

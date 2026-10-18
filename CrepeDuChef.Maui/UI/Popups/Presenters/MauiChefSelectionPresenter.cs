@@ -8,16 +8,16 @@ using CrepeDuChef.ViewModels.Presenters;
 
 namespace CrepeDuChef.Maui.UI.Popups.Presenters
 {
-    public class MauiUserSelectionPresenter : IChefSelectionPresenter
+    public class MauiChefSelectionPresenter : IChefSelectionPresenter
     {
         private readonly PopupCoordinator _coordinator;
         private readonly PopupOptionsFactory _options;
-        private readonly IUserSelectionPopupFactory _factory;
+        private readonly IChefSelectionPopupFactory _factory;
 
-        public MauiUserSelectionPresenter(
+        public MauiChefSelectionPresenter(
             PopupCoordinator coordinator,
             PopupOptionsFactory options,
-            IUserSelectionPopupFactory factory)
+            IChefSelectionPopupFactory factory)
         {
             _coordinator = coordinator;
             _options = options;

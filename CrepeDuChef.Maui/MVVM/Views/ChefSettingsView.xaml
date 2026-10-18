@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CrepeDuChef.Maui.MVVM.Views.UserSettingView"
+             x:Class="CrepeDuChef.Maui.MVVM.Views.ChefSettingsView"
              xmlns:vm="clr-namespace:CrepeDuChef.ViewModels.ViewModels;assembly=CrepeDuChef.ViewModels"
              xmlns:dto_application="clr-namespace:CrepeDuChef.Application.DTOs;assembly=CrepeDuChef.Application"
              xmlns:convert="clr-namespace:CrepeDuChef.Maui.Converters"
@@ -12,7 +12,7 @@
              class="chocoPage">
 
     <Grid RowDefinitions="auto,*">
-        <Label Text="{Binding UserSettingMsg}"
+        <Label Text="{Binding ChefsMsg}"
                FontSize="50"
                FontAttributes="Bold"
                VerticalOptions="Center" 

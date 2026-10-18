@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace CrepeDuChef.Avalonia.Dialogs.Windows;
 
-public partial class SelectUsersDialog : Window, IDialog<IReadOnlyList<ChefDto>>
+public partial class SelectChefsDialog : Window, IDialog<IReadOnlyList<ChefDto>>
 {
     // Required by the XAML loader and the designer
-    public SelectUsersDialog()
+    public SelectChefsDialog()
     {
         InitializeComponent();
     }
 
-    public SelectUsersDialog(SelectChefsDialogViewModel vm) : this()
+    public SelectChefsDialog(SelectChefsDialogViewModel vm) : this()
     {
         DataContext = vm;
         vm.RequestClose += result => Close(result);

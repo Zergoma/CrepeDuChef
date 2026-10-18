@@ -4,9 +4,9 @@ using CrepeDuChef.ViewModels.ViewModels;
 
 namespace CrepeDuChef.Maui.UI.Popups.Views
 {
-    public partial class SelectUsersPopup : Popup<ChefSelectionPopupResult?>
+    public partial class SelectChefsPopup : Popup<ChefSelectionPopupResult?>
     {
-        public SelectUsersPopup(SelectChefsDialogViewModel vm)
+        public SelectChefsPopup(SelectChefsDialogViewModel vm)
         {
             InitializeComponent();
             BindingContext = vm;

@@ -24,7 +24,7 @@ namespace CrepeDuChef.ViewModels.ViewModels
         [ObservableProperty]
         public partial ChefDto? SelectedChef { get; set; }
 
-        public string UserSettingMsg => UiResources.UserSetting;
+        public string ChefsMsg => UiResources.Chefs;
         public string AddMsg => UiResources.Add;
         public string NoChefMsg => UiResources.NoChefInDB;
 

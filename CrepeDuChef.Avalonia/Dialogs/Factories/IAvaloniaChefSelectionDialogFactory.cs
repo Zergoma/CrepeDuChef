@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CrepeDuChef.Avalonia.Dialogs.Factories
 {
-    public interface IAvaloniaUserSelectionDialogFactory
+    public interface IAvaloniaChefSelectionDialogFactory
     {
         IDialog<IReadOnlyList<ChefDto>> Create(
             string title,

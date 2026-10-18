@@ -95,39 +95,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="MVVM\Views\CrepeDuChefView.xaml.cs">
-	    <DependentUpon>CrepeDuChefView.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="UI\Popups\Views\TitledMessagePopup.xaml.cs">
-	    <DependentUpon>TitledMessagePopup.xaml</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <MauiXaml Update="MVVM\Views\CrepeDuChefView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="MVVM\Views\UserSettingView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="UI\Popups\Views\SelectUsersPopup.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="UI\Popups\Views\TitledMessagePopup.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="UI\Popups\Views\UserFormPopup.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\CrepeDuChefColors.xaml">
-	    <Generator></Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\CrepeDuChefStyles.xaml">
-	    <Generator></Generator>
-	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Update="Resources\Splash\kraken.svg" Color="#FF0400" BaseSize="128,128" />
 	</ItemGroup>
 

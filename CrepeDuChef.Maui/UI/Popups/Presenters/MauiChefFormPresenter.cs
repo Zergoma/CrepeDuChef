@@ -9,16 +9,16 @@ using CrepeDuChef.ViewModels.Presenters;
 
 namespace CrepeDuChef.Maui.UI.Popups.Presenters
 {
-    public class MauiUserFormPresenter : IChefFormPresenter
+    public class MauiChefFormPresenter : IChefFormPresenter
     {
         private readonly PopupCoordinator _coordinator;
         private readonly PopupOptionsFactory _options;
-        private readonly IUserFormPopupFactory _factory;
+        private readonly IChefFormPopupFactory _factory;
 
-        public MauiUserFormPresenter(
+        public MauiChefFormPresenter(
             PopupCoordinator coordinator,
             PopupOptionsFactory options,
-            IUserFormPopupFactory factory)
+            IChefFormPopupFactory factory)
         {
             _coordinator = coordinator;
             _options = options;
@@ -26,10 +26,10 @@ namespace CrepeDuChef.Maui.UI.Popups.Presenters
         }
 
         public Task<ChefFormData?> ShowAddChefFormAsync()
-            => ShowFormAsync(_factory.CreateAddUserForm);
+            => ShowFormAsync(_factory.CreateAddForm);
 
         public Task<ChefFormData?> ShowUpdateChefFormAsync(ChefDto chef)
-            => ShowFormAsync(() => _factory.CreateUpdateUserForm(chef));
+            => ShowFormAsync(() => _factory.CreateUpdateForm(chef));
 
         private Task<ChefFormData?> ShowFormAsync(Func<Popup> createPopup)
         {

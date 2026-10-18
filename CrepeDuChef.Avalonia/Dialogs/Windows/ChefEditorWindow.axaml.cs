@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 namespace CrepeDuChef.Avalonia.Dialogs.Windows;
 
-public partial class UserEditorWindow : Window, IDialog<ChefFormData>
+public partial class ChefEditorWindow : Window, IDialog<ChefFormData>
 {
     // Required by the XAML loader and the designer
-    public UserEditorWindow()
+    public ChefEditorWindow()
     {
         InitializeComponent();
     }
 
-    public UserEditorWindow(ChefEditorViewModel vm) : this()
+    public ChefEditorWindow(ChefEditorViewModel vm) : this()
     {
         DataContext = vm;
         vm.RequestClose += result => Close(result);

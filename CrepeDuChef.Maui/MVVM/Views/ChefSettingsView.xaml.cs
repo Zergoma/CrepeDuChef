@@ -2,11 +2,11 @@ using CrepeDuChef.ViewModels.ViewModels;
 
 namespace CrepeDuChef.Maui.MVVM.Views;
 
-public partial class CrepeDuChefView : ContentPage
+public sealed partial class ChefSettingsView : ContentPage
 {
-    private readonly CrepeSessionsViewModel _vm;
+    private readonly ChefSettingsViewModel _vm;
 
-    public CrepeDuChefView(CrepeSessionsViewModel vm)
+    public ChefSettingsView(ChefSettingsViewModel vm)
     {
         InitializeComponent();
         BindingContext = _vm = vm;
@@ -15,6 +15,6 @@ public partial class CrepeDuChefView : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _vm.OnAppearingAsync();
+        await _vm.LoadChefsCommand.ExecuteAsync(null);
     }
 }

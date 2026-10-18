@@ -8,8 +8,8 @@ public static class AvaloniaDialogsModule
     public static IServiceCollection AddAvaloniaDialogs(this IServiceCollection services)
     {
         services.AddTransient<IAvaloniaMessageDialogFactory, AvaloniaMessageDialogFactory>();
-        services.AddTransient<IAvaloniaUserFormDialogFactory, AvaloniaUserFormDialogFactory>();
-        services.AddTransient<IAvaloniaUserSelectionDialogFactory, AvaloniaUserSelectionDialogFactory>();
+        services.AddTransient<IAvaloniaChefFormDialogFactory, AvaloniaChefFormDialogFactory>();
+        services.AddTransient<IAvaloniaChefSelectionDialogFactory, AvaloniaChefSelectionDialogFactory>();
 
         return services;
     }

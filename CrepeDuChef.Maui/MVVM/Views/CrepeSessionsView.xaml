@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CrepeDuChef.Maui.MVVM.Views.CrepeDuChefView"
+             x:Class="CrepeDuChef.Maui.MVVM.Views.CrepeSessionsView"
              xmlns:converter="clr-namespace:CrepeDuChef.Maui.Converters"
              xmlns:vm="clr-namespace:CrepeDuChef.ViewModels.ViewModels;assembly=CrepeDuChef.ViewModels"
              xmlns:models="clr-namespace:CrepeDuChef.ViewModels.Models;assembly=CrepeDuChef.ViewModels"
@@ -49,7 +49,7 @@
                     Margin="0,0,0,5"/>
 
             <Button Grid.Row="1"
-                    Text="{Binding UsersAway}"
+                    Text="{Binding ChefsAwayMsg}"
                     Command="{Binding SelectAvailableChefsCommand}"
                     HorizontalOptions="End"
                     IsVisible="{Binding IsMoreThanOneChef}"

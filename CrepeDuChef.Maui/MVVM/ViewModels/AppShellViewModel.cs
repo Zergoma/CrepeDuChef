@@ -9,6 +9,6 @@ namespace CrepeDuChef.Maui.MVVM.ViewModels
     {
         public string AppTitle => UiResources.CrepeDuChef_title;
         public string CrepePartyMsg => UiResources.CrepeDuChef_title;
-        public string ChefsMsg => UiResources.UserSetting;
+        public string ChefsMsg => UiResources.Chefs;
     }
 }

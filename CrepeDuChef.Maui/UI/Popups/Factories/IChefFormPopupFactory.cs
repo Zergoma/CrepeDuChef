@@ -3,9 +3,9 @@ using CrepeDuChef.Application.DTOs;
 
 namespace CrepeDuChef.Maui.UI.Popups.Factories
 {
-    public interface IUserFormPopupFactory
+    public interface IChefFormPopupFactory
     {
-        Popup CreateAddUserForm();
-        Popup CreateUpdateUserForm(ChefDto chef);
+        Popup CreateAddForm();
+        Popup CreateUpdateForm(ChefDto chef);
     }
 }

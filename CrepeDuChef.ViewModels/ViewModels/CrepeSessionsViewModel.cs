@@ -27,7 +27,7 @@ namespace CrepeDuChef.ViewModels.ViewModels
         #region Translations
         public string CrepeDuChef_title => UiResources.CrepeDuChef_title;
         public string WhoIsTheChef => UiResources.WhoIsTheChef;
-        public string UsersAway => UiResources.UsersAway;
+        public string ChefsAwayMsg => UiResources.ChefsAway;
         public string NoSessionInDb => UiResources.NoSessionInDb;
         public string OnContentOnlyCurrentSession => UiResources.ShowOnlyCurrentSession;
         public string OffOnContentAllSession => UiResources.ShowAllSession;

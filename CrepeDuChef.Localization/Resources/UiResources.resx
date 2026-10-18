@@ -147,11 +147,8 @@
   <data name="Today_s_Chef" xml:space="preserve">
     <value>Today's Chef is</value>
   </data>
-  <data name="Users" xml:space="preserve">
-    <value>Users</value>
-  </data>
-  <data name="UserSetting" xml:space="preserve">
-    <value>User Settings</value>
+  <data name="Chefs" xml:space="preserve">
+    <value>Chefs</value>
   </data>
   <data name="AddAChef" xml:space="preserve">
     <value>Add a chef</value>
@@ -180,8 +177,8 @@
   <data name="WhoIsTheChef" xml:space="preserve">
     <value>Who is the Chef ?</value>
   </data>
-  <data name="UsersAway" xml:space="preserve">
-    <value>Are there any users who aren't here?</value>
+  <data name="ChefsAway" xml:space="preserve">
+    <value>Who is away?</value>
   </data>
   <data name="NoChefSelectionExceptionMessage" xml:space="preserve">
     <value>Unable to select a chief.</value>

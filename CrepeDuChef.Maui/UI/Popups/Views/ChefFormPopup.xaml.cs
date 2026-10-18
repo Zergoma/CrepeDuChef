@@ -4,9 +4,9 @@ using CrepeDuChef.ViewModels.ViewModels;
 
 namespace CrepeDuChef.Maui.UI.Popups.Views;
 
-public partial class UserFormPopup : Popup<ChefFormData?>
+public partial class ChefFormPopup : Popup<ChefFormData?>
 {
-    public UserFormPopup(ChefEditorViewModel vm)
+    public ChefFormPopup(ChefEditorViewModel vm)
     {
         InitializeComponent();
         BindingContext = vm;

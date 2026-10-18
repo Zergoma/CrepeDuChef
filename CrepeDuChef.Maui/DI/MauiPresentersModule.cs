@@ -11,8 +11,8 @@ public static class MauiPresentersModule
         services.AddSingleton<PopupCoordinator>();
         services.AddSingleton<PopupOptionsFactory>();
 
-        services.AddTransient<IChefFormPresenter, MauiUserFormPresenter>();
-        services.AddTransient<IChefSelectionPresenter, MauiUserSelectionPresenter>();
+        services.AddTransient<IChefFormPresenter, MauiChefFormPresenter>();
+        services.AddTransient<IChefSelectionPresenter, MauiChefSelectionPresenter>();
         services.AddTransient<IDialogPresenter, MauiDialogPresenter>();
 
         return services;

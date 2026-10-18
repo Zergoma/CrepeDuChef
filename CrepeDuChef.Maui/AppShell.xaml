@@ -39,16 +39,16 @@
     <FlyoutItem Title="{Binding CrepePartyMsg}">
         <Tab>
         <ShellContent Title="{Binding CrepePartyMsg}"
-                      Route="CrepeDuChefView"
-                      ContentTemplate="{DataTemplate view:CrepeDuChefView}"/>
+                      Route="CrepeSessionsView"
+                      ContentTemplate="{DataTemplate view:CrepeSessionsView}"/>
         </Tab>
     </FlyoutItem>
 
     <FlyoutItem Title="{Binding ChefsMsg}">
         <Tab>
         <ShellContent Title="{Binding ChefsMsg}"
-                      Route="UserSettingView"
-                      ContentTemplate="{DataTemplate view:UserSettingView}"/>
+                      Route="ChefSettingsView"
+                      ContentTemplate="{DataTemplate view:ChefSettingsView}"/>
         </Tab>
     </FlyoutItem>
 

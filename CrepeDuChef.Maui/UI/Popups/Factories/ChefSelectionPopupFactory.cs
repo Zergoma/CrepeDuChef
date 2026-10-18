@@ -5,7 +5,7 @@ using CrepeDuChef.ViewModels.ViewModels;
 
 namespace CrepeDuChef.Maui.UI.Popups.Factories
 {
-    public class UserSelectionPopupFactory : IUserSelectionPopupFactory
+    public class ChefSelectionPopupFactory : IChefSelectionPopupFactory
     {
         public Popup CreateSelectionPopup(
             string title,
@@ -13,7 +13,7 @@ namespace CrepeDuChef.Maui.UI.Popups.Factories
             IReadOnlyList<ChefDto> allChefs,
             IReadOnlyList<ChefDto> selectedChefs)
         {
-            return new SelectUsersPopup(new SelectChefsDialogViewModel(title, message, allChefs, selectedChefs));
+            return new SelectChefsPopup(new SelectChefsDialogViewModel(title, message, allChefs, selectedChefs));
         }
     }
 }

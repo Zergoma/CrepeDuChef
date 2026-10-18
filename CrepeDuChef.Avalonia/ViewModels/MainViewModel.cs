@@ -15,7 +15,7 @@ namespace CrepeDuChef.Avalonia.ViewModels
         private readonly ChefSettingsViewModel _chefSettings;
 
         public string AppTitle => UiResources.CrepeDuChef_title;
-        public string UsersMsg => UiResources.Users;
+        public string ChefsMsg => UiResources.Chefs;
         public string CrepePartyMsg => UiResources.CrepeDuChef_title;
 
         [ObservableProperty]
