@@ -43,11 +43,11 @@ namespace CrepeDuChef.Infrastructure
                 
                 entity.Property(u => u.FirstName)
                       .IsRequired()
-                      .HasMaxLength(100);
+                      .HasMaxLength(User.NameMaxLength);
 
                 entity.Property(u => u.LastName)
                       .IsRequired()
-                      .HasMaxLength(100);
+                      .HasMaxLength(User.NameMaxLength);
 
                 entity.Property(u => u.UpdatedAt)
                       .IsRequired();

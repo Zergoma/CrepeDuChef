@@ -5,6 +5,8 @@ namespace CrepeDuChef.Domain.Entities
 {
     public class User : ISyncEntity
     {
+        public const int NameMaxLength = 50;
+
         // 🔑 Global ID for synchro
         public Guid Id { get; set; } = Guid.NewGuid();
 

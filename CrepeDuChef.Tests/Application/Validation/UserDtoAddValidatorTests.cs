@@ -1,4 +1,5 @@
-﻿using CrepeDuChef.Application.DTOs;
+﻿using CrepeDuChef.Domain.Entities;
+using CrepeDuChef.Application.DTOs;
 using CrepeDuChef.Localization.Resources;
 using CrepeDuChef.Application.Validation;
 using CrepeDuChef.Tests.Helpers;
@@ -102,6 +103,42 @@ namespace CrepeDuChef.Tests.Application.Validation
             result.Errors.Should().Contain(e => e.PropertyName == nameof(dto.LastName));
 
             result.Errors.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public void Should_Fail_With_Length_Message_When_FirstName_Is_Too_Long()
+        {
+            // Arrange
+            UserDtoAdd dto = new()
+            {
+                FirstName = new string('a', User.NameMaxLength + 1),
+                LastName = "Doe"
+            };
+
+            // Act
+            var result = _validator.Validate(dto);
+
+            // Assert
+            result.Errors.Should().ContainSingle()
+                .Which.ErrorMessage.Should().Be("FirstNameLengthRange");
+        }
+
+        [Fact]
+        public void Should_Fail_With_Length_Message_When_LastName_Is_Too_Long()
+        {
+            // Arrange
+            UserDtoAdd dto = new()
+            {
+                FirstName = "John",
+                LastName = new string('a', User.NameMaxLength + 1)
+            };
+
+            // Act
+            var result = _validator.Validate(dto);
+
+            // Assert
+            result.Errors.Should().ContainSingle()
+                .Which.ErrorMessage.Should().Be("LastNameLengthRange");
         }
     }
 }
