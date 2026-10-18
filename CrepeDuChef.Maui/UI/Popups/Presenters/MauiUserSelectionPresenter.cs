@@ -1,14 +1,14 @@
 ﻿using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
 using CrepeDuChef.Application.DTOs;
-using CrepeDuChef.Application.ValueObjects;
 using CrepeDuChef.Maui.UI.Popups.Core;
 using CrepeDuChef.Maui.UI.Popups.Factories;
-using VmPresenters = CrepeDuChef.ViewModels.Presenters;
+using CrepeDuChef.Maui.UI.Popups.Models;
+using CrepeDuChef.ViewModels.Presenters;
 
 namespace CrepeDuChef.Maui.UI.Popups.Presenters
 {
-    public class MauiUserSelectionPresenter : VmPresenters.IUserSelectionPresenter
+    public class MauiUserSelectionPresenter : IChefSelectionPresenter
     {
         private readonly PopupCoordinator _coordinator;
         private readonly PopupOptionsFactory _options;
@@ -24,27 +24,20 @@ namespace CrepeDuChef.Maui.UI.Popups.Presenters
             _factory = factory;
         }
 
-        public Task<UserDto[]?> SelectUsersAsync(
+        public Task<IReadOnlyList<ChefDto>?> SelectChefsAsync(
             string title,
             string message,
-            List<UserDto> allUsers,
-            List<UserDto> selectedUsers)
+            IReadOnlyList<ChefDto> allChefs,
+            IReadOnlyList<ChefDto> selectedChefs)
         {
             return _coordinator.RunAsync(async () =>
             {
-                var popup =
-                    _factory.CreateSelectionPopup(
-                        title,
-                        message,
-                        allUsers,
-                        selectedUsers);
+                var popup = _factory.CreateSelectionPopup(title, message, allChefs, selectedChefs);
 
-                IPopupResult<UserSelectionResult> resu =
-                    await Shell.Current.ShowPopupAsync<UserSelectionResult>(
-                        popup,
-                        _options.Create());
+                IPopupResult<ChefSelectionPopupResult?> result =
+                    await Shell.Current.ShowPopupAsync<ChefSelectionPopupResult?>(popup, _options.Create());
 
-                return resu?.Result?.Users;
+                return result.Result?.Chefs;
             });
         }
     }

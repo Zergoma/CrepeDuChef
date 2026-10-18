@@ -1,49 +1,25 @@
 using Avalonia.Controls;
 using CrepeDuChef.Application.DTOs;
-using CrepeDuChef.Avalonia.ViewModels;
+using CrepeDuChef.ViewModels.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SharedVm = CrepeDuChef.ViewModels.ViewModels;
 
 namespace CrepeDuChef.Avalonia.Dialogs.Windows;
 
-public partial class SelectUsersDialog : Window, IDialog<UserDto[]>
+public partial class SelectUsersDialog : Window, IDialog<IReadOnlyList<ChefDto>>
 {
-    private SelectUsersDialog(
-        string title,
-        string message,
-        IEnumerable<UserDto> allUsers,
-        IEnumerable<UserDto> selectedUsers)
+    // Required by the XAML loader and the designer
+    public SelectUsersDialog()
     {
         InitializeComponent();
-        SharedVm.SelectUsersDialogViewModel sharedVm = 
-            new (
-                title,
-                message,
-                allUsers: allUsers,
-                selectedUsers: selectedUsers);
-
-        var adapter = new SelectUsersDialogViewModelAvaloniaAdapter(sharedVm);
-        DataContext = adapter;
-
-        // Close dialog
-        adapter.RequestClose += result => Close(result);
     }
 
-    public static IDialog<UserDto[]> Create(
-        string title,
-        string message,
-        IEnumerable<UserDto> allUsers,
-        IEnumerable<UserDto> selectedUsers)
+    public SelectUsersDialog(SelectChefsDialogViewModel vm) : this()
     {
-        return new SelectUsersDialog(
-            title: title,
-            message: message,
-            allUsers: allUsers,
-            selectedUsers: selectedUsers);
+        DataContext = vm;
+        vm.RequestClose += result => Close(result);
     }
 
-    public Task<UserDto[]?> ShowAsync(Window owner)
-        => this.ShowDialog<UserDto[]?>(owner);
-
+    public Task<IReadOnlyList<ChefDto>?> ShowAsync(Window owner)
+        => ShowDialog<IReadOnlyList<ChefDto>?>(owner);
 }

@@ -10,6 +10,8 @@ namespace CrepeDuChef.Avalonia.Views
             InitializeComponent();
 
             DataContext = vm;
+
+            Opened += async (_, _) => await vm.GoToCrepePartyCommand.ExecuteAsync(null);
         }
     }
 }

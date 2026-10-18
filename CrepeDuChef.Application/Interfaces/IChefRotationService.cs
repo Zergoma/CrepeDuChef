@@ -1,10 +1,10 @@
 ﻿using CrepeDuChef.Application.DTOs;
-using CrepeDuChef.Application.ValueObjects;
 
 namespace CrepeDuChef.Application.Interfaces
 {
     public interface IChefRotationService
     {
-        Task<ChefSelectionResult> GetNextChefAsync(List<UserDto>? availableChefs = null);
+        /// <param name="availableChefIds">Chefs present today; null means everyone is available.</param>
+        Task<ChefSelectionDto> GetNextChefAsync(IReadOnlyCollection<Guid>? availableChefIds = null);
     }
 }

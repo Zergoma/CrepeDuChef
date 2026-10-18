@@ -1,7 +1,6 @@
 ﻿using CrepeDuChef.Maui.UI.Popups.Core;
-using CrepeDuChef.Maui.UI.Popups.Factories;
 using CrepeDuChef.Maui.UI.Popups.Presenters;
-using SharedPresenter = CrepeDuChef.ViewModels.Presenters;
+using CrepeDuChef.ViewModels.Presenters;
 
 namespace CrepeDuChef.Maui.DI;
 
@@ -12,9 +11,9 @@ public static class MauiPresentersModule
         services.AddSingleton<PopupCoordinator>();
         services.AddSingleton<PopupOptionsFactory>();
 
-        services.AddTransient<SharedPresenter.IUserFormPresenter, MauiUserFormPresenter>();
-        services.AddTransient<SharedPresenter.IUserSelectionPresenter, MauiUserSelectionPresenter>();
-        services.AddTransient<SharedPresenter.IDialogPresenter, MauiDialogPresenter>();
+        services.AddTransient<IChefFormPresenter, MauiUserFormPresenter>();
+        services.AddTransient<IChefSelectionPresenter, MauiUserSelectionPresenter>();
+        services.AddTransient<IDialogPresenter, MauiDialogPresenter>();
 
         return services;
     }

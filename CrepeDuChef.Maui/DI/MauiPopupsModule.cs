@@ -6,7 +6,7 @@ public static class MauiPopupsModule
 {
     public static IServiceCollection AddMauiPopups(this IServiceCollection services)
     {
-        services.AddTransient<IUserFormPopupFactory, UserPopCommunautyFactory>();
+        services.AddTransient<IUserFormPopupFactory, UserFormPopupFactory>();
         services.AddTransient<IUserSelectionPopupFactory, UserSelectionPopupFactory>();
         services.AddTransient<IMessagePopupFactory, MessagePopupFactory>();
 

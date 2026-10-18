@@ -2,5 +2,5 @@
 
 namespace CrepeDuChef.Domain.ValueObjects
 {
-    public record ChefSelection(User User, int SessionNumber);
+    public record ChefSelection(Chef Chef, int SessionNumber);
 }

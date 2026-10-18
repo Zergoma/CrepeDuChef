@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using System;
 
-namespace CrepeDuChef.Avalonia.Dialogs.ViewModels
+namespace CrepeDuChef.Avalonia.Dialogs.MessageDialogs
 {
     public partial class BaseMessageDialogViewModel : ObservableObject
     {

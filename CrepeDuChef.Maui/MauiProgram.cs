@@ -1,12 +1,11 @@
 ﻿using CommunityToolkit.Maui;
 
-using CrepeDuChef.Application.Extensions;
+using CrepeDuChef.Application.DI;
 using CrepeDuChef.Application.Interfaces;
-using CrepeDuChef.Infrastructure.Extensions;
+using CrepeDuChef.Infrastructure.DI;
 using CrepeDuChef.Maui.DI;
 using CrepeDuChef.Maui.Services;
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 using SkiaSharp.Views.Maui.Controls.Hosting;
@@ -15,7 +14,6 @@ using SQLitePCL;
 
 using UraniumUI;
 
-using AppInfra = CrepeDuChef.Infrastructure;
 
 namespace CrepeDuChef.Maui
 {
@@ -76,15 +74,9 @@ namespace CrepeDuChef.Maui
             DIValidator.Validate(builder.Services);
 #endif
 
-            #region Infrastructure Update
-            var app = builder.Build();
+            MauiApp app = builder.Build();
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var db = scope.ServiceProvider.GetRequiredService<AppInfra.CrepeDbContext>();
-                db.Database.Migrate();
-            }
-            #endregion
+            app.Services.MigrateCrepeDuChefDatabase();
 
             return app;
         }

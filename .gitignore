@@ -363,3 +363,10 @@ MigrationBackup/
 FodyWeavers.xsd
 
 Scripts/Output/
+# JetBrains Rider
+.idea/
+
+# Local SQLite databases
+*.db
+*.db-shm
+*.db-wal

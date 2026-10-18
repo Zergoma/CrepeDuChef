@@ -1,9 +1,8 @@
 using Avalonia.Controls;
-using CrepeDuChef.Avalonia.Dialogs.ViewModels;
 using System;
 using System.Threading.Tasks;
 
-namespace CrepeDuChef.Avalonia.Dialogs.Windows;
+namespace CrepeDuChef.Avalonia.Dialogs.MessageDialogs;
 
 public partial class BaseMessageDialogWindow : Window, IDialog
 {

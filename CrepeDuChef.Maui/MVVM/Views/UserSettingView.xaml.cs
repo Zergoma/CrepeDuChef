@@ -4,20 +4,17 @@ namespace CrepeDuChef.Maui.MVVM.Views;
 
 public sealed partial class UserSettingView : ContentPage
 {
-    private bool _isInit = false;
-    public UserSettingView(UserSettingViewModel vm)
+    private readonly ChefSettingsViewModel _vm;
+
+    public UserSettingView(ChefSettingsViewModel vm)
     {
         InitializeComponent();
-        BindingContext = vm;
+        BindingContext = _vm = vm;
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
-        if(_isInit is false)
-        {
-            _isInit = true;
-            if (BindingContext is UserSettingViewModel vm)
-                vm.UpdateUserCommand.Execute(null);
-        }
+        base.OnAppearing();
+        await _vm.LoadChefsCommand.ExecuteAsync(null);
     }
 }

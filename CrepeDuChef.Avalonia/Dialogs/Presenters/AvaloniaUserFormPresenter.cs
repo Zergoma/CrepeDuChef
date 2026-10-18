@@ -1,53 +1,27 @@
-﻿using Avalonia.Controls;
+﻿using CrepeDuChef.Application.DTOs;
 using CrepeDuChef.Avalonia.DI;
 using CrepeDuChef.Avalonia.Dialogs.Factories;
-using CrepeDuChef.Avalonia.Services;
+using CrepeDuChef.ViewModels.Models;
+using CrepeDuChef.ViewModels.Presenters;
 using System.Threading.Tasks;
-using AppDto = CrepeDuChef.Application.DTOs;
-using AppValueObj = CrepeDuChef.Application.ValueObjects;
-using SharedPresenters = CrepeDuChef.ViewModels.Presenters;
 
 namespace CrepeDuChef.Avalonia.Dialogs.Presenters
 {
-    public class AvaloniaUserFormPresenter : SharedPresenters.IUserFormPresenter
+    public class AvaloniaUserFormPresenter : IChefFormPresenter
     {
         private readonly IAvaloniaUserFormDialogFactory _factory;
-        private readonly IDialogService _dialogService;
-
-        private Window Owner => _holder.Window!;
         private readonly MainWindowHolder _holder;
 
-        public AvaloniaUserFormPresenter(
-            IDialogService dialog,
-            MainWindowHolder holder,
-            IAvaloniaUserFormDialogFactory factory)
+        public AvaloniaUserFormPresenter(MainWindowHolder holder, IAvaloniaUserFormDialogFactory factory)
         {
-            _dialogService = dialog;
             _holder = holder;
             _factory = factory;
         }
 
+        public Task<ChefFormData?> ShowAddChefFormAsync()
+            => _factory.CreateAddForm().ShowAsync(_holder.RequiredWindow);
 
-        public Task<AppValueObj.UserFormData?> ShowAddUserFormAsync()
-        {
-            IDialog<AppValueObj.UserFormData> dialog =
-                _factory.CreateAddForm();
-
-            Task<AppValueObj.UserFormData?> resu =
-                _dialogService.ShowDialogAsync<AppValueObj.UserFormData>(dialog, Owner);
-
-            return resu;
-        }
-
-        public Task<AppValueObj.UserFormData?> ShowUpdateUserFormAsync(AppDto.UserDto user)
-        {
-            IDialog<AppValueObj.UserFormData> dialog =
-                _factory.CreateEditForm(user);
-
-            Task<AppValueObj.UserFormData?> resu =
-                _dialogService.ShowDialogAsync<AppValueObj.UserFormData>(dialog, Owner);
-
-            return resu;
-        }
+        public Task<ChefFormData?> ShowUpdateChefFormAsync(ChefDto chef)
+            => _factory.CreateEditForm(chef).ShowAsync(_holder.RequiredWindow);
     }
 }

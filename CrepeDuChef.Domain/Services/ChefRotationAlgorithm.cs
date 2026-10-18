@@ -6,20 +6,20 @@ using CrepeDuChef.Domain.ValueObjects;
 
 namespace CrepeDuChef.Domain.Services
 {
-    public class ChefRotationAlgorithm
+    public static class ChefRotationAlgorithm
     {
         public static ChefSelection SelectNextChef(
-            List<User> allChefs,
+            List<Chef> allChefs,
             int lastSessionId,
-            List<CrepesParty> sessionCrepes,
+            List<CrepeParty> sessionCrepes,
             IRandomProvider random,
-            List<User>? availableChefs = null)
+            List<Chef>? availableChefs = null)
         {
             ArgumentNullException.ThrowIfNull(allChefs, nameof(allChefs));
             ArgumentNullException.ThrowIfNull(sessionCrepes, nameof(sessionCrepes));
             ArgumentNullException.ThrowIfNull(random, nameof(random));
             
-            // no chefs att all
+            // no chef at all
             if (allChefs.Count == 0)
             {
                 throw new NoChefException();
@@ -32,7 +32,7 @@ namespace CrepeDuChef.Domain.Services
                 return new ChefSelection(allChefs[0], lastSessionId + 1);
             }
 
-            // juste based on all chefs, they are all available
+            // just based on all chefs, they are all available
             if (availableChefs is null ||
                 availableChefs.Count == 0 || 
                 availableChefs.Count == allChefs.Count)
@@ -46,13 +46,13 @@ namespace CrepeDuChef.Domain.Services
         }
 
         private static ChefSelection NormalSelection(
-            List<User> allChefs,
+            List<Chef> allChefs,
             int lastSessionId,
-            List<CrepesParty> sessionCrepes,
+            List<CrepeParty> sessionCrepes,
             IRandomProvider random)
         {
-            // This function is private and checkd for good use but
-            // In case of evolution -> argument vérification : should chef.Count >= 2
+            // This function is private and checked for proper use, but
+            // In case of evolution -> argument check: chef count should be >= 2
             ArgumentOutOfRangeException.ThrowIfLessThan(allChefs.Count, 2, nameof(allChefs));
             
             // RULE
@@ -62,7 +62,7 @@ namespace CrepeDuChef.Domain.Services
             if (sessionCompleted)
             {
                 // get previous session last chef
-                Guid lastChefId = sessionCrepes.Last().UserId;
+                Guid lastChefId = sessionCrepes.Last().ChefId;
 
                 // get remaining chef
                 var remainingChefs = allChefs.Where(c => c.Id != lastChefId);
@@ -75,7 +75,7 @@ namespace CrepeDuChef.Domain.Services
 
             // Session not yet completed
             // Optimization : get session chefs id
-            HashSet<Guid> sessionChefIds = [.. sessionCrepes.Select(c => c.UserId) ];
+            HashSet<Guid> sessionChefIds = [.. sessionCrepes.Select(c => c.ChefId) ];
 
             var remgChefs =
                 allChefs.Where(c => !sessionChefIds.Contains(c.Id));
@@ -85,10 +85,10 @@ namespace CrepeDuChef.Domain.Services
         }
 
         private static ChefSelection WithAbsentSelection(
-            List<User> allChefs,
+            List<Chef> allChefs,
             int lastSessionId,
-            List<CrepesParty> sessionCrepes,
-            List<User> availableChefs,
+            List<CrepeParty> sessionCrepes,
+            List<Chef> availableChefs,
             IRandomProvider random)
         {
             // Just one chef available
@@ -104,14 +104,14 @@ namespace CrepeDuChef.Domain.Services
         }
 
         private static ChefSelection WithAbsentSelectionRules(
-            List<User> allChefs,
+            List<Chef> allChefs,
             int lastSessionId,
-            List<CrepesParty> sessionCrepes,
-            List<User> availableChefs,
+            List<CrepeParty> sessionCrepes,
+            List<Chef> availableChefs,
             IRandomProvider random)
         {
             HashSet<Guid> availableChefIds = [.. availableChefs.Select(c => c.Id)];
-            HashSet<Guid> sessionChefIds = [.. sessionCrepes.Select(cp => cp.UserId)];
+            HashSet<Guid> sessionChefIds = [.. sessionCrepes.Select(cp => cp.ChefId)];
 
             // Filter already used chefs during this session
             HashSet<Guid> remaining = [.. availableChefIds.Except(sessionChefIds)];
@@ -134,9 +134,12 @@ namespace CrepeDuChef.Domain.Services
                 ? lastSessionId + 1
                 : lastSessionId;        // still in a session
 
-            Guid lastChefId = sessionCrepes.Last().UserId;
+            // No crepe yet in this session (first draw): there is no last chef to exclude
+            CrepeParty? lastCrepe = sessionCrepes.LastOrDefault();
 
-            var candidates = workOn.Except([lastChefId]);
+            var candidates = lastCrepe is null
+                ? workOn
+                : workOn.Except([lastCrepe.ChefId]);
 
             if (!candidates.Any())
             {

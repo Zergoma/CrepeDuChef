@@ -1,9 +1,7 @@
-﻿using CrepeDuChef.Avalonia.Dialogs.ViewModels;
-using CrepeDuChef.Avalonia.Dialogs.Windows;
 
 namespace CrepeDuChef.Avalonia.Dialogs.MessageDialogs;
 
-public static partial class WarningDialog
+public static class WarningDialog
 {
     public static IDialog Create(string title, string message)
     {

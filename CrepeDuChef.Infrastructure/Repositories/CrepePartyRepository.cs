@@ -1,10 +1,11 @@
-﻿using AppInterface = CrepeDuChef.Application.Interfaces;
+﻿using CrepeDuChef.Application.Interfaces;
 using CrepeDuChef.Domain.Entities;
+using CrepeDuChef.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace CrepeDuChef.Infrastructure.Repositories
 {
-    public class CrepePartyRepository : AppInterface.ICrepePartyRepository
+    public class CrepePartyRepository : ICrepePartyRepository
     {
         private readonly IDbContextFactory<CrepeDbContext> _factory;
 
@@ -13,62 +14,32 @@ namespace CrepeDuChef.Infrastructure.Repositories
             _factory = factory;
         }
 
-        public async Task AddChefAsync(User user)
+        public async Task AddAsync(CrepeParty crepeParty)
         {
-            await using var ctx = await _factory.CreateDbContextAsync();
-            await ctx.Users.AddAsync(user);
-            await ctx.SaveChangesAsync();
-        }        
-        public async Task UpdateChefAsync(User user)
-        {
-            await using var ctx = await _factory.CreateDbContextAsync();
-            User userToUpdate = await ctx.Users.FirstAsync(u => u.Id == user.Id);
-            userToUpdate.FirstName = user.FirstName;
-            userToUpdate.LastName = user.LastName;
+            await using CrepeDbContext ctx = await _factory.CreateDbContextAsync();
+            await ctx.CrepeParties.AddAsync(crepeParty);
             await ctx.SaveChangesAsync();
         }
 
-        public async Task<User?> GetChefAsync(Guid id)
+        public async Task<List<CrepeParty>> GetAllAsync()
         {
-            await using var ctx = await _factory.CreateDbContextAsync();
-            return await ctx.Users.FirstOrDefaultAsync(u => u.Id == id);
+            await using CrepeDbContext ctx = await _factory.CreateDbContextAsync();
+            return await ctx.CrepeParties.ToListAsync();
         }
 
-        public async Task<List<User>> GetAllChefsAsync()
+        public async Task<List<CrepeParty>> GetBySessionAsync(int sessionNumber)
         {
-            await using var ctx = await _factory.CreateDbContextAsync();
-            return [.. await ctx.Users.ToListAsync()];
+            await using CrepeDbContext ctx = await _factory.CreateDbContextAsync();
+            return await ctx.CrepeParties
+                .Where(cp => cp.SessionNumber == sessionNumber)
+                .OrderBy(cp => cp.Date)
+                .ToListAsync();
         }
-
-        public async Task AddCrepePartyAsync(CrepesParty crepeParty)
-        {
-            await using var ctx = await _factory.CreateDbContextAsync();
-            crepeParty.User = await ctx.Users.FirstAsync(u => u.Id == crepeParty.UserId);
-            await ctx.CrepesParty.AddAsync(crepeParty);
-            await ctx.SaveChangesAsync();
-        }
-
-        public async Task<List<CrepesParty>> GetAllCrepePartiesAsync()
-        {
-            await using var ctx = await _factory.CreateDbContextAsync();
-            return [.. await ctx.CrepesParty.ToListAsync()];
-        }
-
 
         public async Task<int> GetLastSessionNumberAsync()
         {
-            await using var ctx = await _factory.CreateDbContextAsync();
-            return await ctx.CrepesParty.AnyAsync()
-                         ? ctx.CrepesParty.Max(u => u.SessionNumber)
-                         : 0;
-        }
-
-        public async Task<List<CrepesParty>> GetCrepePartiesFromSessionAsync(int SessionNumber)
-        {
-            await using var ctx = await _factory.CreateDbContextAsync();
-            return [.. await ctx.CrepesParty.Where(p => p.SessionNumber == SessionNumber)
-                                      .OrderBy(c => c.Date)
-                                      .ToListAsync()];
+            await using CrepeDbContext ctx = await _factory.CreateDbContextAsync();
+            return await ctx.CrepeParties.MaxAsync(cp => (int?)cp.SessionNumber) ?? 0;
         }
     }
 }

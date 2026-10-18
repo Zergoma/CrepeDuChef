@@ -4,23 +4,23 @@ namespace CrepeDuChef.Tests.Helpers
 {
     public static class TestData
     {
-        public static List<User> UsersWithIds(params int[] ids)
+        public static List<Chef> ChefsWithIds(params int[] ids)
         {
-            return [.. ids.Select(id => new User { Id = IntToGuid(id) })];
+            return [.. ids.Select(id => new Chef { Id = IntToGuid(id) })];
         }
 
-        public static List<CrepesParty> CrepePartiesWithUserIds(params int[] ids)
+        public static List<CrepeParty> CrepePartiesWithChefIds(params int[] ids)
         {
-            return [..ids.Select(id => new CrepesParty { UserId = IntToGuid(id) })];
+            return [..ids.Select(id => new CrepeParty { ChefId = IntToGuid(id) })];
         }
 
 
         public static Guid IntToGuid(int value)
         {
-            // Convertit l'int en chaîne décimale sur 12 chiffres
+            // Formats the int as a 12-digit decimal string
             string decimalPart = value.ToString().PadLeft(12, '0');
 
-            // Construit le GUID complet
+            // Builds the full GUID
             string guidString = $"00000000-0000-0000-0000-{decimalPart}";
 
             return Guid.Parse(guidString);

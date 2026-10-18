@@ -4,30 +4,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CrepeDuChef.Avalonia.Dialogs.Windows.SelectUsersDialog"
-        xmlns:vm="using:CrepeDuChef.Avalonia.ViewModels"
-        xmlns:model_ui="using:CrepeDuChef.Avalonia.Models.UI"
-        xmlns:conv="using:CrepeDuChef.Avalonia.Converters"
-        x:DataType="vm:SelectUsersDialogViewModelAvaloniaAdapter"
+        xmlns:vm="using:CrepeDuChef.ViewModels.ViewModels"
+        xmlns:models="using:CrepeDuChef.ViewModels.Models"
+        x:DataType="vm:SelectChefsDialogViewModel"
         Width="400"
         Height="400"
         WindowStartupLocation="CenterOwner"
-        Title="{Binding Shared.TitleMsg}">
-
-    <Window.Resources>
-		<conv:SelectedUsersContainsConverter x:Key="ContainsConverter"/>
-    </Window.Resources>
+        Title="{Binding Title}">
 
     <StackPanel Margin="20" Spacing="20">
-        <TextBlock Text="{Binding Shared.Message}"
+        <TextBlock Text="{Binding Message}"
                    TextWrapping="Wrap"
                    FontSize="16"/>
 
         <ScrollViewer Height="200">
-            <ItemsControl ItemsSource="{Binding Users}">
+            <ItemsControl ItemsSource="{Binding Chefs}">
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="model_ui:SelectableUser">
+                    <DataTemplate x:DataType="models:SelectableChef">
                         <CheckBox
-                            Content="{Binding User.FullName}"
+                            Content="{Binding Chef.FullName}"
                             IsChecked="{Binding IsSelected, Mode=TwoWay}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -36,11 +31,11 @@
 
 
         <StackPanel Orientation="Horizontal" Margin="20" Spacing="20">
-            <Button Content="{Binding Shared.ValidateMsg}"
+            <Button Content="{Binding ValidateMsg}"
                     Command="{Binding ValidateCommand}"/>
 
 
-            <Button Content="{Binding Shared.CloseMsg}"
+            <Button Content="{Binding CancelMsg}"
                     Command="{Binding CancelCommand}"/>
         </StackPanel>
 

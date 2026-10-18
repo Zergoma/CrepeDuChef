@@ -1,20 +1,20 @@
-using CrepeDuChef.Maui.MVVM.ViewModels;
+using CrepeDuChef.ViewModels.ViewModels;
 
 namespace CrepeDuChef.Maui.MVVM.Views;
 
 public partial class CrepeDuChefView : ContentPage
 {
-	public CrepeDuChefView(CrepeSessionsViewModel_MauiAdapter vm)
-	{
-		InitializeComponent();
-		BindingContext = vm;
+    private readonly CrepeSessionsViewModel _vm;
+
+    public CrepeDuChefView(CrepeSessionsViewModel vm)
+    {
+        InitializeComponent();
+        BindingContext = _vm = vm;
     }
 
     protected override async void OnAppearing()
     {
-		if(BindingContext is CrepeSessionsViewModel_MauiAdapter vm)
-		{
-			await vm.Shared.OnAppearingAsync();
-		}
+        base.OnAppearing();
+        await _vm.OnAppearingAsync();
     }
 }
