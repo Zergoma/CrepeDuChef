@@ -2,43 +2,50 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="460"
         x:Class="CrepeDuChef.Avalonia.Dialogs.Windows.SelectChefsDialog"
         xmlns:vm="using:CrepeDuChef.ViewModels.ViewModels"
         xmlns:models="using:CrepeDuChef.ViewModels.Models"
         x:DataType="vm:SelectChefsDialogViewModel"
-        Width="400"
-        Height="400"
-        WindowStartupLocation="CenterOwner"
-        Title="{Binding Title}">
+        Title="{Binding Title}"
+        Width="420"
+        SizeToContent="Height"
+        CanResize="False"
+        Classes="dialog">
 
-    <StackPanel Margin="20" Spacing="20">
-        <TextBlock Text="{Binding Message}"
-                   TextWrapping="Wrap"
-                   FontSize="16"/>
-
-        <ScrollViewer Height="200">
-            <ItemsControl ItemsSource="{Binding Chefs}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="models:SelectableChef">
-                        <CheckBox
-                            Content="{Binding Chef.FullName}"
-                            IsChecked="{Binding IsSelected, Mode=TwoWay}"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
-
-
-        <StackPanel Orientation="Horizontal" Margin="20" Spacing="20">
-            <Button Content="{Binding ValidateMsg}"
-                    Command="{Binding ValidateCommand}"/>
-
-
-            <Button Content="{Binding CancelMsg}"
-                    Command="{Binding CancelCommand}"/>
-        </StackPanel>
-
+  <StackPanel Margin="24" Spacing="18">
+    <StackPanel Spacing="6">
+      <StackPanel Orientation="Horizontal" Spacing="10">
+        <PathIcon Data="{StaticResource ChefsIcon}" Width="24" Height="24" Foreground="{DynamicResource BrandBrush}"/>
+        <TextBlock Classes="heading" Text="{Binding Title}" VerticalAlignment="Center"/>
+      </StackPanel>
+      <TextBlock Classes="caption" Text="{Binding Message}" TextWrapping="Wrap"/>
     </StackPanel>
 
+    <Border Classes="card" Padding="8" BoxShadow="none">
+      <ScrollViewer MaxHeight="320">
+        <ItemsControl ItemsSource="{Binding Chefs}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="models:SelectableChef">
+              <Border Classes="row" Padding="10 6">
+                <CheckBox IsChecked="{Binding IsSelected}">
+                  <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Border Classes="avatar" Width="30" Height="30" CornerRadius="15">
+                      <TextBlock Text="{Binding Chef.FullName, Converter={StaticResource InitialsConverter}}" FontSize="11"/>
+                    </Border>
+                    <TextBlock Classes="strong" Text="{Binding Chef.FullName}" VerticalAlignment="Center"/>
+                  </StackPanel>
+                </CheckBox>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+    </Border>
+
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+      <Button Classes="subtle" Content="{Binding CancelMsg}" Command="{Binding CancelCommand}" IsCancel="True"/>
+      <Button Classes="primary" Content="{Binding ValidateMsg}" Command="{Binding ValidateCommand}" IsDefault="True"/>
+    </StackPanel>
+  </StackPanel>
 </Window>

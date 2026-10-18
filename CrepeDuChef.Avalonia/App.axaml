@@ -1,27 +1,31 @@
 <Application xmlns="https://github.com/avaloniaui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:av="clr-namespace:Avalonia.Markup.Xaml;assembly=Avalonia.Markup.Xaml"
-			 xmlns:views="using:CrepeDuChef.Avalonia.Views"
-			 xmlns:vm="using:CrepeDuChef.Avalonia.ViewModels"
-			 x:Class="CrepeDuChef.Avalonia.App"
-			 RequestedThemeVariant="Default">
-	<!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="using:CrepeDuChef.Avalonia.Converters"
+             x:Class="CrepeDuChef.Avalonia.App"
+             RequestedThemeVariant="Default">
+  <!-- "Default" follows the system light/dark theme -->
 
-	
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://CrepeDuChef.Avalonia/Styles/Theme/Palette.axaml"/>
+        <ResourceInclude Source="avares://CrepeDuChef.Avalonia/Styles/Theme/Icons.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
 
-	<Application.Styles>
-		<FluentTheme />
-		<StyleInclude Source="avares://CrepeDuChef.Avalonia/Styles/ControlsStyles.axaml" />
+      <conv:InitialsConverter x:Key="InitialsConverter"/>
+      <conv:IsTodayConverter x:Key="IsTodayConverter"/>
+    </ResourceDictionary>
+  </Application.Resources>
 
-		<!-- Every window, dialogs included, shows the app icon -->
-		<Style Selector=":is(Window)">
-			<Setter Property="Icon" Value="/Assets/crepeduchef.ico"/>
-		</Style>
+  <Application.Styles>
+    <!-- Fluent controls (toggles, check boxes, focus) take the brand colors -->
+    <FluentTheme>
+      <FluentTheme.Palettes>
+        <ColorPaletteResources x:Key="Light" Accent="#E03131" RegionColor="#FFF8EE"/>
+        <ColorPaletteResources x:Key="Dark" Accent="#F04A4A" RegionColor="#1E1814"/>
+      </FluentTheme.Palettes>
+    </FluentTheme>
 
-		<!-- dialogs are center to owner -->
-		<Style Selector="Window.dialog">
-			<Setter Property="WindowStartupLocation" Value="CenterOwner"/>
-		</Style>
-
-	</Application.Styles>
+    <StyleInclude Source="avares://CrepeDuChef.Avalonia/Styles/AppStyles.axaml"/>
+  </Application.Styles>
 </Application>

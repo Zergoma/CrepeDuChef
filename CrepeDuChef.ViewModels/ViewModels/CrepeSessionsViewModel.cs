@@ -31,6 +31,8 @@ namespace CrepeDuChef.ViewModels.ViewModels
         public string NoSessionInDb => UiResources.NoSessionInDb;
         public string OnContentOnlyCurrentSession => UiResources.ShowOnlyCurrentSession;
         public string OffOnContentAllSession => UiResources.ShowAllSession;
+        public string HistoryMsg => UiResources.History;
+        public string TodayMsg => UiResources.Today;
         #endregion
 
         public CrepeSessionsViewModel(
@@ -48,7 +50,10 @@ namespace CrepeDuChef.ViewModels.ViewModels
         }
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasSessions))]
         public partial IReadOnlyList<CrepePartySessionGroup> Sessions { get; private set; } = [];
+
+        public bool HasSessions => Sessions.Count > 0;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(TextSwitchMessage))]
@@ -61,14 +66,19 @@ namespace CrepeDuChef.ViewModels.ViewModels
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(IsMoreThanOneChef))]
+        [NotifyPropertyChangedFor(nameof(PresentChefsMsg))]
         [NotifyCanExecuteChangedFor(nameof(SelectAvailableChefsCommand))]
         public partial IReadOnlyList<ChefDto> AllChefs { get; private set; } = [];
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(PresentChefsMsg))]
         [NotifyCanExecuteChangedFor(nameof(GetNewChefCommand))]
         public partial IReadOnlyList<ChefDto> AvailableChefs { get; private set; } = [];
 
         public bool IsMoreThanOneChef => AllChefs.Count > 1;
+
+        /// <summary>"3 chefs present out of 4".</summary>
+        public string PresentChefsMsg => string.Format(UiResources.PresentChefs, AvailableChefs.Count, AllChefs.Count);
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(CanUpdate))]

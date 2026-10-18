@@ -19,12 +19,29 @@ namespace CrepeDuChef.Avalonia.ViewModels
         public string CrepePartyMsg => UiResources.CrepeDuChef_title;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsCrepePartyPage))]
+        [NotifyPropertyChangedFor(nameof(IsChefsPage))]
         public partial object? CurrentPage { get; private set; }
+
+        // Highlights the matching navigation entry
+        public bool IsCrepePartyPage => CurrentPage == _crepeSessions;
+        public bool IsChefsPage => CurrentPage == _chefSettings;
 
         public MainViewModel(CrepeSessionsViewModel crepeSessions, ChefSettingsViewModel chefSettings)
         {
             _crepeSessions = crepeSessions;
             _chefSettings = chefSettings;
+        }
+
+        /// <summary>
+        /// Shows the home page, unless a page is already displayed.
+        /// </summary>
+        public async Task ShowHomeAsync()
+        {
+            if (CurrentPage is null)
+            {
+                await GoToCrepeParty();
+            }
         }
 
         [RelayCommand]

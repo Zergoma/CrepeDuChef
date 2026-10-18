@@ -1,41 +1,63 @@
 <Window xmlns="https://github.com/avaloniaui"
-		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-		x:Class="CrepeDuChef.Avalonia.Views.MainWindow"
-		Title="{Binding AppTitle}"
-		xmlns:vm="using:CrepeDuChef.Avalonia.ViewModels"
-		xmlns:sharedVm="using:CrepeDuChef.ViewModels.ViewModels"
-		xmlns:views="using:CrepeDuChef.Avalonia.Views"
-		x:DataType="vm:MainViewModel">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="720"
+        x:Class="CrepeDuChef.Avalonia.Views.MainWindow"
+        xmlns:vm="using:CrepeDuChef.Avalonia.ViewModels"
+        xmlns:sharedVm="using:CrepeDuChef.ViewModels.ViewModels"
+        xmlns:views="using:CrepeDuChef.Avalonia.Views"
+        x:DataType="vm:MainViewModel"
+        Title="{Binding AppTitle}"
+        Width="1000" Height="720"
+        MinWidth="760" MinHeight="560">
 
-	<Window.DataTemplates>
-		<DataTemplate DataType="sharedVm:CrepeSessionsViewModel">
-			<views:CrepeSessionsView />
-		</DataTemplate>
-		<DataTemplate DataType="sharedVm:ChefSettingsViewModel">
-			<views:ChefSettingsView />
-		</DataTemplate>
-	</Window.DataTemplates>
+  <Window.DataTemplates>
+    <DataTemplate DataType="sharedVm:CrepeSessionsViewModel">
+      <views:CrepeSessionsView/>
+    </DataTemplate>
+    <DataTemplate DataType="sharedVm:ChefSettingsViewModel">
+      <views:ChefSettingsView/>
+    </DataTemplate>
+  </Window.DataTemplates>
 
-	<SplitView IsPaneOpen="True"
-			   DisplayMode="CompactInline"
-			   CompactPaneLength="60"
-			   OpenPaneLength="200">
+  <Grid ColumnDefinitions="232,*">
 
-		<SplitView.Pane>
-			<StackPanel>
-				<Button Content="{Binding CrepePartyMsg}"
-						Classes="menu-button"
-						Command="{Binding GoToCrepePartyCommand}" />
+    <!-- Sidebar -->
+    <Border Background="{DynamicResource SidebarBrush}">
+      <DockPanel Margin="14 24">
+        <StackPanel DockPanel.Dock="Top" Spacing="2" Margin="0 0 0 28">
+          <Image Source="/Assets/logo.png" Width="104" Height="104" HorizontalAlignment="Center"/>
+          <TextBlock Text="{Binding AppTitle}"
+                     FontFamily="{StaticResource TitleFontFamily}"
+                     FontSize="30"
+                     Foreground="{DynamicResource SidebarForegroundBrush}"
+                     HorizontalAlignment="Center"/>
+        </StackPanel>
 
-				<Button Content="{Binding ChefsMsg}"
-						Classes="menu-button"
-						Command="{Binding GoToChefsCommand}" />
-			</StackPanel>
-		</SplitView.Pane>
+        <StackPanel Spacing="6">
+          <Button Classes="nav"
+                  Classes.selected="{Binding IsCrepePartyPage}"
+                  Command="{Binding GoToCrepePartyCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+              <PathIcon Data="{StaticResource ChefHatIcon}"/>
+              <TextBlock Text="{Binding CrepePartyMsg}" VerticalAlignment="Center"/>
+            </StackPanel>
+          </Button>
 
-		<ContentControl Content="{Binding CurrentPage}"/>
-	</SplitView>
+          <Button Classes="nav"
+                  Classes.selected="{Binding IsChefsPage}"
+                  Command="{Binding GoToChefsCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+              <PathIcon Data="{StaticResource ChefsIcon}"/>
+              <TextBlock Text="{Binding ChefsMsg}" VerticalAlignment="Center"/>
+            </StackPanel>
+          </Button>
+        </StackPanel>
+      </DockPanel>
+    </Border>
+
+    <!-- Current page -->
+    <ContentControl Grid.Column="1" Content="{Binding CurrentPage}"/>
+  </Grid>
 </Window>

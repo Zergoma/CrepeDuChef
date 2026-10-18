@@ -42,11 +42,15 @@ namespace CrepeDuChef.Avalonia.Tests.Screens
 
         private static void Render(Window window, string name, string theme)
         {
-            using BindingErrorSink bindings = new();
+            // Closing tears bindings down and may log transient errors: only the rendering is checked
+            using (BindingErrorSink bindings = new())
+            {
+                Snapshot.Save(window, name, Theme(theme));
 
-            Snapshot.Save(window, name, Theme(theme));
+                bindings.Errors.Should().BeEmpty();
+            }
 
-            bindings.Errors.Should().BeEmpty();
+            window.Close();
         }
 
         [AvaloniaTheory]

@@ -1,48 +1,58 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:i="using:Avalonia.Xaml.Interactivity"
-			 xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
-			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-			 x:Class="CrepeDuChef.Avalonia.Views.ChefSettingsView"
-			 xmlns:vm="using:CrepeDuChef.ViewModels.ViewModels"
-			 x:DataType="vm:ChefSettingsViewModel"
-			 xmlns:dto="using:CrepeDuChef.Application.DTOs">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="768" d:DesignHeight="720"
+             x:Class="CrepeDuChef.Avalonia.Views.ChefSettingsView"
+             xmlns:vm="using:CrepeDuChef.ViewModels.ViewModels"
+             xmlns:dto="using:CrepeDuChef.Application.DTOs"
+             x:DataType="vm:ChefSettingsViewModel">
 
+  <ScrollViewer>
+    <StackPanel MaxWidth="760" Margin="32 24 32 32" Spacing="22">
 
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock Classes="title" Text="{Binding ChefsMsg}"/>
+        <Button Grid.Column="1" Classes="primary" Command="{Binding AddChefCommand}" VerticalAlignment="Center">
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <PathIcon Data="{StaticResource PlusIcon}"/>
+            <TextBlock Text="{Binding AddMsg}" VerticalAlignment="Center"/>
+          </StackPanel>
+        </Button>
+      </Grid>
 
-	<StackPanel Margin="20" Spacing="10">
+      <Border Classes="card" Padding="10" IsVisible="{Binding HasChefs}">
+        <ItemsControl ItemsSource="{Binding Chefs}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="dto:ChefDto">
+              <Border Classes="row">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                  <Border Classes="avatar">
+                    <TextBlock Text="{Binding FullName, Converter={StaticResource InitialsConverter}}"/>
+                  </Border>
+                  <TextBlock Grid.Column="1" Classes="strong" Text="{Binding FullName}"
+                             VerticalAlignment="Center" Margin="12 0"/>
+                  <Button Grid.Column="2" Classes="subtle"
+                          Command="{Binding $parent[UserControl].((vm:ChefSettingsViewModel)DataContext).EditChefCommand}"
+                          CommandParameter="{Binding}"
+                          ToolTip.Tip="{Binding $parent[UserControl].((vm:ChefSettingsViewModel)DataContext).EditMsg}">
+                    <PathIcon Data="{StaticResource PencilIcon}"/>
+                  </Button>
+                </Grid>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </Border>
 
-		<!-- Title -->
-		<TextBlock Text="{Binding ChefsMsg}"
-				   FontSize="24"
-				   FontWeight="Bold"/>
+      <!-- No chef yet -->
+      <Border Classes="card" IsVisible="{Binding !HasChefs}">
+        <StackPanel Classes="empty">
+          <PathIcon Data="{StaticResource ChefsIcon}"/>
+          <TextBlock Text="{Binding NoChefMsg}"/>
+        </StackPanel>
+      </Border>
 
-		<!-- Add button -->
-		<Button Content="{Binding AddMsg}"
-				Command="{Binding AddChefCommand}"
-				Width="150"/>
-
-		<!-- Chefs -->
-		<ListBox ItemsSource="{Binding Chefs}"
-				 HorizontalAlignment="Center"
-				 SelectedItem="{Binding SelectedChef}"
-				 SelectionMode="Single">
-
-			<i:Interaction.Behaviors>
-				<ia:EventTriggerBehavior EventName="SelectionChanged">
-					<ia:InvokeCommandAction Command="{Binding EditChefCommand}" />
-				</ia:EventTriggerBehavior>
-			</i:Interaction.Behaviors>
-
-			<ListBox.ItemTemplate>
-				<DataTemplate x:DataType="dto:ChefDto">
-					<TextBlock Text="{Binding FullName}" />
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
-	</StackPanel>
-
-
+    </StackPanel>
+  </ScrollViewer>
 </UserControl>

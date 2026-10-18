@@ -1,42 +1,51 @@
 #:package Svg.Skia@5.2.3
 #:property ManagePackageVersionsCentrally=false
 
-// Renders the app icon SVG to PNG previews and to a multi-size .ico for the Avalonia app.
-// Usage (from the repository root): dotnet run Scripts/Generate-AppIcons.cs
-//   optional args: <source.svg> <output.ico> <preview-dir>
+// Renders the brand SVGs to the raster assets of the Avalonia app:
+//   - Docs/Design/Icons/crepeduchef-icon.svg -> CrepeDuChef.Avalonia/Assets/crepeduchef.ico (multi-size)
+//   - CrepeDuChef.Maui/Resources/AppIcon/appiconfg.svg -> CrepeDuChef.Avalonia/Assets/logo.png
+// Usage (from the repository root): dotnet run Scripts/Generate-AppIcons.cs [--preview <dir>]
 
 using SkiaSharp;
 using Svg.Skia;
 
-string source = args.Length > 0 ? args[0] : "Docs/Design/Icons/crepeduchef-icon.svg";
-string icoPath = args.Length > 1 ? args[1] : "CrepeDuChef.Avalonia/Assets/crepeduchef.ico";
-string? previewDir = args.Length > 2 ? args[2] : null;
+const string IconSource = "Docs/Design/Icons/crepeduchef-icon.svg";
+const string IconOutput = "CrepeDuChef.Avalonia/Assets/crepeduchef.ico";
+const string LogoSource = "CrepeDuChef.Maui/Resources/AppIcon/appiconfg.svg";
+const string LogoOutput = "CrepeDuChef.Avalonia/Assets/logo.png";
+const int LogoSize = 256;
 
-int[] sizes = [16, 24, 32, 48, 64, 128, 256];
+int[] iconSizes = [16, 24, 32, 48, 64, 128, 256];
 
-using SKSvg svg = new();
-SKPicture picture = svg.Load(source) ?? throw new InvalidOperationException($"Cannot load '{source}'.");
-SKRect bounds = picture.CullRect;
+int previewIndex = Array.IndexOf(args, "--preview");
+string? previewDir = previewIndex >= 0 && previewIndex + 1 < args.Length ? args[previewIndex + 1] : null;
 
-List<byte[]> images = [];
-foreach (int size in sizes)
+// Icon
+List<byte[]> icons = [.. iconSizes.Select(size => RenderPng(IconSource, size))];
+WriteIco(IconOutput, iconSizes, icons);
+Console.WriteLine($"Wrote {IconOutput} ({string.Join(", ", iconSizes)} px)");
+
+// Logo
+byte[] logo = RenderPng(LogoSource, LogoSize);
+File.WriteAllBytes(LogoOutput, logo);
+Console.WriteLine($"Wrote {LogoOutput} ({LogoSize} px)");
+
+if (previewDir is not null)
 {
-    byte[] png = RenderPng(picture, bounds, size);
-    images.Add(png);
-
-    if (previewDir is not null)
+    Directory.CreateDirectory(previewDir);
+    for (int i = 0; i < iconSizes.Length; i++)
     {
-        Directory.CreateDirectory(previewDir);
-        File.WriteAllBytes(Path.Combine(previewDir, $"icon-{size}.png"), png);
+        File.WriteAllBytes(Path.Combine(previewDir, $"icon-{iconSizes[i]}.png"), icons[i]);
     }
+    File.WriteAllBytes(Path.Combine(previewDir, "logo.png"), logo);
 }
 
-Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(icoPath))!);
-WriteIco(icoPath, sizes, images);
-Console.WriteLine($"Wrote {icoPath} ({string.Join(", ", sizes)} px)");
-
-static byte[] RenderPng(SKPicture picture, SKRect bounds, int size)
+static byte[] RenderPng(string svgPath, int size)
 {
+    using SKSvg svg = new();
+    SKPicture picture = svg.Load(svgPath) ?? throw new InvalidOperationException($"Cannot load '{svgPath}'.");
+    SKRect bounds = picture.CullRect;
+
     using SKBitmap bitmap = new(size, size, SKColorType.Rgba8888, SKAlphaType.Premul);
     using (SKCanvas canvas = new(bitmap))
     {
@@ -52,6 +61,8 @@ static byte[] RenderPng(SKPicture picture, SKRect bounds, int size)
 // ICO container with PNG-compressed entries (supported since Windows Vista).
 static void WriteIco(string path, int[] sizes, List<byte[]> images)
 {
+    Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path))!);
+
     using FileStream stream = File.Create(path);
     using BinaryWriter writer = new(stream);
 

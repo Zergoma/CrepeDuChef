@@ -1,0 +1,74 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- White rounded panel holding a group of content -->
+  <Style Selector="Border.card">
+    <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius" Value="18"/>
+    <Setter Property="Padding" Value="20"/>
+    <Setter Property="BoxShadow" Value="{DynamicResource CardShadow}"/>
+  </Style>
+
+  <!-- A row inside a card (crepe party entry, chef) -->
+  <Style Selector="Border.row">
+    <Setter Property="CornerRadius" Value="12"/>
+    <Setter Property="Padding" Value="12 10"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+  <Style Selector="Border.row:pointerover">
+    <Setter Property="Background" Value="{DynamicResource SurfaceHoverBrush}"/>
+  </Style>
+  <Style Selector="Border.row.today, Border.row.today:pointerover">
+    <Setter Property="Background" Value="{DynamicResource TodayBrush}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource TodayBorderBrush}"/>
+  </Style>
+
+  <!-- Round avatar with a chef's initials -->
+  <Style Selector="Border.avatar">
+    <Setter Property="Width" Value="38"/>
+    <Setter Property="Height" Value="38"/>
+    <Setter Property="CornerRadius" Value="19"/>
+    <Setter Property="Background" Value="{DynamicResource GoldSoftBrush}"/>
+  </Style>
+  <Style Selector="Border.avatar > TextBlock">
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="FontSize" Value="13"/>
+    <Setter Property="Foreground" Value="{DynamicResource OnGoldBrush}"/>
+  </Style>
+
+  <!-- Small pill label ("today") -->
+  <Style Selector="Border.badge">
+    <Setter Property="CornerRadius" Value="10"/>
+    <Setter Property="Padding" Value="8 2"/>
+    <Setter Property="Background" Value="{DynamicResource GoldBrush}"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="Border.badge > TextBlock">
+    <Setter Property="FontSize" Value="11"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Foreground" Value="#5A3608"/>
+  </Style>
+
+  <!-- Centered message shown when a list is empty -->
+  <Style Selector="StackPanel.empty">
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Setter Property="Spacing" Value="10"/>
+    <Setter Property="Margin" Value="0 24"/>
+  </Style>
+  <Style Selector="StackPanel.empty > PathIcon">
+    <Setter Property="Width" Value="40"/>
+    <Setter Property="Height" Value="40"/>
+    <Setter Property="Foreground" Value="{DynamicResource GoldBrush}"/>
+  </Style>
+  <Style Selector="StackPanel.empty > TextBlock">
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+  </Style>
+
+</Styles>

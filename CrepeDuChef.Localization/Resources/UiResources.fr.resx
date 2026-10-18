@@ -193,7 +193,7 @@
     <value>Afficher toutes les sessions</value>
   </data>
   <data name="NoSessionInDb" xml:space="preserve">
-    <value>Aucune session enregistrées.</value>
+    <value>Aucune session enregistrée.</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Annuler</value>
@@ -209,5 +209,17 @@
   </data>
   <data name="Ok" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="PresentChefs" xml:space="preserve">
+    <value>{0} chef(s) présent(s) sur {1}</value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>Historique</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Aujourd'hui</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Modifier</value>
   </data>
 </root>

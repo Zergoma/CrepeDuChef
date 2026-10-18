@@ -7,8 +7,8 @@ using Avalonia.Threading;
 namespace CrepeDuChef.Avalonia.Tests.Support
 {
     /// <summary>
-    /// Renders a window and saves it as a PNG under the test output "snapshots" folder,
-    /// to review the UI without launching the app.
+    /// Shows and renders a window, then saves it as a PNG under the test output "snapshots" folder,
+    /// to review the UI without launching the app. The caller closes the window.
     /// </summary>
     public static class Snapshot
     {
@@ -36,7 +36,6 @@ namespace CrepeDuChef.Avalonia.Tests.Support
             string path = Path.Combine(Directory, $"{name}{suffix}.png");
             frame.Save(path);
 
-            window.Close();
             return path;
         }
     }

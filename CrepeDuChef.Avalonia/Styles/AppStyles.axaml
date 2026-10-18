@@ -1,0 +1,11 @@
+<!-- Entry point of the app styles, included once by App.axaml. -->
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <StyleInclude Source="avares://CrepeDuChef.Avalonia/Styles/Controls/Windows.axaml"/>
+  <StyleInclude Source="avares://CrepeDuChef.Avalonia/Styles/Controls/Text.axaml"/>
+  <StyleInclude Source="avares://CrepeDuChef.Avalonia/Styles/Controls/Buttons.axaml"/>
+  <StyleInclude Source="avares://CrepeDuChef.Avalonia/Styles/Controls/Containers.axaml"/>
+  <StyleInclude Source="avares://CrepeDuChef.Avalonia/Styles/Controls/Inputs.axaml"/>
+
+</Styles>

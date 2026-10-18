@@ -19,13 +19,17 @@ namespace CrepeDuChef.ViewModels.ViewModels
         private readonly IDialogPresenter _dialogPresenter;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasChefs))]
         public partial IReadOnlyList<ChefDto> Chefs { get; private set; } = [];
+
+        public bool HasChefs => Chefs.Count > 0;
 
         [ObservableProperty]
         public partial ChefDto? SelectedChef { get; set; }
 
         public string ChefsMsg => UiResources.Chefs;
         public string AddMsg => UiResources.Add;
+        public string EditMsg => UiResources.Edit;
         public string NoChefMsg => UiResources.NoChefInDB;
 
         public ChefSettingsViewModel(
@@ -58,10 +62,11 @@ namespace CrepeDuChef.ViewModels.ViewModels
                 showSuccess: false);
         }
 
+        /// <param name="chefToEdit">The chef to edit; when null (list selection), the selected chef.</param>
         [RelayCommand]
-        public async Task EditChef()
+        public async Task EditChef(ChefDto? chefToEdit)
         {
-            if (SelectedChef is not ChefDto chef)
+            if ((chefToEdit ?? SelectedChef) is not ChefDto chef)
             {
                 return;
             }

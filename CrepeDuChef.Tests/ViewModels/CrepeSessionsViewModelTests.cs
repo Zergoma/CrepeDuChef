@@ -1,5 +1,6 @@
 using CrepeDuChef.Application.DTOs;
 using CrepeDuChef.Application.Interfaces;
+using CrepeDuChef.Localization.Resources;
 using CrepeDuChef.Tests.Helpers;
 using CrepeDuChef.ViewModels.Presenters;
 using CrepeDuChef.ViewModels.ViewModels;
@@ -78,6 +79,43 @@ namespace CrepeDuChef.Tests.ViewModels
                 ids.SequenceEqual(new[] { TestData.IntToGuid(1), TestData.IntToGuid(2) })));
             await _crepePartyService.Received(1).AddAsync(new AddCrepePartyDto { ChefId = TestData.IntToGuid(2), SessionNumber = 5 });
             await _dialogPresenter.Received(1).ShowSuccessAsync(Arg.Any<string>(), "F2 L2");
+        }
+
+        [Fact]
+        public async Task PresentChefsMsg_Should_Count_Available_Out_Of_All_Chefs()
+        {
+            // Arrange
+            _chefService.GetAllAsync().Returns([Chef(1), Chef(2)]);
+            await _vm.OnAppearingAsync();
+
+            _selectionPresenter
+                .SelectChefsAsync(default!, default!, default!, default!)
+                .ReturnsForAnyArgs([Chef(2)]);
+
+            // Act
+            await _vm.SelectAvailableChefsCommand.ExecuteAsync(null);
+
+            // Assert
+            _vm.PresentChefsMsg.Should().Be(string.Format(UiResources.PresentChefs, 1, 2));
+        }
+
+        [Fact]
+        public async Task HasSessions_Should_Reflect_Loaded_History()
+        {
+            // Arrange
+            _chefService.GetAllAsync().Returns([Chef(1)]);
+            _crepePartyService.GetSessionsAsync().Returns(
+            [
+                new CrepePartySessionDto { SessionNumber = 1, Entries = [new() { ChefId = Chef(1).Id, ChefName = "F1 L1" }] },
+            ]);
+
+            // Act
+            bool before = _vm.HasSessions;
+            await _vm.OnAppearingAsync();
+
+            // Assert
+            before.Should().BeFalse();
+            _vm.HasSessions.Should().BeTrue();
         }
     }
 }
