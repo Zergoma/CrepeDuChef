@@ -13,6 +13,11 @@
 		<FluentTheme />
 		<StyleInclude Source="avares://CrepeDuChef.Avalonia/Styles/ControlsStyles.axaml" />
 
+		<!-- Every window, dialogs included, shows the app icon -->
+		<Style Selector=":is(Window)">
+			<Setter Property="Icon" Value="/Assets/crepeduchef.ico"/>
+		</Style>
+
 		<!-- dialogs are center to owner -->
 		<Style Selector="Window.dialog">
 			<Setter Property="WindowStartupLocation" Value="CenterOwner"/>

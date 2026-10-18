@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Crêpe du chef app icon: a stack of crepes topped with a chef's hat, on a brick red rounded square.
+     Source for the Avalonia .ico (Scripts/Generate-AppIcons.cs); MAUI uses the split
+     background/foreground files in CrepeDuChef.Maui/Resources/AppIcon. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="456" height="456" viewBox="0 0 456 456">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="75%">
+      <stop offset="0" stop-color="#F04A4A"/>
+      <stop offset="1" stop-color="#C92A2A"/>
+    </radialGradient>
+    <radialGradient id="crepe" cx="45%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#FCE1A4"/>
+      <stop offset="0.6" stop-color="#F4BC55"/>
+      <stop offset="1" stop-color="#E29C3A"/>
+    </radialGradient>
+    <linearGradient id="hat" gradientUnits="userSpaceOnUse" x1="0" y1="90" x2="0" y2="262">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#ECECEC"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="456" height="456" rx="96" fill="url(#bg)"/>
+
+  <g transform="translate(228 228) scale(0.86) translate(-228 -254)">
+    <!-- Stack of crepes, bottom to top: an edge (thickness) then the top face -->
+    <ellipse cx="228" cy="352" rx="166" ry="58" fill="#B8711D"/>
+    <ellipse cx="228" cy="340" rx="166" ry="58" fill="url(#crepe)"/>
+
+    <ellipse cx="228" cy="318" rx="160" ry="56" fill="#B8711D"/>
+    <ellipse cx="228" cy="306" rx="160" ry="56" fill="url(#crepe)"/>
+
+    <ellipse cx="228" cy="284" rx="154" ry="54" fill="#B8711D"/>
+    <ellipse cx="228" cy="272" rx="154" ry="54" fill="url(#crepe)"/>
+
+    <!-- Lacy browning on the top crepe -->
+    <g fill="#D88B2C" opacity="0.45">
+      <ellipse cx="128" cy="276" rx="16" ry="6"/>
+      <ellipse cx="318" cy="284" rx="18" ry="6"/>
+      <ellipse cx="300" cy="252" rx="10" ry="4"/>
+      <ellipse cx="170" cy="300" rx="12" ry="4"/>
+      <ellipse cx="270" cy="306" rx="12" ry="4"/>
+    </g>
+
+    <!-- Hat shadow on the top crepe -->
+    <ellipse cx="232" cy="268" rx="82" ry="16" fill="#8C5212" opacity="0.3"/>
+
+    <!-- Chef's hat, scaled up around the middle of its band -->
+    <g transform="translate(228 262) scale(1.14) translate(-228 -262)">
+      <circle cx="176" cy="170" r="42" fill="url(#hat)"/>
+      <circle cx="280" cy="170" r="42" fill="url(#hat)"/>
+      <circle cx="228" cy="144" r="52" fill="url(#hat)"/>
+      <rect x="166" y="160" width="124" height="60" fill="url(#hat)"/>
+      <rect x="164" y="214" width="128" height="48" rx="10" fill="#FFFFFF" stroke="#DDDDDD" stroke-width="3"/>
+      <g stroke="#D4D4D4" stroke-width="4" stroke-linecap="round">
+        <line x1="198" y1="225" x2="198" y2="251"/>
+        <line x1="228" y1="225" x2="228" y2="251"/>
+        <line x1="258" y1="225" x2="258" y2="251"/>
+      </g>
+    </g>
+  </g>
+</svg>
