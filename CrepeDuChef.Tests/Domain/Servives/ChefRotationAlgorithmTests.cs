@@ -192,6 +192,11 @@ namespace CrepeDuChef.Tests.Domain.Servives
         // 1 available, 1 session with someone else
         [InlineData(new int[] { 1, 2, 3 }, new int[] { 3 }, new int[] { 1 }, 0, 5,          6, 1)]
 
+        // 2 available, no session yet (first draw), pick one of them in the current session
+        [InlineData(new int[] { 1, 2, 3 }, new int[] { }, new int[] { 1, 2 }, 0, 0,          0, 1)]
+        [InlineData(new int[] { 1, 2, 3 }, new int[] { }, new int[] { 1, 2 }, 1, 0,          0, 2)]
+        [InlineData(new int[] { 1, 2, 3 }, new int[] { }, new int[] { 2, 3 }, 1, 5,          5, 3)]
+
         // 2 available, 1 session with one of them, get the last remaining
         [InlineData(new int[] { 1, 2, 3 }, new int[] { 1 }, new int[] { 1, 2 }, 0, 5,       5, 2)]
         // 2 available, 2 session with one of them, get the last remaining

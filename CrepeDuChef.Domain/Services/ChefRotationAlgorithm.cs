@@ -134,9 +134,12 @@ namespace CrepeDuChef.Domain.Services
                 ? lastSessionId + 1
                 : lastSessionId;        // still in a session
 
-            Guid lastChefId = sessionCrepes.Last().UserId;
+            // No crepe yet in this session (first draw): there is no last chef to exclude
+            CrepesParty? lastCrepe = sessionCrepes.LastOrDefault();
 
-            var candidates = workOn.Except([lastChefId]);
+            var candidates = lastCrepe is null
+                ? workOn
+                : workOn.Except([lastCrepe.UserId]);
 
             if (!candidates.Any())
             {
