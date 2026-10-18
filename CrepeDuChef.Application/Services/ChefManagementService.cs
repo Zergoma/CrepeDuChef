@@ -53,7 +53,7 @@ namespace CrepeDuChef.Application.Services
             entity.UpdatedAt = _dateTime.UtcNow;
 
             await _repo.AddChefAsync(entity);
-            return userDto;
+            return entity.ToDto();
         }
 
         public async Task<UserDto?> UpdateUserAsync(UserDto user, UserDtoUpdate userUpdate)

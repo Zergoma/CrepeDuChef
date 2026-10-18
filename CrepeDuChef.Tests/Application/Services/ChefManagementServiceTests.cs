@@ -137,6 +137,28 @@ namespace CrepeDuChef.Tests.Application.Services
             ));
         }
 
+        [Fact]
+        public async Task AddUserAsync_Should_Return_Dto_With_Persisted_Id()
+        {
+            // Arrange
+            UserDtoAdd dto = new() { FirstName = "John", LastName = "Doe" };
+
+            _addValidator.Validate(dto).Returns(new ValidationResult());
+
+            User? persisted = null;
+            await _repo.AddChefAsync(Arg.Do<User>(u => persisted = u));
+
+            var service = CreateService();
+
+            // Act
+            var result = await service.AddUserAsync(dto);
+
+            // Assert
+            persisted.Should().NotBeNull();
+            result!.Id.Should().NotBeEmpty();
+            result.Id.Should().Be(persisted!.Id);
+        }
+
         // -------------------------------------------------------
         // UPDATE USER
         // -------------------------------------------------------
