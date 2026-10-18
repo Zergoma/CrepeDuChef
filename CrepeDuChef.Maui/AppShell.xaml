@@ -3,55 +3,48 @@
     x:Class="CrepeDuChef.Maui.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:CrepeDuChef.Maui"
     xmlns:view="clr-namespace:CrepeDuChef.Maui.MVVM.Views"
     xmlns:vm="clr-namespace:CrepeDuChef.Maui.MVVM.ViewModels"
     x:DataType="vm:AppShellViewModel"
-    xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
     Title="{Binding AppTitle}"
-    FlyoutWidth="200"
-    FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource Black}}"
-    Shell.BackgroundColor="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource Black}}"
-    Shell.ForegroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Bric}}"
-    Shell.FlyoutBehavior="{OnIdiom Desktop=Locked, Default=Flyout}"
-    >
+    FlyoutWidth="232"
+    FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource SidebarLight}, Dark={StaticResource SidebarDark}}"
+    Shell.BackgroundColor="{AppThemeBinding Light={StaticResource SidebarLight}, Dark={StaticResource SidebarDark}}"
+    Shell.ForegroundColor="{AppThemeBinding Light={StaticResource SidebarTextLight}, Dark={StaticResource SidebarTextDark}}"
+    Shell.TitleColor="{AppThemeBinding Light={StaticResource SidebarTextLight}, Dark={StaticResource SidebarTextDark}}"
+    Shell.FlyoutBehavior="{OnIdiom Desktop=Locked, Default=Flyout}">
 
     <Shell.FlyoutHeader>
-        <skia:SKLottieView Source="BingePanda.json" RepeatCount="-1" HeightRequest="200" class="chocoAnim"/>
+        <VerticalStackLayout Padding="0,24,0,20" Spacing="2">
+            <Image Source="appiconfg.png" WidthRequest="104" HeightRequest="104" HorizontalOptions="Center" />
+            <Label Text="{Binding AppTitle}" StyleClass="shellItem" FontSize="30" HorizontalOptions="Center" />
+        </VerticalStackLayout>
     </Shell.FlyoutHeader>
 
     <Shell.ItemTemplate>
         <!-- Items are the flyout items, not the shell view model -->
         <DataTemplate x:DataType="BaseShellItem">
             <Label Text="{Binding Title}"
-                   WidthRequest="200"
-                   class="chocoLabelShell"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   FontSize="Medium"
-                   FontFamily="SalonDuChocolat"
-                   Padding="10"/>
+                   StyleClass="shellItem"
+                   Padding="24,10"
+                   VerticalOptions="Center" />
         </DataTemplate>
     </Shell.ItemTemplate>
 
-
-
     <FlyoutItem Title="{Binding CrepePartyMsg}">
         <Tab>
-        <ShellContent Title="{Binding CrepePartyMsg}"
-                      Route="CrepeSessionsView"
-                      ContentTemplate="{DataTemplate view:CrepeSessionsView}"/>
+            <ShellContent Title="{Binding CrepePartyMsg}"
+                          Route="CrepeSessionsView"
+                          ContentTemplate="{DataTemplate view:CrepeSessionsView}" />
         </Tab>
     </FlyoutItem>
 
     <FlyoutItem Title="{Binding ChefsMsg}">
         <Tab>
-        <ShellContent Title="{Binding ChefsMsg}"
-                      Route="ChefSettingsView"
-                      ContentTemplate="{DataTemplate view:ChefSettingsView}"/>
+            <ShellContent Title="{Binding ChefsMsg}"
+                          Route="ChefSettingsView"
+                          ContentTemplate="{DataTemplate view:ChefSettingsView}" />
         </Tab>
     </FlyoutItem>
-
-
 
 </Shell>

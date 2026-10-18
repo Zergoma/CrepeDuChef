@@ -1,9 +1,10 @@
-﻿using CrepeDuChef.Maui.UI.Popups.Views;
+﻿using CrepeDuChef.Maui.UI.Popups.Models;
+using CrepeDuChef.Maui.UI.Popups.Views;
 
 namespace CrepeDuChef.Maui.UI.Popups.Factories
 {
     public interface IMessagePopupFactory
     {
-        TitledMessagePopup Create(string title, string message, Color iconColor);
+        MessagePopup Create(string title, string message, MessageKind kind);
     }
 }

@@ -4,79 +4,42 @@
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                x:Class="CrepeDuChef.Maui.UI.Popups.Views.ChefFormPopup"
                xmlns:vm="clr-namespace:CrepeDuChef.ViewModels.ViewModels;assembly=CrepeDuChef.ViewModels"
-               x:DataType="vm:ChefEditorViewModel"
                xmlns:models="clr-namespace:CrepeDuChef.ViewModels.Models;assembly=CrepeDuChef.ViewModels"
+               x:DataType="vm:ChefEditorViewModel"
                x:TypeArguments="models:ChefFormData"
-               BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
-               MinimumWidthRequest="350"
-               MinimumHeightRequest="400"
+               BackgroundColor="Transparent"
                Margin="0"
                Padding="0">
 
+    <Border StyleClass="card" Padding="22" WidthRequest="340">
+        <VerticalStackLayout Spacing="16">
+            <HorizontalStackLayout Spacing="10">
+                <Image Source="icon_chef_hat.png" WidthRequest="26" HeightRequest="26" VerticalOptions="Center">
+                    <Image.Behaviors>
+                        <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource BrandLight}, Dark={StaticResource BrandDark}}" />
+                    </Image.Behaviors>
+                </Image>
+                <Label StyleClass="heading" Text="{Binding Title}" VerticalOptions="Center" LineBreakMode="WordWrap" />
+            </HorizontalStackLayout>
 
-    <Border class="chocoBorder"
-            Margin="0">
+            <VerticalStackLayout Spacing="4">
+                <Label StyleClass="caption" Text="{Binding FirstNameMsg}" />
+                <Border StyleClass="row" Stroke="{AppThemeBinding Light={StaticResource CardBorderLight}, Dark={StaticResource CardBorderDark}}" Padding="8,0">
+                    <Entry StyleClass="field" Text="{Binding FirstName}" />
+                </Border>
+            </VerticalStackLayout>
 
-        <Grid RowDefinitions="auto,auto,auto"
-              HorizontalOptions="Fill"
-              VerticalOptions="Fill">
+            <VerticalStackLayout Spacing="4">
+                <Label StyleClass="caption" Text="{Binding LastNameMsg}" />
+                <Border StyleClass="row" Stroke="{AppThemeBinding Light={StaticResource CardBorderLight}, Dark={StaticResource CardBorderDark}}" Padding="8,0">
+                    <Entry StyleClass="field" Text="{Binding LastName}" />
+                </Border>
+            </VerticalStackLayout>
 
-            <Label Grid.ColumnSpan="2"
-                   class="chocoItemLabel"
-                   FontSize="Large"
-                   FontAttributes="Bold"
-                   FontFamily="SalonDuChocolat"
-                   LineBreakMode="WordWrap"
-                   MaxLines="2"
-                   Text="{Binding Title}"
-                   Margin="10,0,10,40"/>
-
-
-            <Grid Grid.Row="1" RowDefinitions="auto,auto"
-                    ColumnDefinitions="auto,auto"
-                    ColumnSpacing="10"
-                    RowSpacing="10"
-                    HorizontalOptions="Center">
-
-                <Label class="chocoItemLabel" Grid.Row="0"
-                            Text="{Binding FirstNameMsg}" 
-                            VerticalOptions="Center" 
-                            HorizontalOptions="Fill"/>
-
-                <Entry Grid.Row="0" Grid.Column="1"
-                            Placeholder=""
-                            Text="{Binding FirstName}"
-                            class="chocoEntryPopup"
-                            x:Name="FirstNameEntry"/>
-
-                <Label class="chocoItemLabel" 
-                            Grid.Row="1" 
-                            Text="{Binding LastNameMsg}"
-                            VerticalOptions="Center"/>
-
-                <Entry Grid.Row="1" Grid.Column="1"
-                            Placeholder=""
-                            WidthRequest="120"    
-                            Text="{Binding LastName}"
-                            class="chocoEntryPopup"
-                            x:Name="LastNameEntry"/>
-            </Grid>
-
-
-
-            <Grid Grid.Row="2" Grid.ColumnSpan="2"
-                  ColumnDefinitions="auto,auto" 
-                  HorizontalOptions="End"
-                  Margin="40"
-                  ColumnSpacing="5">
-
-                <Button Text="{Binding ValidateMsg}" class="chocoButtonPopup" FontAttributes="Bold" Command="{Binding SaveCommand}"/>
-
-                <Button Grid.Column="1" Text="{Binding CancelMsg}" class="chocoButtonPopup" Command="{Binding CancelCommand}"/>
-
-            </Grid>
-
-        </Grid>
+            <HorizontalStackLayout Spacing="8" HorizontalOptions="End">
+                <Button StyleClass="subtle" Text="{Binding CancelMsg}" Command="{Binding CancelCommand}" />
+                <Button StyleClass="primary" Text="{Binding ValidateMsg}" Command="{Binding SaveCommand}" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
     </Border>
-
 </toolkit:Popup>

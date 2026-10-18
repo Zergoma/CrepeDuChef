@@ -2,24 +2,15 @@
 
 namespace CrepeDuChef.Maui.Converters
 {
-    internal class IsTodayConverter : IValueConverter
+    /// <summary>
+    /// True when the (local) date is today, to highlight today's crepe party.
+    /// </summary>
+    public class IsTodayConverter : IValueConverter
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (value is DateTime dt)
-            {
-#if DEBUG
-                return DateTime.Now - dt < TimeSpan.FromMinutes(2);
-#else
-                return dt.Date == DateTime.Now.Date;
-#endif
-            }
-            return false;
-        }
+            => value is DateTime date && date.Date == DateTime.Now.Date;
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotSupportedException();
     }
 }

@@ -8,7 +8,6 @@ using CrepeDuChef.Maui.Services;
 
 using Microsoft.Extensions.Logging;
 
-using SkiaSharp.Views.Maui.Controls.Hosting;
 
 using SQLitePCL;
 
@@ -32,16 +31,12 @@ namespace CrepeDuChef.Maui
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     fonts.AddFont("Salon du Chocolat.ttf", "SalonDuChocolat");
-                    fonts.AddFont("SwirlyCanalope_PERSONAL_USE_ONLY.otf", "Swirly");
-                    fonts.AddFont("Ananda Personal Use.ttf", "Ananda");
                 });
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-            builder
-                .UseSkiaSharp()
-                .UseMauiCommunityToolkit();
+            builder.UseMauiCommunityToolkit();
             
             builder.Services.AddLocalization();
 

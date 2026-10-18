@@ -2,88 +2,82 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CrepeDuChef.Maui.MVVM.Views.ChefSettingsView"
+             xmlns:converter="clr-namespace:CrepeDuChef.Maui.Converters"
              xmlns:vm="clr-namespace:CrepeDuChef.ViewModels.ViewModels;assembly=CrepeDuChef.ViewModels"
-             xmlns:dto_application="clr-namespace:CrepeDuChef.Application.DTOs;assembly=CrepeDuChef.Application"
-             xmlns:convert="clr-namespace:CrepeDuChef.Maui.Converters"
+             xmlns:dto="clr-namespace:CrepeDuChef.Application.DTOs;assembly=CrepeDuChef.Application"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="vm:ChefSettingsViewModel"
              Title=""
-             Shell.NavBarIsVisible="True"
-             class="chocoPage">
+             StyleClass="page">
 
-    <Grid RowDefinitions="auto,*">
-        <Label Text="{Binding ChefsMsg}"
-               FontSize="50"
-               FontAttributes="Bold"
-               VerticalOptions="Center" 
-               HorizontalOptions="Center"
-               Margin="0,20,0,20"
-               FontFamily="SalonDuChocolat"
-               class="chocoLabel"/>
+    <ContentPage.Resources>
+        <converter:InitialsConverter x:Key="InitialsConverter" />
+    </ContentPage.Resources>
 
-        <Grid Grid.Row="1"
-              RowDefinitions="*,auto">
+    <Grid RowDefinitions="Auto,*" Padding="16,12" RowSpacing="14" MaximumWidthRequest="760">
 
-            <CollectionView Grid.Row="0"
-                            
-                            HorizontalOptions="Center"
-                            class="chocoCollectionView"
-                            ItemsSource="{Binding Chefs}"
-                            SelectedItem="{Binding SelectedChef}"
-                            SelectionMode="Single"
-                            
-                            SelectionChangedCommand="{Binding EditChefCommand}">
+        <Label StyleClass="title" Text="{Binding ChefsMsg}" />
 
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
-                </CollectionView.ItemsLayout>
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Chefs}" BackgroundColor="Transparent">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+            </CollectionView.ItemsLayout>
 
-                <CollectionView.EmptyView>
-                    <Border class="chocoBorder"
-                            StrokeShape="RoundRectangle 10"
-                            WidthRequest="200"
-                            HeightRequest="200">
+            <CollectionView.EmptyView>
+                <Border StyleClass="card" VerticalOptions="Start">
+                    <VerticalStackLayout Spacing="10" Padding="0,20">
+                        <Image Source="icon_chefs.png" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{StaticResource Gold}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label StyleClass="caption" Text="{Binding NoChefMsg}" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+            </CollectionView.EmptyView>
 
-                        <Label Text="{Binding NoChefMsg}"
-                               class="chocoItemLabel"
-                               HorizontalTextAlignment="Center"
-                               VerticalTextAlignment="Center"
-                               HorizontalOptions="Center" 
-                               VerticalOptions="Center"/>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="dto:ChefDto">
+                    <Border StyleClass="card" Padding="12,8">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                            <Border StyleClass="avatar">
+                                <Label StyleClass="avatarText" Text="{Binding FullName, Converter={StaticResource InitialsConverter}}" />
+                            </Border>
+
+                            <Label Grid.Column="1" StyleClass="strong" Text="{Binding FullName}" VerticalOptions="Center" />
+
+                            <ImageButton Grid.Column="2"
+                                         Source="icon_pencil.png"
+                                         WidthRequest="40" HeightRequest="40" Padding="10"
+                                         BackgroundColor="Transparent"
+                                         Command="{Binding EditChefCommand, Source={RelativeSource AncestorType={x:Type vm:ChefSettingsViewModel}}}"
+                                         CommandParameter="{Binding}"
+                                         SemanticProperties.Description="{Binding EditMsg, Source={RelativeSource AncestorType={x:Type vm:ChefSettingsViewModel}}}">
+                                <ImageButton.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" />
+                                </ImageButton.Behaviors>
+                            </ImageButton>
+                        </Grid>
                     </Border>
-                </CollectionView.EmptyView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="dto_application:ChefDto">
-                        <Border class="chocoBorder"
-                                x:Name="ItemBorder"
-                                Padding="5" 
-                                StrokeShape="RoundRectangle 10"
-                                HorizontalOptions="Center"
-                                WidthRequest="200">
-
-                            <Label Text="{Binding FullName}" HorizontalOptions="Center" VerticalOptions="Center" class ="chocoItemLabel"/>
-
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-
-            <Button Grid.Row="1"
-                    WidthRequest="90"
-                    HeightRequest="90"
-                    Margin="0,10,50,10"
-                    FontSize="50"
-                    FontAttributes="Bold"
-                    Text="+"
-                    CornerRadius="50"
-                    HorizontalOptions="End"
-                    class="chocoButton"
-                    Command="{Binding AddChefCommand}"/>
-
-        </Grid>
-
+        <!-- Floating add button -->
+        <Button Grid.Row="1"
+                StyleClass="primary"
+                ImageSource="icon_plus.png"
+                WidthRequest="64" HeightRequest="64" CornerRadius="32" Padding="0"
+                HorizontalOptions="End" VerticalOptions="End"
+                Margin="0,0,8,8"
+                SemanticProperties.Description="{Binding AddMsg}"
+                Command="{Binding AddChefCommand}">
+            <Button.Behaviors>
+                <toolkit:IconTintColorBehavior TintColor="White" />
+            </Button.Behaviors>
+            <Button.Shadow>
+                <Shadow Brush="#E03131" Offset="0,6" Radius="16" Opacity="0.35" />
+            </Button.Shadow>
+        </Button>
     </Grid>
-
-
 </ContentPage>

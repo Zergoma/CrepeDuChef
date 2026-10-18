@@ -16,7 +16,7 @@ namespace CrepeDuChef.Maui.UI.Popups.Core
             {
                 Shape = new RoundRectangle
                 {
-                    CornerRadius = new CornerRadius(12),
+                    CornerRadius = new CornerRadius(18),
                     Stroke = Colors.Transparent,
                     StrokeThickness = 0
                 },

@@ -7,249 +7,144 @@
              xmlns:models="clr-namespace:CrepeDuChef.ViewModels.Models;assembly=CrepeDuChef.ViewModels"
              xmlns:behaviors="clr-namespace:CrepeDuChef.Maui.Behaviors"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
-             Title=""
-             Shell.NavBarIsVisible="True"
              x:DataType="vm:CrepeSessionsViewModel"
-             class="chocoPage">
-
+             Title=""
+             StyleClass="page">
 
     <ContentPage.Resources>
-        <converter:IsTodayConverter x:Key="isTodayConv"/>
+        <converter:IsTodayConverter x:Key="IsTodayConverter" />
+        <converter:InitialsConverter x:Key="InitialsConverter" />
     </ContentPage.Resources>
 
+    <Grid RowDefinitions="Auto,Auto,*" Padding="16,12" RowSpacing="18" MaximumWidthRequest="760">
 
-    <Grid RowDefinitions="auto,.18*,.5*,.1*"
-          ColumnDefinitions=".8*,.2*"
-          HorizontalOptions="Center">
+        <!-- Draw -->
+        <Border StyleClass="card" Padding="20">
+            <VerticalStackLayout Spacing="14">
+                <Grid>
+                    <Button StyleClass="hero"
+                            Text="{Binding WhoIsTheChef}"
+                            ImageSource="icon_chef_hat.png"
+                            ContentLayout="Left,12"
+                            Command="{Binding GetNewChefCommand}"
+                            IsEnabled="{Binding CanUpdate}">
+                        <Button.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="White" />
+                        </Button.Behaviors>
+                    </Button>
 
-        <Label Text="{Binding CrepeDuChef_title}"
-               VerticalOptions="Start" 
-               HorizontalOptions="Center" 
-               FontSize="50"
-               Margin="0,20"
-               FontAttributes="Bold"
-               FontFamily="SalonDuChocolat"
-               class="chocoLabel"/>
+                    <!-- Over the button while loading only, and never catching taps -->
+                    <ActivityIndicator Color="White"
+                                       HeightRequest="40"
+                                       WidthRequest="40"
+                                       InputTransparent="True"
+                                       IsVisible="{Binding IsUpdating}"
+                                       IsRunning="{Binding IsUpdating}" />
+                </Grid>
 
-        <Grid Grid.Row="1" 
-              RowDefinitions="auto, auto">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                    <Label StyleClass="caption" Text="{Binding PresentChefsMsg}" VerticalOptions="Center" />
+                    <Button Grid.Column="1"
+                            StyleClass="secondary"
+                            Text="{Binding ChefsAwayMsg}"
+                            ImageSource="icon_away.png"
+                            ContentLayout="Left,8"
+                            Command="{Binding SelectAvailableChefsCommand}"
+                            IsVisible="{Binding IsMoreThanOneChef}">
+                        <Button.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource OnGoldLight}, Dark={StaticResource OnGoldDark}}" />
+                        </Button.Behaviors>
+                    </Button>
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
 
-            <Button Grid.Row="0"
-                    class="chocoButton"
-                    HeightRequest="80"
-                    CornerRadius="20"
-                    Text="{Binding WhoIsTheChef}"
-                    LineBreakMode="WordWrap"
-                    FontFamily="Swirly"
-                    FontSize="40"
-                    IsEnabled="{Binding CanUpdate}"
-                    Command="{Binding GetNewChefCommand}"
-                    IsVisible="{Binding CanUpdate}"
-                    Margin="0,0,0,5"/>
-
-            <Button Grid.Row="1"
-                    Text="{Binding ChefsAwayMsg}"
-                    Command="{Binding SelectAvailableChefsCommand}"
-                    HorizontalOptions="End"
-                    IsVisible="{Binding IsMoreThanOneChef}"
-                    class="chocoAbsent"/>
-
-        </Grid>
-
-        <ActivityIndicator Grid.Row="1" 
-                           Color="#FADE05"
-                           HeightRequest="85"
-                           WidthRequest="85"
-                           InputTransparent="True"
-                           IsVisible="{Binding IsUpdating}"
-                           IsRunning="{Binding IsUpdating}"/>
-
-        <Grid Grid.Row="2">
-            <Border Grid.Row="1"
-                    Margin="10"
-                    class="chocoOuterBorderCollectionView"
->
-
-                <CollectionView ItemsSource="{Binding Sessions}"
-                                IsGrouped="True">
-
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
-                    </CollectionView.ItemsLayout>
-
-                    <CollectionView.EmptyViewTemplate>
-                        <DataTemplate>
-                            <Border class="chocoBorder"
-                                    StrokeShape="RoundRectangle 10"
-                                    HeightRequest="300">
-
-                                <Label Text="{Binding NoSessionInDb}"
-                                       class="chocoItemLabel"
-                                       HorizontalTextAlignment="Center"
-                                       VerticalTextAlignment="Center"
-                                       HorizontalOptions="Center" 
-                                       VerticalOptions="Center"/>
-
-                            </Border>
-                        </DataTemplate>
-                    </CollectionView.EmptyViewTemplate>
-
-                    <!-- HEADER = Session -->
-                    <CollectionView.GroupHeaderTemplate>
-                        <DataTemplate x:DataType="models:CrepePartySessionGroup">
-
-                            <VerticalStackLayout>
-
-                                <Label Text="{Binding Title}"
-                                       FontSize="18"
-                                       FontAttributes="Bold"
-                                       Padding="10"
-                                       class="chocoLabel"/>
-
-                                <BoxView HeightRequest="1"
-                                         Margin="10,0"
-                                         class="chocoBoxview"/>
-
-                            </VerticalStackLayout>
-
-                        </DataTemplate>
-
-                    </CollectionView.GroupHeaderTemplate>
-
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:CrepePartyEntryItem">
-
-                            <Border class="chocoBorderCollectionViewItem">
-                                <Border.Triggers>
-                                    <DataTrigger TargetType="Border"
-                                                 Binding="{Binding DateLocal, Converter={StaticResource isTodayConv}}"
-                                                 Value="True">
-                                        
-                                        <Setter Property="BackgroundColor" 
-                                                Value="{AppThemeBinding Light={StaticResource TodayLight}, Dark={StaticResource Black}}" />
-                                        <Setter Property="Stroke" 
-                                                Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource TodayDark}}" />
-                                    </DataTrigger>
-                                </Border.Triggers>
-
-                                <Grid RowDefinitions="auto,auto">
-
-                                    <Label Text="{Binding ChefName}"
-                                           FontFamily="Ananda"
-                                           FontSize="15"
-                                           VerticalOptions="Center"
-                                           HorizontalOptions="Fill"
-                                           class ="chocoItemLabel">
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label"
-                                                         Binding="{Binding DateLocal, Converter={StaticResource isTodayConv}}"
-                                                         Value="True">
-                                                <Setter Property="TextColor" 
-                                                        Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource TodayDark}}" />
-                                                <Setter Property="HorizontalOptions" Value="Center"/>
-                                                <Setter Property="VerticalOptions" Value="Center"/>
-                                            </DataTrigger>
-                                        </Label.Triggers>
-
-                                        <Label.Behaviors>
-                                            <behaviors:PulseAnimationBehavior IsToday="{Binding DateLocal, Converter={StaticResource isTodayConv}}" />
-                                        </Label.Behaviors>
-                                    </Label>
-
-                                    <Grid Grid.Row="1"
-                                          RowDefinitions="auto"
-                                          HorizontalOptions="Fill">
-
-                                        <Label Grid.Row="0"
-                                               Text="{Binding DateLocal, StringFormat='{}{0:dddd dd  MMMM yyyy} {0:HH}h{0:mm}'}" 
-                                               FontSize="10"
-                                               FontAttributes="Italic"
-                                               VerticalOptions="Center" 
-                                               HorizontalOptions="End"
-                                               class="chocoItemDateLabel">
-                                            <Label.Triggers>
-                                                <DataTrigger TargetType="Label"
-                                                             Binding="{Binding DateLocal, Converter={StaticResource isTodayConv}}"
-                                                             Value="True">
-                                                    <Setter Property="IsVisible" 
-                                                             Value="False" />
-                                                </DataTrigger>
-                                            </Label.Triggers>
-                                        </Label>
-
-                                    </Grid>
-                                </Grid>
-
-                            </Border>
-
-                        </DataTemplate>
-
-                    </CollectionView.ItemTemplate>
-
-                </CollectionView>
-
-            </Border>
-
-        </Grid>
-
-        <toolkit:DockLayout Grid.Row="3">
-            <Grid ColumnDefinitions="auto, *">
-                <Switch IsToggled="{Binding ShowOnlyCurrent}"
-                        BackgroundColor="Transparent"
-                        ThumbColor="Red"
-                        HorizontalOptions="Start"
-                        VerticalOptions="Center"
-                        toolkit:DockLayout.DockPosition="Bottom">
-
-                    <Switch.Triggers>
-                        <DataTrigger TargetType="Switch"
-                                     Binding="{Binding ShowOnlyCurrent}"
-                                     Value="True">
-                            <Setter Property="OnColor" Value="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource OrangeVeryDark}}"/>
-                            <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Orange}, Dark={StaticResource TodayDark}}"/>
-                        </DataTrigger>
-
-                        <DataTrigger TargetType="Switch"
-                                     Binding="{Binding ShowOnlyCurrent}"
-                                     Value="False">
-                            <Setter Property="OffColor" Value="{AppThemeBinding Light={StaticResource DarkGray}, Dark={StaticResource TitleDark}}"/>
-                            <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource TodayDark}, Dark={StaticResource OrangeVeryDark}}"/>
-                        </DataTrigger>
-                    </Switch.Triggers>
-                </Switch>
-
-                <Label Grid.Column="1"
-                       Text="{Binding TextSwitchMessage}"
-                       VerticalOptions="Center"
-                       LineBreakMode="WordWrap"
-                       MaxLines="2"
-                       class="chocoLabel">
-                    
+        <!-- History header -->
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+            <Image Source="icon_history.png" WidthRequest="22" HeightRequest="22" VerticalOptions="Center">
+                <Image.Behaviors>
+                    <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource BrandLight}, Dark={StaticResource BrandDark}}" />
+                </Image.Behaviors>
+            </Image>
+            <Label Grid.Column="1" StyleClass="heading" Text="{Binding HistoryMsg}" VerticalOptions="Center" />
+            <HorizontalStackLayout Grid.Column="2" Spacing="6">
+                <Label StyleClass="caption" Text="{Binding TextSwitchMessage}" VerticalOptions="Center">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ToggleSwitchCommand}" />
                     </Label.GestureRecognizers>
-                    
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label"
-                                 Binding="{Binding ShowOnlyCurrent}"
-                                 Value="True">
-                            <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource TodayDark}}"/>
-                        </DataTrigger>
-
-                        <DataTrigger TargetType="Label"
-                                 Binding="{Binding ShowOnlyCurrent}"
-                                 Value="False">
-                            <Setter Property="TextColor"
-                                Value="{AppThemeBinding Light={StaticResource DarkGray}, Dark={StaticResource TitleDark}}"/>
-                        </DataTrigger>
-
-                    </Label.Triggers>
-                    
                 </Label>
-            </Grid>
-        </toolkit:DockLayout>
-    </Grid>
+                <Switch StyleClass="brand" IsToggled="{Binding ShowOnlyCurrent}" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </Grid>
 
+        <!-- Sessions -->
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Sessions}" BackgroundColor="Transparent">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="14" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.EmptyView>
+                <Border StyleClass="card" VerticalOptions="Start">
+                    <VerticalStackLayout Spacing="10" Padding="0,20">
+                        <Image Source="icon_chef_hat.png" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{StaticResource Gold}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label StyleClass="caption"
+                               Text="{Binding NoSessionInDb}"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:CrepePartySessionGroup">
+                    <Border StyleClass="card" Padding="14,12">
+                        <VerticalStackLayout Spacing="4">
+                            <Label StyleClass="sessionTitle" Text="{Binding Title}" Margin="4,0,0,4" />
+
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding}" Spacing="2">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="models:CrepePartyEntryItem">
+                                        <Border StyleClass="row">
+                                            <Border.Triggers>
+                                                <DataTrigger TargetType="Border"
+                                                             Binding="{Binding DateLocal, Converter={StaticResource IsTodayConverter}}"
+                                                             Value="True">
+                                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource TodayLight}, Dark={StaticResource TodayDark}}" />
+                                                    <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource TodayBorderLight}, Dark={StaticResource TodayBorderDark}}" />
+                                                </DataTrigger>
+                                            </Border.Triggers>
+
+                                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                                <Border StyleClass="avatar">
+                                                    <Label StyleClass="avatarText" Text="{Binding ChefName, Converter={StaticResource InitialsConverter}}" />
+                                                </Border>
+
+                                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                                    <Label StyleClass="strong" Text="{Binding ChefName}" />
+                                                    <Label StyleClass="caption" FontSize="12"
+                                                           Text="{Binding DateLocal, StringFormat='{}{0:dddd d MMMM yyyy}'}" />
+                                                </VerticalStackLayout>
+
+                                                <Border Grid.Column="2" StyleClass="badge"
+                                                        IsVisible="{Binding DateLocal, Converter={StaticResource IsTodayConverter}}">
+                                                    <Border.Behaviors>
+                                                        <behaviors:PulseBehavior IsActive="{Binding DateLocal, Converter={StaticResource IsTodayConverter}}" />
+                                                    </Border.Behaviors>
+                                                    <Label StyleClass="badgeText"
+                                                           Text="{Binding TodayMsg, Source={RelativeSource AncestorType={x:Type vm:CrepeSessionsViewModel}}}" />
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </ContentPage>

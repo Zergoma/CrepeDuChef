@@ -57,7 +57,10 @@
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#E03131" BaseSize="180,180" />
 
 		<!-- Images -->
+		<!-- icon_*.svg: Material Design Icons by Pictogrammers (Apache License 2.0), tinted at runtime -->
 		<MauiImage Include="Resources\Images\*" />
+		<!-- The icon foreground doubles as the logo shown in the flyout header (appiconfg.png) -->
+		<MauiImage Include="Resources\AppIcon\appiconfg.svg" BaseSize="128,128" />
 		
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -73,7 +76,6 @@
 		<PackageReference Include="Microsoft.Maui.Controls" />
 		<PackageReference Include="Microsoft.Maui.Essentials" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" />
-		<PackageReference Include="SkiaSharp.Extended.UI.Maui" />
 		<PackageReference Include="UraniumUI.Material" />
 	</ItemGroup>
 
