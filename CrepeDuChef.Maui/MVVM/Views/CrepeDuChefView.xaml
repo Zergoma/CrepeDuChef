@@ -3,15 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CrepeDuChef.Maui.MVVM.Views.CrepeDuChefView"
              xmlns:converter="clr-namespace:CrepeDuChef.Maui.Converters"
-             xmlns:vm="clr-namespace:CrepeDuChef.Maui.MVVM.ViewModels"
-             xmlns:model_ui="clr-namespace:CrepeDuChef.Maui.Models.UI"
-             xmlns:model_application="clr-namespace:CrepeDuChef.Application.Models;assembly=CrepeDuChef.Application"
+             xmlns:vm="clr-namespace:CrepeDuChef.ViewModels.ViewModels;assembly=CrepeDuChef.ViewModels"
+             xmlns:models="clr-namespace:CrepeDuChef.ViewModels.Models;assembly=CrepeDuChef.ViewModels"
              xmlns:behaviors="clr-namespace:CrepeDuChef.Maui.Behaviors"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
              Title=""
              Shell.NavBarIsVisible="True"
-             x:DataType="vm:CrepeSessionsViewModel_MauiAdapter"
+             x:DataType="vm:CrepeSessionsViewModel"
              class="chocoPage">
 
 
@@ -24,7 +23,7 @@
           ColumnDefinitions=".8*,.2*"
           HorizontalOptions="Center">
 
-        <Label Text="{Binding Shared.CrepeDuChef_title}"
+        <Label Text="{Binding CrepeDuChef_title}"
                VerticalOptions="Start" 
                HorizontalOptions="Center" 
                FontSize="50"
@@ -40,20 +39,20 @@
                     class="chocoButton"
                     HeightRequest="80"
                     CornerRadius="20"
-                    Text="{Binding Shared.WhoIsTheChef}"
+                    Text="{Binding WhoIsTheChef}"
                     LineBreakMode="WordWrap"
                     FontFamily="Swirly"
                     FontSize="40"
-                    IsEnabled="{Binding Shared.CanUpdate}"
-                    Command="{Binding Shared.GetNewChefCommand}"
-                    IsVisible="{Binding Shared.CanUpdate}"
+                    IsEnabled="{Binding CanUpdate}"
+                    Command="{Binding GetNewChefCommand}"
+                    IsVisible="{Binding CanUpdate}"
                     Margin="0,0,0,5"/>
 
             <Button Grid.Row="1"
-                    Text="{Binding Shared.UsersAway}"
-                    Command="{Binding Shared.SelectAvailableUsersCommand}"
+                    Text="{Binding UsersAway}"
+                    Command="{Binding SelectAvailableChefsCommand}"
                     HorizontalOptions="End"
-                    IsVisible="{Binding Shared.IsMoreThanOneChef}"
+                    IsVisible="{Binding IsMoreThanOneChef}"
                     class="chocoAbsent"/>
 
         </Grid>
@@ -62,7 +61,7 @@
                            Color="#FADE05"
                            HeightRequest="85"
                            WidthRequest="85"
-                           IsRunning="{Binding Shared.IsUpdating}"/>
+                           IsRunning="{Binding IsUpdating}"/>
 
         <Grid Grid.Row="2">
             <Border Grid.Row="1"
@@ -70,7 +69,7 @@
                     class="chocoOuterBorderCollectionView"
 >
 
-                <CollectionView ItemsSource="{Binding CrepeSessions}"
+                <CollectionView ItemsSource="{Binding Sessions}"
                                 IsGrouped="True">
 
                     <CollectionView.ItemsLayout>
@@ -83,7 +82,7 @@
                                     StrokeShape="RoundRectangle 10"
                                     HeightRequest="300">
 
-                                <Label Text="{Binding Shared.NoSessionInDb}"
+                                <Label Text="{Binding NoSessionInDb}"
                                        class="chocoItemLabel"
                                        HorizontalTextAlignment="Center"
                                        VerticalTextAlignment="Center"
@@ -96,7 +95,7 @@
 
                     <!-- HEADER = Session -->
                     <CollectionView.GroupHeaderTemplate>
-                        <DataTemplate x:DataType="model_ui:CrepePartyGroup">
+                        <DataTemplate x:DataType="models:CrepePartySessionGroup">
 
                             <VerticalStackLayout>
 
@@ -117,7 +116,7 @@
                     </CollectionView.GroupHeaderTemplate>
 
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="model_application:CrepeDisplayItem">
+                        <DataTemplate x:DataType="models:CrepePartyEntryItem">
 
                             <Border class="chocoBorderCollectionViewItem">
                                 <Border.Triggers>
@@ -134,7 +133,7 @@
 
                                 <Grid RowDefinitions="auto,auto">
 
-                                    <Label Text="{Binding Name}"
+                                    <Label Text="{Binding ChefName}"
                                            FontFamily="Ananda"
                                            FontSize="15"
                                            VerticalOptions="Center"
@@ -194,7 +193,7 @@
 
         <toolkit:DockLayout Grid.Row="3">
             <Grid ColumnDefinitions="auto, *">
-                <Switch IsToggled="{Binding Shared.ShowOnlyCurrent}"
+                <Switch IsToggled="{Binding ShowOnlyCurrent}"
                         BackgroundColor="Transparent"
                         ThumbColor="Red"
                         HorizontalOptions="Start"
@@ -203,14 +202,14 @@
 
                     <Switch.Triggers>
                         <DataTrigger TargetType="Switch"
-                                     Binding="{Binding Shared.ShowOnlyCurrent}"
+                                     Binding="{Binding ShowOnlyCurrent}"
                                      Value="True">
                             <Setter Property="OnColor" Value="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource OrangeVeryDark}}"/>
                             <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Orange}, Dark={StaticResource TodayDark}}"/>
                         </DataTrigger>
 
                         <DataTrigger TargetType="Switch"
-                                     Binding="{Binding Shared.ShowOnlyCurrent}"
+                                     Binding="{Binding ShowOnlyCurrent}"
                                      Value="False">
                             <Setter Property="OffColor" Value="{AppThemeBinding Light={StaticResource DarkGray}, Dark={StaticResource TitleDark}}"/>
                             <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource TodayDark}, Dark={StaticResource OrangeVeryDark}}"/>
@@ -219,26 +218,26 @@
                 </Switch>
 
                 <Label Grid.Column="1"
-                       Text="{Binding Shared.TextSwitchMessage}"
+                       Text="{Binding TextSwitchMessage}"
                        VerticalOptions="Center"
                        LineBreakMode="WordWrap"
                        MaxLines="2"
                        class="chocoLabel">
                     
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding Shared.ToggleSwitchCommand}" />
+                        <TapGestureRecognizer Command="{Binding ToggleSwitchCommand}" />
                     </Label.GestureRecognizers>
                     
                     <Label.Triggers>
                         <DataTrigger TargetType="Label"
-                                 Binding="{Binding Shared.ShowOnlyCurrent}"
+                                 Binding="{Binding ShowOnlyCurrent}"
                                  Value="True">
                             <Setter Property="TextColor"
                                     Value="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource TodayDark}}"/>
                         </DataTrigger>
 
                         <DataTrigger TargetType="Label"
-                                 Binding="{Binding Shared.ShowOnlyCurrent}"
+                                 Binding="{Binding ShowOnlyCurrent}"
                                  Value="False">
                             <Setter Property="TextColor"
                                 Value="{AppThemeBinding Light={StaticResource DarkGray}, Dark={StaticResource TitleDark}}"/>

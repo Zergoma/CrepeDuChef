@@ -1,56 +1,30 @@
 ﻿using CrepeDuChef.Application.DTOs;
-using CrepeDuChef.Application.Extensions;
-using CrepeDuChef.Application.Models;
 using CrepeDuChef.Domain.Entities;
-using CrepeDuChef.Localization.Resources;
-using Microsoft.Extensions.Localization;
 
 namespace CrepeDuChef.Application.Mappers
 {
     public static class CrepePartyMapper
     {
-        extension(CrepesPartyDto crepesPartyDto)
+        public static CrepePartySessionDto ToSessionDto(
+            IGrouping<int, CrepeParty> session,
+            IReadOnlyDictionary<Guid, Chef> chefsById)
         {
-            public CrepesParty ToEntity()
+            return new CrepePartySessionDto
             {
-                return new()
-                {
-                    Id = crepesPartyDto.Id,
-                    Date = crepesPartyDto.Date,
-                    SessionNumber = crepesPartyDto.SessionNumber,
-                    UserId = crepesPartyDto.UserId,
-                };
-            }
-        }
-
-
-
-        public static CrepePartySession ToSession(
-           IGrouping<int, CrepesParty> group,
-           Dictionary<Guid, User> chefsById)
-        {
-            IEnumerable<CrepeDisplayItem> items = group
-                .OrderByDescending(c => c.Date)
-                .Select(dto => ToDisplayItem(dto, chefsById));
-
-            return new CrepePartySession()
-            {
-                SessionNumber = group.Key,
-                Items = [.. items],
+                SessionNumber = session.Key,
+                Entries = [.. session
+                    .OrderByDescending(cp => cp.Date)
+                    .Select(cp => cp.ToEntryDto(chefsById))],
             };
         }
 
-
-        public static CrepeDisplayItem ToDisplayItem(
-            CrepesParty dto,
-            Dictionary<Guid, User> chefsById)
+        extension(CrepeParty crepeParty)
         {
-            chefsById.TryGetValue(dto.UserId, out var chef);
-
-            return new CrepeDisplayItem
+            public CrepePartyEntryDto ToEntryDto(IReadOnlyDictionary<Guid, Chef> chefsById) => new()
             {
-                Date = dto.Date,
-                Name = chef?.FullName() ?? string.Empty,
+                ChefId = crepeParty.ChefId,
+                ChefName = chefsById.TryGetValue(crepeParty.ChefId, out Chef? chef) ? chef.FullName : null,
+                DateUtc = crepeParty.Date,
             };
         }
     }

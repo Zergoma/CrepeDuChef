@@ -1,77 +1,53 @@
 ﻿using CrepeDuChef.Application.DTOs;
 using CrepeDuChef.Application.Interfaces;
 using CrepeDuChef.Application.Mappers;
-using CrepeDuChef.Application.Models;
-using CrepeDuChef.Localization.Resources;
 using CrepeDuChef.Domain.Entities;
-
-using Microsoft.Extensions.Localization;
 
 namespace CrepeDuChef.Application.Services
 {
     public class CrepePartyService : ICrepePartyService
     {
-        private readonly ICrepePartyRepository _repo;
-        private readonly IStringLocalizer<CrepePartyResources> _localizer;
+        private readonly ICrepePartyRepository _crepeParties;
+        private readonly IChefRepository _chefs;
         private readonly IDeviceIdProvider _deviceId;
         private readonly IDateTimeProvider _dateTime;
 
         public CrepePartyService(
-            ICrepePartyRepository repo,
-            IStringLocalizer<CrepePartyResources> localizer,
+            ICrepePartyRepository crepeParties,
+            IChefRepository chefs,
             IDeviceIdProvider deviceId,
             IDateTimeProvider dateTime)
         {
-            _repo = repo;
-            _localizer = localizer;
+            _crepeParties = crepeParties;
+            _chefs = chefs;
             _deviceId = deviceId;
             _dateTime = dateTime;
         }
 
-        public async Task<IEnumerable<CrepePartySession>> GetSessionsAsync()
+        public async Task<IReadOnlyList<CrepePartySessionDto>> GetSessionsAsync()
         {
-            List<CrepesParty> crepes = await _repo.GetAllCrepePartiesAsync();
-            List<User> chefs = await _repo.GetAllChefsAsync();
+            List<CrepeParty> crepeParties = await _crepeParties.GetAllAsync();
+            Dictionary<Guid, Chef> chefsById = (await _chefs.GetAllAsync()).ToDictionary(c => c.Id);
 
-            var chefsById = chefs.ToDictionary(c => c.Id);
-
-            return crepes
+            return [.. crepeParties
                 .GroupBy(cp => cp.SessionNumber)
-                .OrderByDescending(cp => cp.Key)
-                .Select(group =>
-                {
-                    CrepePartySession session =
-                        CrepePartyMapper.ToSession(group, chefsById);
-
-                    session.Title = $"{_localizer["Session"]} {session.SessionNumber}";
-
-                    foreach (var item in session.Items)
-                    {
-                        if (string.IsNullOrWhiteSpace(item.Name))
-                        {
-                            item.Name = _localizer["NoName"];
-                        }
-                    }
-
-                    return session;
-                });
+                .OrderByDescending(session => session.Key)
+                .Select(session => CrepePartyMapper.ToSessionDto(session, chefsById))];
         }
 
-        public async Task AddCrepePartyAsync(CrepesPartyDto dto)
+        public async Task AddAsync(AddCrepePartyDto crepeParty)
         {
-            CrepesParty entity =
-                dto.ToEntity();
+            CrepeParty entity = new()
+            {
+                Id = Guid.NewGuid(),
+                ChefId = crepeParty.ChefId,
+                SessionNumber = crepeParty.SessionNumber,
+                Date = _dateTime.UtcNow,
+                UpdatedAt = _dateTime.UtcNow,
+                OriginDeviceId = _deviceId.DeviceId,
+            };
 
-            entity.Id = Guid.NewGuid();
-            entity.UpdatedAt = _dateTime.UtcNow;
-            entity.OriginDeviceId = _deviceId.DeviceId;
-
-            await _repo.AddCrepePartyAsync(entity);
-        }
-
-        public async Task<List<UserDto>> GetAllChefsAsync()
-        {
-            return [.. (await _repo.GetAllChefsAsync()).Select(u => u.ToDto())];
+            await _crepeParties.AddAsync(entity);
         }
     }
 }

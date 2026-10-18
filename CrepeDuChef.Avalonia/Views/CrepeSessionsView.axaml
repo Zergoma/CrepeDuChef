@@ -3,24 +3,24 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-			 x:Class="CrepeDuChef.Avalonia.CrepeSessionsView"
-			 xmlns:vm="using:CrepeDuChef.Avalonia.ViewModels"
-			 x:DataType="vm:CrepeSessionsViewModelAvaloniaAdapter"
-			 xmlns:model_ui="using:CrepeDuChef.Avalonia.Models.UI">
+			 x:Class="CrepeDuChef.Avalonia.Views.CrepeSessionsView"
+			 xmlns:vm="using:CrepeDuChef.ViewModels.ViewModels"
+			 x:DataType="vm:CrepeSessionsViewModel"
+			 xmlns:models="using:CrepeDuChef.ViewModels.Models">
 	<Grid RowDefinitions="Auto, Auto, *" Margin="20">
 
 		<StackPanel>
 
 			<!-- Header -->
 			<TextBlock
-			Text="{Binding Shared.CrepeDuChef_title}"
+			Text="{Binding CrepeDuChef_title}"
 			FontSize="24"
 			FontWeight="Bold"
 			Margin="0 0 0 20" />
 
 			<Button
-			Content="{Binding Shared.WhoIsTheChef}"
-			Command="{Binding Shared.GetNewChefCommand}"
+			Content="{Binding WhoIsTheChef}"
+			Command="{Binding GetNewChefCommand}"
 			Width="240"
 			Height="100"
 			CornerRadius="30"
@@ -31,29 +31,29 @@
 
 
 		<StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-			<ToggleSwitch IsChecked="{Binding Shared.ShowOnlyCurrent}"
-						  OnContent="{Binding Shared.OnContentOnlyCurrentSession}"
-						  OffContent="{Binding Shared.OffOnContentAllSession}"/>
+			<ToggleSwitch IsChecked="{Binding ShowOnlyCurrent}"
+						  OnContent="{Binding OnContentOnlyCurrentSession}"
+						  OffContent="{Binding OffOnContentAllSession}"/>
 		</StackPanel>
 
 
 		<!-- Content -->
 		<Grid Grid.Row="2" ColumnDefinitions="*, Auto">
 
-			<!-- Liste des sessions -->
-			<ListBox ItemsSource="{Binding CrepeSessions}"
+			<!-- Sessions -->
+			<ListBox ItemsSource="{Binding Sessions}"
 					 Margin="0 0 20 0">
 				<ListBox.ItemTemplate>
-					<DataTemplate x:DataType="model_ui:CrepePartyGroup_Ava">
+					<DataTemplate x:DataType="models:CrepePartySessionGroup">
 						<StackPanel Margin="0 0 0 20">
 
-							<!-- Header du groupe -->
+							<!-- Session header -->
 							<TextBlock Text="{Binding Title}" FontSize="20" FontWeight="Bold" />
 
-							<!-- Items du groupe -->
-							<ItemsControl ItemsSource="{Binding Items}">
+							<!-- Session entries -->
+							<ItemsControl ItemsSource="{Binding}">
 								<ItemsControl.ItemTemplate>
-									<DataTemplate x:DataType="model_ui:CrepePartyItem_Ava">
+									<DataTemplate x:DataType="models:CrepePartyEntryItem">
 										<StackPanel Orientation="Horizontal" Margin="10 0 0 5">
 											<TextBlock Text="{Binding ChefName}" />
 											<TextBlock Text=" - " />
@@ -71,9 +71,9 @@
 			<!-- Actions -->
 			<StackPanel Grid.Column="1" Spacing="10" VerticalAlignment="Top">
 
-				<Button Content="{Binding Shared.UsersAway}"
-						Command="{Binding Shared.SelectAvailableUsersCommand}"
-						IsEnabled="{Binding Shared.IsMoreThanOneChef}" />
+				<Button Content="{Binding UsersAway}"
+						Command="{Binding SelectAvailableChefsCommand}"
+						IsEnabled="{Binding IsMoreThanOneChef}" />
 
 			</StackPanel>
 

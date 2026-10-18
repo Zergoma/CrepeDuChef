@@ -1,18 +1,20 @@
 ﻿using CrepeDuChef.Application.DTOs;
 using CrepeDuChef.Avalonia.Dialogs.Windows;
+using CrepeDuChef.ViewModels.ViewModels;
 using System.Collections.Generic;
 
 namespace CrepeDuChef.Avalonia.Dialogs.Factories
 {
     public class AvaloniaUserSelectionDialogFactory : IAvaloniaUserSelectionDialogFactory
     {
-        public IDialog<UserDto[]> Create(string title, string message, List<UserDto> allUsers, List<UserDto> selectedUsers)
+        public IDialog<IReadOnlyList<ChefDto>> Create(
+            string title,
+            string message,
+            IReadOnlyList<ChefDto> allChefs,
+            IReadOnlyList<ChefDto> selectedChefs)
         {
-            return SelectUsersDialog.Create(
-                title,
-                message,
-                allUsers,
-                selectedUsers);
+            return new SelectUsersDialog(
+                new SelectChefsDialogViewModel(title, message, allChefs, selectedChefs));
         }
     }
 }

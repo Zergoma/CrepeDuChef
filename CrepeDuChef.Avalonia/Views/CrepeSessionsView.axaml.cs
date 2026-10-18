@@ -1,13 +1,11 @@
 using Avalonia.Controls;
-using CrepeDuChef.Avalonia.ViewModels;
 
-namespace CrepeDuChef.Avalonia;
+namespace CrepeDuChef.Avalonia.Views;
 
 public partial class CrepeSessionsView : UserControl
 {
-    public CrepeSessionsView(CrepeSessionsViewModelAvaloniaAdapter vm)
+    public CrepeSessionsView()
     {
         InitializeComponent();
-        DataContext = vm;
     }
 }

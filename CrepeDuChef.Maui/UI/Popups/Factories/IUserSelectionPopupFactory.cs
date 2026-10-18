@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Maui.Views;
 using CrepeDuChef.Application.DTOs;
-using CrepeDuChef.Maui.UI.Popups.Views;
 
 namespace CrepeDuChef.Maui.UI.Popups.Factories
 {
@@ -9,7 +8,7 @@ namespace CrepeDuChef.Maui.UI.Popups.Factories
         Popup CreateSelectionPopup(
             string title,
             string message,
-            List<UserDto> allUsers,
-            List<UserDto> selectedUsers);
+            IReadOnlyList<ChefDto> allChefs,
+            IReadOnlyList<ChefDto> selectedChefs);
     }
 }

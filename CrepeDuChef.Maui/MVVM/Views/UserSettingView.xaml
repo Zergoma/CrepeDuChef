@@ -7,7 +7,7 @@
              xmlns:dto_application="clr-namespace:CrepeDuChef.Application.DTOs;assembly=CrepeDuChef.Application"
              xmlns:convert="clr-namespace:CrepeDuChef.Maui.Converters"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:DataType="vm:UserSettingViewModel"
+             x:DataType="vm:ChefSettingsViewModel"
              Title=""
              Shell.NavBarIsVisible="True"
              class="chocoPage">
@@ -29,11 +29,11 @@
                             
                             HorizontalOptions="Center"
                             class="chocoCollectionView"
-                            ItemsSource="{Binding Users}"
-                            SelectedItem="{Binding SelectedUser}"
+                            ItemsSource="{Binding Chefs}"
+                            SelectedItem="{Binding SelectedChef}"
                             SelectionMode="Single"
                             
-                            SelectionChangedCommand="{Binding UserUpdateCommand}">
+                            SelectionChangedCommand="{Binding EditChefCommand}">
 
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
@@ -55,7 +55,7 @@
                 </CollectionView.EmptyView>
 
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="dto_application:UserDto">
+                    <DataTemplate x:DataType="dto_application:ChefDto">
                         <Border class="chocoBorder"
                                 x:Name="ItemBorder"
                                 Padding="5" 
@@ -80,7 +80,7 @@
                     CornerRadius="50"
                     HorizontalOptions="End"
                     class="chocoButton"
-                    Command="{Binding AddUserCommand}"/>
+                    Command="{Binding AddChefCommand}"/>
 
         </Grid>
 

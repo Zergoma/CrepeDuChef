@@ -4,28 +4,22 @@ using System.IO;
 using System.Threading;
 
 using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 
-using CrepeDuChef.Application.Extensions;
+using CrepeDuChef.Application.DI;
 using CrepeDuChef.Application.Interfaces;
 using CrepeDuChef.Avalonia.DI;
 using CrepeDuChef.Avalonia.Services;
-using CrepeDuChef.Infrastructure.Extensions;    // for db Migrate
+using CrepeDuChef.Infrastructure.DI;
 
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
-using AppInfra = CrepeDuChef.Infrastructure;
-using avaApp = Avalonia.Application;
-
 
 namespace CrepeDuChef.Avalonia
 {
     internal class Program
     {
         public static IHost AppHost { get; private set; } = null!;
+
         // Initialization code. Don't use any Avalonia, third-party APIs or any
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.
@@ -39,57 +33,28 @@ namespace CrepeDuChef.Avalonia
 
             AppHost =
                 Host.CreateDefaultBuilder(args)
-                .ConfigureServices(
-                    services =>
-                    {
-                        services.AddLocalization();
+                .ConfigureServices(services =>
+                {
+                    services.AddLocalization();
 
-                        // Navigation
-                        services.AddSingleton<INavigationService, NavigationService>();
+                    services.AddAvaloniaWindowing();
+                    services.AddAvaloniaViewModels();
+                    services.AddAvaloniaDialogs();
+                    services.AddAvaloniaPresenters();
 
-                        // Dialog service
-                        services.AddSingleton<IDialogService, DialogService>();
+                    services.AddSingleton<IDeviceIdProvider, AvaloniaDeviceIdProvider>();
 
-                        // Main Window holder
-                        services.AddAvaloniaWindowing();
-                        
-                        // Avalonia DI modules
-                        services.AddAvaloniaViews();
-                        services.AddAvaloniaViewModels();
-                        services.AddAvaloniaDialogs();
-                        services.AddAvaloniaPresenters();
+                    string dbPath =
+                        Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                            "CrepeDuChef.db3");
 
-                        // Device GUID
-                        services.AddSingleton<IDeviceIdProvider, AvaloniaDeviceIdProvider>();
-
-
-                        // Database
-                        string dbPath =
-                            Path.Combine(
-                                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                                "CrepeDuChef.db3"
-                                );
-
-                        services.AddCrepeDuChefInfrastructure(dbPath);
-                        services.AddCrepeDuChefApplication();
-
-                        services.AddSingleton<Window>(sp =>
-                        {
-                            var lifetime =
-                                (IClassicDesktopStyleApplicationLifetime)avaApp.Current!.ApplicationLifetime!;
-
-                            return lifetime.MainWindow!;
-                        });
-
-                    })
+                    services.AddCrepeDuChefInfrastructure(dbPath);
+                    services.AddCrepeDuChefApplication();
+                })
                 .Build();
 
-            // Run EF Core migrations
-            using (var scope = AppHost.Services.CreateScope())
-            {
-                var db = scope.ServiceProvider.GetRequiredService<AppInfra.CrepeDbContext>();
-                db.Database.Migrate();
-            }
+            AppHost.Services.MigrateCrepeDuChefDatabase();
 
             BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
         }

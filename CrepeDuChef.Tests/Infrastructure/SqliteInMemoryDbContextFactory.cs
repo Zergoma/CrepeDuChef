@@ -1,4 +1,4 @@
-using CrepeDuChef.Infrastructure;
+using CrepeDuChef.Infrastructure.Persistence;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 

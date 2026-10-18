@@ -1,58 +1,43 @@
-﻿using Avalonia.Controls;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CrepeDuChef.Avalonia.Services;
-using CrepeDuChef.Avalonia.Views;
-using Loca = CrepeDuChef.Localization.Resources.languages;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+using CrepeDuChef.ViewModels.ViewModels;
 using System.Threading.Tasks;
+using Loca = CrepeDuChef.Localization.Resources.languages;
 
 namespace CrepeDuChef.Avalonia.ViewModels
 {
+    /// <summary>
+    /// Shell of the main window: holds the current page view model; MainWindow's data templates pick the view.
+    /// </summary>
     public partial class MainViewModel : ObservableObject
     {
-        private readonly IServiceProvider _provider;
-
-        private readonly INavigationService _nav;
+        private readonly CrepeSessionsViewModel _crepeSessions;
+        private readonly ChefSettingsViewModel _chefSettings;
 
         public string UsersMsg => Loca.Traduction.Users;
         public string CrepePartyMsg => Loca.Traduction.CrepeDuChef_title;
 
-
-
         [ObservableProperty]
-        public partial Control? CurrentView { get; set; }
+        public partial object? CurrentPage { get; private set; }
 
-
-        public MainViewModel(IServiceProvider provider, INavigationService nav)
+        public MainViewModel(CrepeSessionsViewModel crepeSessions, ChefSettingsViewModel chefSettings)
         {
-            _provider = provider;
-            _nav = nav;
-
-            // Subscribe to navigation notifications
-            _nav.OnNavigate += OnNavigate;
-
-            // Set the initial view
-            _nav.NavigateTo<CrepeSessionsView>();
-        }
-
-        public void OnNavigate(Type viewType)
-        {
-            CurrentView = (Control)_provider.GetRequiredService(viewType);
-        }
-
-        [RelayCommand]
-        public async Task GoToUser()
-        {
-            _nav.NavigateTo<UserSettingsView>();
+            _crepeSessions = crepeSessions;
+            _chefSettings = chefSettings;
         }
 
         [RelayCommand]
         public async Task GoToCrepeParty()
         {
-            _nav.NavigateTo<CrepeSessionsView>();
+            CurrentPage = _crepeSessions;
+            await _crepeSessions.OnAppearingAsync();
         }
 
+        [RelayCommand]
+        public async Task GoToChefs()
+        {
+            CurrentPage = _chefSettings;
+            await _chefSettings.LoadChefsCommand.ExecuteAsync(null);
+        }
     }
 }

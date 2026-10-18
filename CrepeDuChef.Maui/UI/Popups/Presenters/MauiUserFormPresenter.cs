@@ -2,14 +2,14 @@
 using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Maui.Views;
 using CrepeDuChef.Application.DTOs;
-using CrepeDuChef.Application.ValueObjects;
 using CrepeDuChef.Maui.UI.Popups.Core;
 using CrepeDuChef.Maui.UI.Popups.Factories;
-using SharedPresenters = CrepeDuChef.ViewModels.Presenters;
+using CrepeDuChef.ViewModels.Models;
+using CrepeDuChef.ViewModels.Presenters;
 
 namespace CrepeDuChef.Maui.UI.Popups.Presenters
 {
-    public class MauiUserFormPresenter : SharedPresenters.IUserFormPresenter
+    public class MauiUserFormPresenter : IChefFormPresenter
     {
         private readonly PopupCoordinator _coordinator;
         private readonly PopupOptionsFactory _options;
@@ -25,30 +25,21 @@ namespace CrepeDuChef.Maui.UI.Popups.Presenters
             _factory = factory;
         }
 
-        public Task<UserFormData?> ShowAddUserFormAsync()
+        public Task<ChefFormData?> ShowAddChefFormAsync()
             => ShowFormAsync(_factory.CreateAddUserForm);
 
-        public Task<UserFormData?> ShowUpdateUserFormAsync(UserDto user)
-            => ShowFormAsync(() => _factory.CreateUpdateUserForm(user));
+        public Task<ChefFormData?> ShowUpdateChefFormAsync(ChefDto chef)
+            => ShowFormAsync(() => _factory.CreateUpdateUserForm(chef));
 
-        private Task<UserFormData?> ShowFormAsync(Func<Popup> createPopup)
+        private Task<ChefFormData?> ShowFormAsync(Func<Popup> createPopup)
         {
-            return _coordinator.RunAsync(
-                async () =>
-                {
-                    var popup = createPopup();
+            return _coordinator.RunAsync(async () =>
+            {
+                IPopupResult<ChefFormData?> result =
+                    await Shell.Current.ShowPopupAsync<ChefFormData?>(createPopup(), _options.Create());
 
-                    IPopupResult<UserFormData?> result = 
-                        await Shell.Current.ShowPopupAsync<UserFormData?>(
-                        popup,
-                        _options.Create());
-
-                    UserFormData? res =
-                        result.Result;
-
-                    return res;
-                });
+                return result.Result;
+            });
         }
     }
-
 }

@@ -1,11 +1,11 @@
 ﻿using CrepeDuChef.Application.DTOs;
-using CrepeDuChef.Application.ValueObjects;
+using CrepeDuChef.ViewModels.Models;
 
 namespace CrepeDuChef.Avalonia.Dialogs.Factories
 {
     public interface IAvaloniaUserFormDialogFactory
     {
-        IDialog<UserFormData> CreateAddForm();
-        IDialog<UserFormData> CreateEditForm(UserDto user);
+        IDialog<ChefFormData> CreateAddForm();
+        IDialog<ChefFormData> CreateEditForm(ChefDto chef);
     }
 }

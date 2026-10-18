@@ -5,10 +5,10 @@ namespace CrepeDuChef.Avalonia.Dialogs.Factories
 {
     public interface IAvaloniaUserSelectionDialogFactory
     {
-        IDialog<UserDto[]> Create(
-        string title,
-        string message,
-        List<UserDto> allUsers,
-        List<UserDto> selectedUsers);
+        IDialog<IReadOnlyList<ChefDto>> Create(
+            string title,
+            string message,
+            IReadOnlyList<ChefDto> allChefs,
+            IReadOnlyList<ChefDto> selectedChefs);
     }
 }

@@ -6,6 +6,6 @@ namespace CrepeDuChef.Maui.UI.Popups.Factories
     public interface IUserFormPopupFactory
     {
         Popup CreateAddUserForm();
-        Popup CreateUpdateUserForm(UserDto user);
+        Popup CreateUpdateUserForm(ChefDto chef);
     }
 }

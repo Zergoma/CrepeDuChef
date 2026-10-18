@@ -1,28 +1,15 @@
 using CommunityToolkit.Maui.Views;
-using CrepeDuChef.Application.ValueObjects;
-using CrepeDuChef.Maui.UI.Popups.ViewModels;
+using CrepeDuChef.ViewModels.Models;
+using CrepeDuChef.ViewModels.ViewModels;
 
 namespace CrepeDuChef.Maui.UI.Popups.Views;
 
-public partial class UserFormPopup : Popup<UserFormData?>
+public partial class UserFormPopup : Popup<ChefFormData?>
 {
-    private readonly UserFormPopupViewModel _vm;
-
-    public UserFormPopup(
-        string firstName = "",
-        string lastName = "",
-        string title = "",
-        string validateButtonText = "")
+    public UserFormPopup(ChefEditorViewModel vm)
     {
         InitializeComponent();
-        _vm = new UserFormPopupViewModel(firstName, lastName, title, validateButtonText);
-        BindingContext = _vm;
+        BindingContext = vm;
+        vm.RequestClose += async result => await CloseAsync(result);
     }
-
-    private async void ButtonCancel_Clicked(object sender, EventArgs e)
-        => await CloseAsync(null);
-    
-
-    private async void ButtonOk_Clicked(object sender, EventArgs e)
-        => await CloseAsync(_vm.ToResult());
 }
