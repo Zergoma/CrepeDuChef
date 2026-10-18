@@ -4,39 +4,42 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:Class="CrepeDuChef.Maui.UI.Popups.Views.SelectUsersPopup"
-    xmlns:models="clr-namespace:CrepeDuChef.Maui.UI.Popups.Models"
-    x:TypeArguments="models:ChefSelectionPopupResult"
+    xmlns:popupModels="clr-namespace:CrepeDuChef.Maui.UI.Popups.Models"
+    xmlns:vm="clr-namespace:CrepeDuChef.ViewModels.ViewModels;assembly=CrepeDuChef.ViewModels"
+    xmlns:models="clr-namespace:CrepeDuChef.ViewModels.Models;assembly=CrepeDuChef.ViewModels"
+    x:TypeArguments="popupModels:ChefSelectionPopupResult"
+    x:DataType="vm:SelectChefsDialogViewModel"
     CanBeDismissedByTappingOutsideOfPopup="False">
 
     <VerticalStackLayout Padding="20" Spacing="15">
 
-        <Label x:Name="TitleLabel"
+        <Label Text="{Binding Title}"
                FontSize="20"
                FontAttributes="Bold" />
 
-        <Label x:Name="MessageLabel"
+        <Label Text="{Binding Message}"
                FontSize="14"
                TextColor="Gray" />
 
-        <CollectionView x:Name="UsersList"
-                        SelectionMode="Multiple"
+        <CollectionView ItemsSource="{Binding Chefs}"
                         HeightRequest="350">
             <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Padding="10">
-                        <Label Text="{Binding FullName}" />
-                    </Grid>
+                <DataTemplate x:DataType="models:SelectableChef">
+                    <HorizontalStackLayout Padding="10" Spacing="10">
+                        <CheckBox IsChecked="{Binding IsSelected}" />
+                        <Label Text="{Binding Chef.FullName}" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
         <HorizontalStackLayout Spacing="10" HorizontalOptions="End">
 
-            <Button Text="Annuler"
-                    Clicked="OnCancelClicked" />
+            <Button Text="{Binding CancelMsg}"
+                    Command="{Binding CancelCommand}" />
 
-            <Button Text="Valider"
-                    Clicked="OnValidateClicked" />
+            <Button Text="{Binding ValidateMsg}"
+                    Command="{Binding ValidateCommand}" />
         </HorizontalStackLayout>
 
     </VerticalStackLayout>

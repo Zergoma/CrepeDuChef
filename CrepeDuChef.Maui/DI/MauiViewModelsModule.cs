@@ -1,4 +1,5 @@
-﻿using SharedVm = CrepeDuChef.ViewModels.ViewModels;
+﻿using CrepeDuChef.Maui.MVVM.ViewModels;
+using SharedVm = CrepeDuChef.ViewModels.ViewModels;
 
 namespace CrepeDuChef.Maui.DI;
 
@@ -8,6 +9,8 @@ public static class MauiViewModelsModule
     {
         services.AddTransient<SharedVm.CrepeSessionsViewModel>();
         services.AddTransient<SharedVm.ChefSettingsViewModel>();
+
+        services.AddTransient<AppShellViewModel>();
 
         return services;
     }

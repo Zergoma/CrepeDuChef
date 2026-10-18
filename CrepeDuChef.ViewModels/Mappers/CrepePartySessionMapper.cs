@@ -10,9 +10,9 @@ namespace CrepeDuChef.ViewModels.Mappers
         {
             public CrepePartySessionGroup ToGroup() => new(
                 session.SessionNumber,
-                $"{CrepePartyResources.Session} {session.SessionNumber}",
+                $"{UiResources.Session} {session.SessionNumber}",
                 session.Entries.Select(e => new CrepePartyEntryItem(
-                    e.ChefName ?? CrepePartyResources.NoName,
+                    e.ChefName ?? UiResources.NoName,
                     e.DateUtc)));
         }
     }

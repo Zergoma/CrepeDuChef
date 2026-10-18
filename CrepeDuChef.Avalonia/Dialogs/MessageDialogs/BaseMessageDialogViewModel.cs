@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CrepeDuChef.Localization.Resources;
 using System;
 
 namespace CrepeDuChef.Avalonia.Dialogs.MessageDialogs
@@ -10,6 +11,7 @@ namespace CrepeDuChef.Avalonia.Dialogs.MessageDialogs
 
         public string Title { get; }
         public string Message { get; }
+        public string OkMsg => UiResources.Ok;
 
         public string Icon { get; }
         public string BackgroundColor { get; }

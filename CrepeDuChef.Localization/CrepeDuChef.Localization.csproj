@@ -1,35 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- Strongly typed resource classes are generated at build time, whatever the IDE -->
   <ItemGroup>
-    <Compile Update="Resources\CrepePartyResources.Designer.cs">
-      <DependentUpon>CrepePartyResources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Resources\languages\traduction.Designer.cs">
-      <DependentUpon>Traduction.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Resources\ValidationResources.Designer.cs">
-      <DependentUpon>ValidationResources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\CrepePartyResources.resx">
-      <LastGenOutput>CrepePartyResources.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\languages\Traduction.resx">
-      <LastGenOutput>traduction.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
+    <EmbeddedResource Update="Resources\UiResources.resx">
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>CrepeDuChef.Localization.Resources</StronglyTypedNamespace>
+      <StronglyTypedClassName>UiResources</StronglyTypedClassName>
+      <StronglyTypedFileName>$(IntermediateOutputPath)UiResources.g.cs</StronglyTypedFileName>
+      <PublicClass>true</PublicClass>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\ValidationResources.resx">
-      <LastGenOutput>ValidationResources.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>CrepeDuChef.Localization.Resources</StronglyTypedNamespace>
+      <StronglyTypedClassName>ValidationResources</StronglyTypedClassName>
+      <StronglyTypedFileName>$(IntermediateOutputPath)ValidationResources.g.cs</StronglyTypedFileName>
+      <PublicClass>true</PublicClass>
     </EmbeddedResource>
   </ItemGroup>
 

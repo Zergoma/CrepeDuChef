@@ -1,10 +1,13 @@
-﻿namespace CrepeDuChef.Maui
+﻿using CrepeDuChef.Maui.MVVM.ViewModels;
+
+namespace CrepeDuChef.Maui
 {
     public partial class AppShell : Shell
     {
-        public AppShell()
+        public AppShell(AppShellViewModel vm)
         {
             InitializeComponent();
+            BindingContext = vm;
         }
     }
 }

@@ -7,7 +7,6 @@
                x:DataType="vm:ChefEditorViewModel"
                xmlns:models="clr-namespace:CrepeDuChef.ViewModels.Models;assembly=CrepeDuChef.ViewModels"
                x:TypeArguments="models:ChefFormData"
-               xmlns:trad="clr-namespace:CrepeDuChef.Localization.Resources.languages;assembly=CrepeDuChef.Localization"
                BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"
                MinimumWidthRequest="350"
                MinimumHeightRequest="400"
@@ -40,7 +39,7 @@
                     HorizontalOptions="Center">
 
                 <Label class="chocoItemLabel" Grid.Row="0"
-                            Text="{Static trad:Traduction.FirstName}" 
+                            Text="{Binding FirstNameMsg}" 
                             VerticalOptions="Center" 
                             HorizontalOptions="Fill"/>
 
@@ -52,7 +51,7 @@
 
                 <Label class="chocoItemLabel" 
                             Grid.Row="1" 
-                            Text="{Static trad:Traduction.LastName}"
+                            Text="{Binding LastNameMsg}"
                             VerticalOptions="Center"/>
 
                 <Entry Grid.Row="1" Grid.Column="1"
@@ -73,7 +72,7 @@
 
                 <Button Text="{Binding ValidateMsg}" class="chocoButtonPopup" FontAttributes="Bold" Command="{Binding SaveCommand}"/>
 
-                <Button Grid.Column="1" Text="{Static trad:Traduction.Cancel}" class="chocoButtonPopup" Command="{Binding CancelCommand}"/>
+                <Button Grid.Column="1" Text="{Binding CancelMsg}" class="chocoButtonPopup" Command="{Binding CancelCommand}"/>
 
             </Grid>
 

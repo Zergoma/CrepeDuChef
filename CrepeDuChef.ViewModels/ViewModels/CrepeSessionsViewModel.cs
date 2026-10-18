@@ -7,7 +7,7 @@ using CrepeDuChef.ViewModels.Mappers;
 using CrepeDuChef.ViewModels.Models;
 using CrepeDuChef.ViewModels.Presenters;
 using System.Diagnostics;
-using Loca = CrepeDuChef.Localization.Resources.languages;
+using CrepeDuChef.Localization.Resources;
 
 namespace CrepeDuChef.ViewModels.ViewModels
 {
@@ -25,12 +25,12 @@ namespace CrepeDuChef.ViewModels.ViewModels
         private IReadOnlyList<CrepePartySessionGroup> _allSessions = [];
 
         #region Translations
-        public string CrepeDuChef_title => Loca.Traduction.CrepeDuChef_title;
-        public string WhoIsTheChef => Loca.Traduction.WhoIsTheChef;
-        public string UsersAway => Loca.Traduction.UsersAway;
-        public string NoSessionInDb => Loca.Traduction.NoSessionInDb;
-        public string OnContentOnlyCurrentSession => Loca.Traduction.ShowOnlyCurrentSession;
-        public string OffOnContentAllSession => Loca.Traduction.ShowAllSession;
+        public string CrepeDuChef_title => UiResources.CrepeDuChef_title;
+        public string WhoIsTheChef => UiResources.WhoIsTheChef;
+        public string UsersAway => UiResources.UsersAway;
+        public string NoSessionInDb => UiResources.NoSessionInDb;
+        public string OnContentOnlyCurrentSession => UiResources.ShowOnlyCurrentSession;
+        public string OffOnContentAllSession => UiResources.ShowAllSession;
         #endregion
 
         public CrepeSessionsViewModel(
@@ -135,25 +135,25 @@ namespace CrepeDuChef.ViewModels.ViewModels
                 await RefreshSessionsAsync();
 
                 await _dialogPresenter.ShowSuccessAsync(
-                    title: Loca.Traduction.Today_s_Chef,
+                    title: UiResources.Today_s_Chef,
                     message: next.Chef.FullName);
             }
             catch (NoChefException)
             {
                 await _dialogPresenter.ShowWarningAsync(
-                    title: Loca.Traduction.NoChefInDB,
-                    message: Loca.Traduction.NeedAtLeastOneChef);
+                    title: UiResources.NoChefInDB,
+                    message: UiResources.NeedAtLeastOneChef);
             }
             catch (NoChefSelectionException)
             {
                 await _dialogPresenter.ShowWarningAsync(
-                    title: Loca.Traduction.Error,
-                    message: Loca.Traduction.NoChefSelectionExceptionMessage);
+                    title: UiResources.Error,
+                    message: UiResources.NoChefSelectionExceptionMessage);
             }
             catch (Exception ex)
             {
                 await _dialogPresenter.ShowWarningAsync(
-                    title: Loca.Traduction.Error,
+                    title: UiResources.Error,
                     message: ex.Message);
             }
         }
@@ -167,8 +167,8 @@ namespace CrepeDuChef.ViewModels.ViewModels
             {
                 IReadOnlyList<ChefDto>? selected =
                     await _selectionPresenter.SelectChefsAsync(
-                        title: Loca.Traduction.ChefsPresent,
-                        message: Loca.Traduction.SelectAvailableChefs,
+                        title: UiResources.ChefsPresent,
+                        message: UiResources.SelectAvailableChefs,
                         allChefs: AllChefs,
                         selectedChefs: AvailableChefs);
 
@@ -180,8 +180,8 @@ namespace CrepeDuChef.ViewModels.ViewModels
                 if (selected.Count == 0)
                 {
                     await _dialogPresenter.ShowWarningAsync(
-                        title: Loca.Traduction.NoChefSelected,
-                        message: Loca.Traduction.SelectAtLeastOneChef);
+                        title: UiResources.NoChefSelected,
+                        message: UiResources.SelectAtLeastOneChef);
                     return;
                 }
 
@@ -189,7 +189,7 @@ namespace CrepeDuChef.ViewModels.ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"{Loca.Traduction.UnexpectedError}: {ex}");
+                Debug.WriteLine($"{UiResources.UnexpectedError}: {ex}");
             }
         }
 

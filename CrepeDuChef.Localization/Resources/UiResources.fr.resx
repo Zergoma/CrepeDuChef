@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddUser" xml:space="preserve">
-    <value>Ajouter Utilisateur</value>
-  </data>
   <data name="OperationCanceled" xml:space="preserve">
     <value>Opération annulée</value>
   </data>
@@ -150,23 +147,14 @@
   <data name="Today_s_Chef" xml:space="preserve">
     <value>Chef(fe) du jour est</value>
   </data>
-  <data name="UpdateUser" xml:space="preserve">
-    <value>Utilisateur mis à jour</value>
-  </data>
   <data name="Users" xml:space="preserve">
     <value>Utilisateurs</value>
   </data>
   <data name="UserSetting" xml:space="preserve">
     <value>Utilisateurs</value>
   </data>
-  <data name="YouMustEnterFirstAndLastName" xml:space="preserve">
-    <value>Le prénom et le nom doivent être renseignés.</value>
-  </data>
   <data name="AddAChef" xml:space="preserve">
     <value>Ajoutez un(e) chef(fe)</value>
-  </data>
-  <data name="EnterFirstAndLastName" xml:space="preserve">
-    <value>Veuillez renseigner le prénom et le nom.</value>
   </data>
   <data name="Add" xml:space="preserve">
     <value>Ajouter</value>
@@ -186,9 +174,6 @@
   <data name="UpdateAChef" xml:space="preserve">
     <value>Modifiez un(e) chef(fe)</value>
   </data>
-  <data name="UpdateFirstAndOrLastName" xml:space="preserve">
-    <value>Veuillez modifier le prénom et/ou le nom.</value>
-  </data>
   <data name="Update" xml:space="preserve">
     <value>Mettre à jour</value>
   </data>
@@ -198,14 +183,11 @@
   <data name="UsersAway" xml:space="preserve">
     <value>Utilisateur(s) absent(s) ? </value>
   </data>
-  <data name="InvalidUserFormData" xml:space="preserve">
-    <value>Les data du formulaire utilisateur sont invalides.</value>
-  </data>
   <data name="NoChefSelectionExceptionMessage" xml:space="preserve">
     <value>Échec lors de la sélection d'un(e) chef(fe)...</value>
   </data>
   <data name="Session" xml:space="preserve">
-    <value>session</value>
+    <value>Session</value>
   </data>
   <data name="ShowOnlyCurrentSession" xml:space="preserve">
     <value>Afficher uniquement la session courante</value>
@@ -219,12 +201,6 @@
   <data name="Cancel" xml:space="preserve">
     <value>Annuler</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>Fermer</value>
-  </data>
-  <data name="Title_UserEditor" xml:space="preserve">
-    <value>Éditeur d'utilisateur</value>
-  </data>
   <data name="UnexpectedError" xml:space="preserve">
     <value>Une erreur inattendue s'est produite</value>
   </data>
@@ -233,5 +209,8 @@
   </data>
   <data name="SelectAvailableChefs" xml:space="preserve">
     <value>Sélectionnez les chefs présents</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
   </data>
 </root>

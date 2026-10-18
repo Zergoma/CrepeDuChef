@@ -20,7 +20,7 @@
 				   FontWeight="Bold"/>
 
 		<!-- Add button -->
-		<Button Content="Add"
+		<Button Content="{Binding AddMsg}"
 				Command="{Binding AddChefCommand}"
 				Width="150"/>
 

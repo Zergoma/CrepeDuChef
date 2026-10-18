@@ -27,7 +27,7 @@
 						   TextWrapping="Wrap"/>
 			</StackPanel>
 
-			<Button Content="OK"
+			<Button Content="{Binding OkMsg}"
 					Command="{Binding CloseCommand}"
 					HorizontalAlignment="Right"
 					Width="60"

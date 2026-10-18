@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CrepeDuChef.ViewModels.ViewModels;
 using System.Threading.Tasks;
-using Loca = CrepeDuChef.Localization.Resources.languages;
+using CrepeDuChef.Localization.Resources;
 
 namespace CrepeDuChef.Avalonia.ViewModels
 {
@@ -14,8 +14,9 @@ namespace CrepeDuChef.Avalonia.ViewModels
         private readonly CrepeSessionsViewModel _crepeSessions;
         private readonly ChefSettingsViewModel _chefSettings;
 
-        public string UsersMsg => Loca.Traduction.Users;
-        public string CrepePartyMsg => Loca.Traduction.CrepeDuChef_title;
+        public string AppTitle => UiResources.CrepeDuChef_title;
+        public string UsersMsg => UiResources.Users;
+        public string CrepePartyMsg => UiResources.CrepeDuChef_title;
 
         [ObservableProperty]
         public partial object? CurrentPage { get; private set; }

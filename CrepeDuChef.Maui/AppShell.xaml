@@ -5,9 +5,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:CrepeDuChef.Maui"
     xmlns:view="clr-namespace:CrepeDuChef.Maui.MVVM.Views"
-    xmlns:trad="clr-namespace:CrepeDuChef.Localization.Resources.languages;assembly=CrepeDuChef.Localization"
+    xmlns:vm="clr-namespace:CrepeDuChef.Maui.MVVM.ViewModels"
+    x:DataType="vm:AppShellViewModel"
     xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
-    Title="CrepeDuChef.Maui"
+    Title="{Binding AppTitle}"
     FlyoutWidth="200"
     FlyoutBackgroundColor="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource Black}}"
     Shell.BackgroundColor="{AppThemeBinding Light={StaticResource Bric}, Dark={StaticResource Black}}"
@@ -34,17 +35,17 @@
 
 
 
-    <FlyoutItem Title="{Static trad:Traduction.CrepeDuChef_title}">
+    <FlyoutItem Title="{Binding CrepePartyMsg}">
         <Tab>
-        <ShellContent Title="{Static trad:Traduction.CrepeDuChef_title}"
+        <ShellContent Title="{Binding CrepePartyMsg}"
                       Route="CrepeDuChefView"
                       ContentTemplate="{DataTemplate view:CrepeDuChefView}"/>
         </Tab>
     </FlyoutItem>
 
-    <FlyoutItem Title="{Static trad:Traduction.UserSetting}">
+    <FlyoutItem Title="{Binding ChefsMsg}">
         <Tab>
-        <ShellContent Title="{Static trad:Traduction.UserSetting}"
+        <ShellContent Title="{Binding ChefsMsg}"
                       Route="UserSettingView"
                       ContentTemplate="{DataTemplate view:UserSettingView}"/>
         </Tab>

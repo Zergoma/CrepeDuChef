@@ -26,7 +26,7 @@
                    LineBreakMode="WordWrap"
                    Margin="10,20,10,30"/>
 
-            <Button Text="OK" class="chocoButtonPopup" Clicked="OkButton_Clicked"/>
+            <Button Text="{Binding OkMsg}" class="chocoButtonPopup" Clicked="OkButton_Clicked"/>
         </VerticalStackLayout>
     </Border>
     

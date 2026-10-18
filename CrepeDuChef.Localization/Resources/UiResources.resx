@@ -117,10 +117,100 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="OperationCanceled" xml:space="preserve">
+    <value>Operation Canceled</value>
+  </data>
+  <data name="ChefsPresent" xml:space="preserve">
+    <value>chefs in attendance:</value>
+  </data>
+  <data name="CrepeDuChef_title" xml:space="preserve">
+    <value>the chef's crepe</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="NeedAtLeastOneChef" xml:space="preserve">
+    <value>You need to add at least 1 chef</value>
+  </data>
+  <data name="NoChefInDB" xml:space="preserve">
+    <value>No chef is listed</value>
+  </data>
+  <data name="NoChefSelected" xml:space="preserve">
+    <value>No chef selected</value>
+  </data>
   <data name="NoName" xml:space="preserve">
-    <value>pas de nom</value>
+    <value>NoName</value>
+  </data>
+  <data name="SelectAtLeastOneChef" xml:space="preserve">
+    <value>You must select at least one chef.</value>
+  </data>
+  <data name="Today_s_Chef" xml:space="preserve">
+    <value>Today's Chef is</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="UserSetting" xml:space="preserve">
+    <value>User Settings</value>
+  </data>
+  <data name="AddAChef" xml:space="preserve">
+    <value>Add a chef</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>First name</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Last name</value>
+  </data>
+  <data name="Updated" xml:space="preserve">
+    <value>Updated</value>
+  </data>
+  <data name="InformationUpdated" xml:space="preserve">
+    <value>The information has been updated</value>
+  </data>
+  <data name="UpdateAChef" xml:space="preserve">
+    <value>Update a Chef</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="WhoIsTheChef" xml:space="preserve">
+    <value>Who is the Chef ?</value>
+  </data>
+  <data name="UsersAway" xml:space="preserve">
+    <value>Are there any users who aren't here?</value>
+  </data>
+  <data name="NoChefSelectionExceptionMessage" xml:space="preserve">
+    <value>Unable to select a chief.</value>
   </data>
   <data name="Session" xml:space="preserve">
     <value>session</value>
+  </data>
+  <data name="ShowOnlyCurrentSession" xml:space="preserve">
+    <value>Show only current session</value>
+  </data>
+  <data name="ShowAllSession" xml:space="preserve">
+    <value>Show all sessions</value>
+  </data>
+  <data name="NoSessionInDb" xml:space="preserve">
+    <value>No sessions saved.</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>An unexpected error has occurred</value>
+  </data>
+  <data name="Validate" xml:space="preserve">
+    <value>Validate</value>
+  </data>
+  <data name="SelectAvailableChefs" xml:space="preserve">
+    <value>Select the available chefs</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
   </data>
 </root>

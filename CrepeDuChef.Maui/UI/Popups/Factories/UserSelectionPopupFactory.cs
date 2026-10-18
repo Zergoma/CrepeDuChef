@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Views;
 using CrepeDuChef.Application.DTOs;
 using CrepeDuChef.Maui.UI.Popups.Views;
+using CrepeDuChef.ViewModels.ViewModels;
 
 namespace CrepeDuChef.Maui.UI.Popups.Factories
 {
@@ -12,7 +13,7 @@ namespace CrepeDuChef.Maui.UI.Popups.Factories
             IReadOnlyList<ChefDto> allChefs,
             IReadOnlyList<ChefDto> selectedChefs)
         {
-            return new SelectUsersPopup(title, message, allChefs, selectedChefs);
+            return new SelectUsersPopup(new SelectChefsDialogViewModel(title, message, allChefs, selectedChefs));
         }
     }
 }

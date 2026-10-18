@@ -5,7 +5,7 @@ using CrepeDuChef.Application.DTOs;
 using CrepeDuChef.Application.Interfaces;
 using CrepeDuChef.ViewModels.Models;
 using CrepeDuChef.ViewModels.Presenters;
-using Loca = CrepeDuChef.Localization.Resources.languages;
+using CrepeDuChef.Localization.Resources;
 
 namespace CrepeDuChef.ViewModels.ViewModels
 {
@@ -24,7 +24,9 @@ namespace CrepeDuChef.ViewModels.ViewModels
         [ObservableProperty]
         public partial ChefDto? SelectedChef { get; set; }
 
-        public string UserSettingMsg => Loca.Traduction.UserSetting;
+        public string UserSettingMsg => UiResources.UserSetting;
+        public string AddMsg => UiResources.Add;
+        public string NoChefMsg => UiResources.NoChefInDB;
 
         public ChefSettingsViewModel(
             IChefService chefService,
@@ -87,7 +89,7 @@ namespace CrepeDuChef.ViewModels.ViewModels
                 if (!result.IsSuccess)
                 {
                     await _dialogPresenter.ShowErrorAsync(
-                        title: Loca.Traduction.OperationCanceled,
+                        title: UiResources.OperationCanceled,
                         message: string.Join(Environment.NewLine, result.Errors));
                     return;
                 }
@@ -95,8 +97,8 @@ namespace CrepeDuChef.ViewModels.ViewModels
                 if (showSuccess)
                 {
                     await _dialogPresenter.ShowSuccessAsync(
-                        title: Loca.Traduction.Updated,
-                        message: Loca.Traduction.InformationUpdated);
+                        title: UiResources.Updated,
+                        message: UiResources.InformationUpdated);
                 }
 
                 await LoadChefs();
@@ -104,7 +106,7 @@ namespace CrepeDuChef.ViewModels.ViewModels
             catch (Exception ex)
             {
                 await _dialogPresenter.ShowErrorAsync(
-                    title: Loca.Traduction.UnexpectedError,
+                    title: UiResources.UnexpectedError,
                     message: ex.Message);
             }
         }
