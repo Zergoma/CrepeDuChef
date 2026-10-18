@@ -2,8 +2,6 @@
 using CrepeDuChef.Application.Extensions;
 using CrepeDuChef.Application.Models;
 using CrepeDuChef.Domain.Entities;
-using CrepeDuChef.Localization.Resources;
-using Microsoft.Extensions.Localization;
 
 namespace CrepeDuChef.Application.Mappers
 {

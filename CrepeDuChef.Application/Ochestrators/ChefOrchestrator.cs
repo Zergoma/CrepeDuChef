@@ -3,35 +3,42 @@ using CrepeDuChef.Application.Extensions;
 using CrepeDuChef.Application.Interfaces;
 using CrepeDuChef.Application.Mappers;
 
+using CrepeDuChef.Domain.Entities;
+
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace CrepeDuChef.Application.Services
+namespace CrepeDuChef.Application.Ochestrators
 {
-    public class ChefManagementService : IChefManagementService
+    public class ChefOrchestrator : IChefOrchestrator
     {
-        private readonly ICrepePartyRepository _repo;
         private readonly IValidator<UserDtoAdd> _addValidator;
         private readonly IValidator<UserDtoUpdate> _updateValidator;
         private readonly IDeviceIdProvider _deviceId;
-        private readonly IDateTimeProvider _dateTime;
+        private readonly IChefLocalService _chefs;
 
-        public ChefManagementService(
-            ICrepePartyRepository repo,
+        public ChefOrchestrator(
             IValidator<UserDtoAdd> addValidator,
             IValidator<UserDtoUpdate> updateValidator,
             IDeviceIdProvider deviceId,
-            IDateTimeProvider dateTime)
+            IDateTimeProvider dateTime,
+            IChefLocalService chefs)
         {
-            _repo = repo;
             _addValidator = addValidator;
             _updateValidator = updateValidator;
             _deviceId = deviceId;
-            _dateTime = dateTime;
+            _chefs = chefs;
         }
 
         public async Task<List<UserDto>> GetAllUsersAsync()
-            => [.. (await _repo.GetAllChefsAsync()).Select(u => u.ToDto())];
+        {
+            List<UserDto> usersDto = 
+                (await _chefs.GetAllChefsAsync())
+                .Select(u => u.ToDto())
+                .ToList();
+
+            return usersDto;
+        }
 
         public async Task<UserDto?> AddUserAsync(UserDtoAdd userDtoAdd)
         {
@@ -42,18 +49,15 @@ namespace CrepeDuChef.Application.Services
                 throw new ValidationException(validation.Errors);
             }
 
-            UserDto userDto = new()
+            User user = 
+                await _chefs.AddChefAsync(userDtoAdd.FirstName, userDtoAdd.LastName, _deviceId.DeviceId);
+            
+            return new()
             {
+                Id = user.Id,    
                 FirstName = userDtoAdd.FirstName,
                 LastName = userDtoAdd.LastName,
             };
-
-            var entity = userDto.ToEntity(_deviceId.DeviceId);
-            entity.Id = Guid.NewGuid();
-            entity.UpdatedAt = _dateTime.UtcNow;
-
-            await _repo.AddChefAsync(entity);
-            return userDto;
         }
 
         public async Task<UserDto?> UpdateUserAsync(UserDto user, UserDtoUpdate userUpdate)
@@ -68,10 +72,10 @@ namespace CrepeDuChef.Application.Services
                 throw new ValidationException(validation.Errors);
             }
 
-            var entity = userUpdate.ToDto().ToEntity(_deviceId.DeviceId);
-            entity.UpdatedAt = _dateTime.UtcNow;
-
-            await _repo.UpdateChefAsync(entity);
+            await _chefs.UpdateChefAsync(
+                userUpdate.Id,
+                firstName: userUpdate.FirstName,
+                lastName: userUpdate.LastName);
 
             // update fields
             user.FirstName = userUpdate.FirstName;

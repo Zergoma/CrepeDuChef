@@ -32,6 +32,7 @@
     <Project Path="CrepeDuChef.Maui/CrepeDuChef.Maui.csproj">
       <Deploy />
     </Project>
+    <Project Path="CrepeDuChef.UI.Shared/CrepeDuChef.UI.Shared.csproj" Id="d4310c09-1def-49d8-aaea-65dc1ea7d49a" />
   </Folder>
   <Project Path="CrepeDuChef.Api/CrepeDuChef.Api.csproj" />
   <Project Path="CrepeDuChef.Application/CrepeDuChef.Application.csproj" Id="ec9b46f5-0191-4571-a3ce-3e564ba6fd3c" />

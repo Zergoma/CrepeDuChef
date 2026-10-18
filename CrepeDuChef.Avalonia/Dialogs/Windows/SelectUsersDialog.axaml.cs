@@ -9,6 +9,13 @@ namespace CrepeDuChef.Avalonia.Dialogs.Windows;
 
 public partial class SelectUsersDialog : Window, IDialog<UserDto[]>
 {
+
+    // Avalonia ctor required to eleminate "Avalonia warning AVLN3001"
+    public SelectUsersDialog()
+    {
+        InitializeComponent();
+    }
+
     private SelectUsersDialog(
         string title,
         string message,

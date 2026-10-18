@@ -1,8 +1,10 @@
 ﻿using CrepeDuChef.Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
+
 using System.Diagnostics;
 
-namespace CrepeDuChef.Infrastructure
+namespace CrepeDuChef.Infrastructure.DbContexts
 {
     public class CrepeDbContext : DbContext
     {

@@ -1,20 +1,26 @@
 ﻿using CommunityToolkit.Maui;
 
 using CrepeDuChef.Application.Extensions;
-using AppInterfaces = CrepeDuChef.Application.Interfaces;
-using Infrastructure = CrepeDuChef.Infrastructure;
-
+using CrepeDuChef.Application.Interfaces;
+using CrepeDuChef.Application.DI;
+using CrepeDuChef.Application.Services;
+using CrepeDuChef.Infrastructure.DbContexts;
 using CrepeDuChef.Infrastructure.DI;
 using CrepeDuChef.Maui.DI;
-
 using CrepeDuChef.Maui.Services;
+using CrepeDuChef.UI.Shared.DI;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using SQLitePCL;
 
 using SkiaSharp.Views.Maui.Controls.Hosting;
+
+using SQLitePCL;
+
 using UraniumUI;
+
+using AppInterfaces = CrepeDuChef.Application.Interfaces;
 
 
 namespace CrepeDuChef.Maui
@@ -51,17 +57,18 @@ namespace CrepeDuChef.Maui
             builder.Services.AddTransient<App>();
             builder.Services.AddTransient<AppShell>();
 
-
             string dbPath = 
                 Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                     "CrepeDuChef.db3"
                     );
 
-            builder.Services.AddDbContextFactory<Infrastructure.CrepeDbContext>(
+
+            builder.Services.AddDbContextFactory<CrepeDbContext>(
                 options =>
                     options.UseSqlite($"Data Source={dbPath}"));
 
+            
             builder.Services.AddCrepeDuChefInfrastructure();
             builder.Services.AddCrepeDuChefApplication();
 
@@ -72,20 +79,43 @@ namespace CrepeDuChef.Maui
             builder.Services.AddMauiPopups();
             builder.Services.AddMauiPresenters();
 
+
+            // Network status
+            builder.Services.AddSingleton<INetworkStatusService, NetworkStatusService>();
+
+
+            //var config =
+            //    new ConfigurationBuilder()
+            //    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            //    .Build();
+
+            //builder.Configuration.AddConfiguration(config);
+
+            //string? apiBaseUrl = builder.Configuration["Api:BaseUrl"];
+            //ArgumentNullException.ThrowIfNullOrWhiteSpace(apiBaseUrl);
+
+
+            // Remote HTTP client
+            //builder.Services.AddCrepeClientServices(new Uri(apiBaseUrl));
+
             // Device GUID
             builder.Services.AddSingleton<AppInterfaces.IDeviceIdProvider, MauiDeviceIdProvider>();
+
+            builder.Services.AddSingleton<AppInterfaces.IChefRotationLocalService, ChefRotationLocalService>();
+
+
 
 
 #if DEBUG
             DIValidator.Validate(builder.Services);
 #endif
+            var app = builder.Build();
 
             #region Infrastructure Update
-            var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
             {
-                var db = scope.ServiceProvider.GetRequiredService<Infrastructure.CrepeDbContext>();
+                var db = scope.ServiceProvider.GetRequiredService<CrepeDbContext>();
                 db.Database.Migrate();
             }
             #endregion

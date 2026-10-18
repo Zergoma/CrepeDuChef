@@ -11,6 +11,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\CrepeDuChef.Application\CrepeDuChef.Application.csproj" />
 	  <ProjectReference Include="..\CrepeDuChef.Localization\CrepeDuChef.Localization.csproj" />
+	  <ProjectReference Include="..\CrepeDuChef.UI.Shared\CrepeDuChef.UI.Shared.csproj" />
 	</ItemGroup>
 		
 </Project>

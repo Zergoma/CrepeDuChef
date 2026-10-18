@@ -1,6 +1,6 @@
 ﻿using CrepeDuChef.Application.Interfaces;
 
-namespace CrepeDuChef.Infrastructure.Services
+namespace CrepeDuChef.Infrastructure.Providers
 {
     public class SystemDateTimeProvider : IDateTimeProvider
     {

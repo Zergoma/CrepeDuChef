@@ -9,7 +9,8 @@ namespace CrepeDuChef.Avalonia.Dialogs.Windows;
 
 public partial class UserEditorWindow : Window, IDialog<UserFormData>
 {
-    private UserEditorWindow()
+    // Avalonia ctor required to eleminate "Avalonia warning AVLN3001"
+    public UserEditorWindow()
     {
         InitializeComponent();
     }

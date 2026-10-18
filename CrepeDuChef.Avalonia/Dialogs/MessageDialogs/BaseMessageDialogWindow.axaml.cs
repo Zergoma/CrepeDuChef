@@ -7,6 +7,12 @@ namespace CrepeDuChef.Avalonia.Dialogs.Windows;
 
 public partial class BaseMessageDialogWindow : Window, IDialog
 {
+    // Avalonia ctor required to eleminate "Avalonia warning AVLN3001"
+    public BaseMessageDialogWindow()
+    {
+        InitializeComponent();
+    }
+
     public BaseMessageDialogWindow(BaseMessageDialogViewModel vm)
     {
         InitializeComponent();

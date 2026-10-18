@@ -1,6 +1,7 @@
 ﻿using CrepeDuChef.Application.DTOs;
 using CrepeDuChef.Application.Interfaces;
-using CrepeDuChef.Application.Services;
+using CrepeDuChef.Application.Models.Requests.Chefs;
+using CrepeDuChef.Application.Ochestrators;
 using CrepeDuChef.Domain.Entities;
 
 using FluentAssertions;
@@ -14,7 +15,7 @@ namespace CrepeDuChef.Tests.Application.Services
 {
     public class ChefManagementServiceTests
     {
-        private readonly ICrepePartyRepository _repo;
+        private readonly IChefLocalService _repoChefs;
         private readonly IValidator<UserDtoAdd> _addValidator;
         private readonly IValidator<UserDtoUpdate> _updateValidator;
         private readonly IDeviceIdProvider _deviceIdProvider;
@@ -27,13 +28,13 @@ namespace CrepeDuChef.Tests.Application.Services
         Guid DeviceIdTest;
         DateTime FixedNow;
 
-        private ChefManagementService CreateService()
-            => new(_repo, _addValidator, _updateValidator, _deviceIdProvider, _dateTimeProvider);
+        private ChefOrchestrator CreateService()
+            => new ChefOrchestrator(_addValidator, _updateValidator, _deviceIdProvider, _dateTimeProvider, _repoChefs);
 
 
         public ChefManagementServiceTests()
         {
-            _repo = Substitute.For<ICrepePartyRepository>();
+            _repoChefs = Substitute.For<IChefLocalService>();
             _addValidator = Substitute.For<IValidator<UserDtoAdd>>();
             _updateValidator = Substitute.For<IValidator<UserDtoUpdate>>();
             
@@ -59,7 +60,7 @@ namespace CrepeDuChef.Tests.Application.Services
         public async Task GetAllUsersAsync_Should_Return_Empty_List_When_Repo_Returns_Empty()
         {
             // Arrange
-            _repo.GetAllChefsAsync().Returns([]);
+            _repoChefs.GetAllChefsAsync().Returns([]);
 
             var service = CreateService();
 
@@ -74,7 +75,7 @@ namespace CrepeDuChef.Tests.Application.Services
         public async Task GetAllUsersAsync_Should_Map_Users_To_Dtos()
         {
             // Arrange
-            _repo.GetAllChefsAsync().Returns(
+            _repoChefs.GetAllChefsAsync().Returns(
             [
                 new User { Id = Id01Test, FirstName = "John", LastName = "Doe" },
                 new User { Id = Id02Test, FirstName = "Jane", LastName = "Smith" }
@@ -125,16 +126,14 @@ namespace CrepeDuChef.Tests.Application.Services
             var service = CreateService();
 
             // Act
-            var result = await service.AddUserAsync(dto);
+            UserDto? result = await service.AddUserAsync(dto);
 
             // Assert
             result.Should().NotBeNull();
-            result!.FirstName.Should().Be("John");
+            result.FirstName.Should().Be("John");
+            result.LastName.Should().Be("Doe");
 
-            await _repo.Received(1).AddChefAsync(Arg.Is<User>(u =>
-                u.FirstName == "John" &&
-                u.LastName == "Doe"
-            ));
+            await _repoChefs.Received(1).AddChefAsync("John","Doe", DeviceIdTest);
         }
 
         // -------------------------------------------------------
@@ -181,11 +180,7 @@ namespace CrepeDuChef.Tests.Application.Services
             result!.FirstName.Should().Be("New");
             result.LastName.Should().Be("Value");
 
-            await _repo.Received(1).UpdateChefAsync(Arg.Is<User>(u =>
-                u.Id == Id01Test &&
-                u.FirstName == "New" &&
-                u.LastName == "Value"
-            ));
+            await _repoChefs.Received(1).UpdateChefAsync(DeviceIdTest,"New","Value");
         }
 
 
@@ -209,11 +204,7 @@ namespace CrepeDuChef.Tests.Application.Services
             result.LastName.Should().Be("Value");
             result.Id.Should().Be(Id01Test);
 
-            await _repo.Received(1).UpdateChefAsync(Arg.Is<User>(u =>
-                u.Id == Id01Test &&
-                u.FirstName == "New" &&
-                u.LastName == "Value"
-            ));
+            await _repoChefs.Received(1).UpdateChefAsync(DeviceIdTest, "New", "Value");
         }
     }
 }

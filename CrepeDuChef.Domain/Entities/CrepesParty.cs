@@ -12,7 +12,7 @@ namespace CrepeDuChef.Domain.Entities
 
         // Relation vers User (clé étrangère)
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
 
         // Champs de synchro
         public DateTime UpdatedAt { get; set; }

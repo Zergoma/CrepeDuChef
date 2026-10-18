@@ -16,15 +16,15 @@
     <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Include="Avalonia.Diagnostics" >
+    <PackageReference Include="Avalonia.Diagnostics">
       <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection"  />
-	  <PackageReference Include="Microsoft.Extensions.Localization"  />
-	<PackageReference Include="Microsoft.Extensions.Localization.Abstractions"  />
-    <PackageReference Include="Microsoft.Extensions.Hosting"  />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+	  <PackageReference Include="Microsoft.Extensions.Localization" />
+	<PackageReference Include="Microsoft.Extensions.Localization.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Xaml.Behaviors" />
   </ItemGroup>
 
@@ -32,7 +32,14 @@
     <ProjectReference Include="..\CrepeDuChef.Application\CrepeDuChef.Application.csproj" />
     <ProjectReference Include="..\CrepeDuChef.Infrastructure\CrepeDuChef.Infrastructure.csproj" />
     <ProjectReference Include="..\CrepeDuChef.Localization\CrepeDuChef.Localization.csproj" />
+    <ProjectReference Include="..\CrepeDuChef.UI.Shared\CrepeDuChef.UI.Shared.csproj" />
     <ProjectReference Include="..\CrepeDuChef.ViewModels\CrepeDuChef.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 	
 	

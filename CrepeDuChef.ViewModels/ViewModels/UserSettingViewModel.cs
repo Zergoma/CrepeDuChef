@@ -25,8 +25,8 @@ namespace CrepeDuChef.ViewModels.ViewModels
         [ObservableProperty]
         public partial object? SelectedUser { get; set; } = null;
 
-        private AppContracts.IChefManagementService ChefManagementService { get; }
-        private AppContracts.IUserApplicationOrchestrator UserApplicationOrchestrator { get; }
+        private AppContracts.IChefOrchestrator ChefManagementService { get; }
+        private AppContracts.IUserOrchestrator UserApplicationOrchestrator { get; }
         public VmPresenters.IUserFormPresenter UserFormPresenter { get; }
         public VmPresenters.IDialogPresenter UserDialPresenter { get; }
 
@@ -34,8 +34,8 @@ namespace CrepeDuChef.ViewModels.ViewModels
         public string UserSettingMsg => Loca.Traduction.UserSetting;
 
         public UserSettingViewModel(
-            AppContracts.IChefManagementService chefManagementService,
-            AppContracts.IUserApplicationOrchestrator userApplicationOrchestrator,
+            AppContracts.IChefOrchestrator chefManagementService,
+            AppContracts.IUserOrchestrator userApplicationOrchestrator,
             VmPresenters.IUserFormPresenter userPopupPresenter,
             VmPresenters.IDialogPresenter userDialPresenter)
         {

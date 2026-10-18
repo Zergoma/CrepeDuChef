@@ -15,6 +15,16 @@ namespace CrepeDuChef.Application.Extensions
             {
                 return $"{user.FirstName} {user.LastName}";
             }
+
+            //public UserDto ToDto()
+            //{
+            //    return new UserDto()
+            //    {
+            //        FirstName = user.FirstName,
+            //        LastName = user.LastName,
+            //        Id = user.Id
+            //    };
+            //}
         }
     }
 }

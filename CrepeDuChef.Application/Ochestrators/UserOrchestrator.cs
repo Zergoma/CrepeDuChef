@@ -6,12 +6,12 @@ using FluentValidation;
 namespace CrepeDuChef.Application.Ochestrators
 {
 
-    public class UserApplicationOrchestrator : IUserApplicationOrchestrator
+    public class UserOrchestrator : IUserOrchestrator
     {
-        private readonly IChefManagementService _chefService;
+        private readonly IChefOrchestrator _chefService;
 
-        public UserApplicationOrchestrator(
-            IChefManagementService chefService)
+        public UserOrchestrator(
+            IChefOrchestrator chefService)
         {
             _chefService = chefService;
         }

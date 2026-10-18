@@ -7,17 +7,24 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 
-using CrepeDuChef.Application.Extensions;
-using AppInterfaces = CrepeDuChef.Application.Interfaces;
+using CrepeDuChef.Application.DI;
+using CrepeDuChef.Application.Interfaces;
 using CrepeDuChef.Avalonia.DI;
 using CrepeDuChef.Avalonia.Services;
+using CrepeDuChef.Infrastructure.DbContexts;
 using CrepeDuChef.Infrastructure.DI;
+using CrepeDuChef.UI.Shared.DI;
+using CrepeDuChef.UI.Shared.Services;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using SkiaSharp;
+
 using AppInfra = CrepeDuChef.Infrastructure;
+using AppInterfaces = CrepeDuChef.Application.Interfaces;
 using avaApp = Avalonia.Application;
 
 
@@ -39,8 +46,12 @@ namespace CrepeDuChef.Avalonia
 
             AppHost =
                 Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(config =>
+                {
+                    config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                })
                 .ConfigureServices(
-                    services =>
+                    (context, services) =>
                     {
                         services.AddLocalization();
 
@@ -59,9 +70,13 @@ namespace CrepeDuChef.Avalonia
                         services.AddAvaloniaDialogs();
                         services.AddAvaloniaPresenters();
 
+                        string? apiBaseUrl = context.Configuration["Api:BaseUrl"];
+                        ArgumentNullException.ThrowIfNullOrWhiteSpace(apiBaseUrl);
+
+                        services.AddCrepeClientServices(new Uri(apiBaseUrl));
+
                         // Device GUID
                         services.AddSingleton<AppInterfaces.IDeviceIdProvider, AvaloniaDeviceIdProvider>();
-
 
                         // Database
                         string dbPath =
@@ -69,7 +84,7 @@ namespace CrepeDuChef.Avalonia
                                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                                 "CrepeDuChef.db3"
                                 );
-                        services.AddDbContextFactory<Infrastructure.CrepeDbContext>(
+                        services.AddDbContextFactory<CrepeDbContext>(
                             options =>
                                 options.UseSqlite($"Data Source={dbPath}"));
 
@@ -90,7 +105,7 @@ namespace CrepeDuChef.Avalonia
             // Run EF Core migrations
             using (var scope = AppHost.Services.CreateScope())
             {
-                var db = scope.ServiceProvider.GetRequiredService<AppInfra.CrepeDbContext>();
+                var db = scope.ServiceProvider.GetRequiredService<CrepeDbContext>();
                 db.Database.Migrate();
             }
 

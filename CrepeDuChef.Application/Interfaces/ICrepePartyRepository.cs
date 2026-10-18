@@ -4,13 +4,7 @@ namespace CrepeDuChef.Application.Interfaces
 {
     public interface ICrepePartyRepository
     {
-        Task AddChefAsync(User user);
-        Task UpdateChefAsync(User user);
         Task AddCrepePartyAsync(CrepesParty crepeParty);
-        Task<List<User>> GetAllChefsAsync();
-        Task<User?> GetChefAsync(Guid id);
         Task<List<CrepesParty>> GetAllCrepePartiesAsync();
-        Task<List<CrepesParty>> GetCrepePartiesFromSessionAsync(int SessionNumber);
-        Task<int> GetLastSessionNumberAsync();
     }
 }

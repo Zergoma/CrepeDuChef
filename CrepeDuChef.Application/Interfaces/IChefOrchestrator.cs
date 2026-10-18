@@ -2,7 +2,7 @@
 
 namespace CrepeDuChef.Application.Interfaces
 {
-    public interface IChefManagementService
+    public interface IChefOrchestrator
     {
         Task<UserDto?> AddUserAsync(UserDtoAdd userDtoAdd);
         Task<List<UserDto>> GetAllUsersAsync();

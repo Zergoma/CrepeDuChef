@@ -1,6 +1,6 @@
 ﻿using CrepeDuChef.Domain.Interfaces;
 
-namespace CrepeDuChef.Infrastructure.Services
+namespace CrepeDuChef.Infrastructure.Providers
 {
     public class DefaultRandomProvider : IRandomProvider
     {
