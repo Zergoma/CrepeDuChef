@@ -1,0 +1,17 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- Text color and size are inherited from the window, so text inside buttons keeps the button's colors -->
+  <Style Selector=":is(Window)">
+    <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="Icon" Value="/Assets/crepeduchef.ico"/>
+  </Style>
+
+  <!-- Dialogs open centered on their owner -->
+  <Style Selector=":is(Window).dialog">
+    <Setter Property="WindowStartupLocation" Value="CenterOwner"/>
+  </Style>
+
+</Styles>

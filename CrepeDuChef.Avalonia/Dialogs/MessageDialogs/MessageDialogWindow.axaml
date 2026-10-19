@@ -1,0 +1,70 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="440" d:DesignHeight="200"
+        x:Class="CrepeDuChef.Avalonia.Dialogs.MessageDialogs.MessageDialogWindow"
+        xmlns:vm="using:CrepeDuChef.Avalonia.Dialogs.MessageDialogs"
+        x:DataType="vm:MessageDialogViewModel"
+        Title="{Binding Title}"
+        Width="440"
+        SizeToContent="Height"
+        CanResize="False"
+        Classes="dialog">
+
+  <Window.Styles>
+    <Style Selector="Border#IconBadge">
+      <Setter Property="Width" Value="48"/>
+      <Setter Property="Height" Value="48"/>
+      <Setter Property="CornerRadius" Value="24"/>
+    </Style>
+    <Style Selector="Border#IconBadge > PathIcon">
+      <Setter Property="Width" Value="24"/>
+      <Setter Property="Height" Value="24"/>
+    </Style>
+
+    <Style Selector="Window.success Border#IconBadge">
+      <Setter Property="Background" Value="{DynamicResource SuccessSoftBrush}"/>
+    </Style>
+    <Style Selector="Window.success Border#IconBadge > PathIcon">
+      <Setter Property="Data" Value="{StaticResource SuccessIcon}"/>
+      <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}"/>
+    </Style>
+
+    <Style Selector="Window.warning Border#IconBadge">
+      <Setter Property="Background" Value="{DynamicResource WarningSoftBrush}"/>
+    </Style>
+    <Style Selector="Window.warning Border#IconBadge > PathIcon">
+      <Setter Property="Data" Value="{StaticResource WarningIcon}"/>
+      <Setter Property="Foreground" Value="{DynamicResource WarningBrush}"/>
+    </Style>
+
+    <Style Selector="Window.error Border#IconBadge">
+      <Setter Property="Background" Value="{DynamicResource ErrorSoftBrush}"/>
+    </Style>
+    <Style Selector="Window.error Border#IconBadge > PathIcon">
+      <Setter Property="Data" Value="{StaticResource ErrorIcon}"/>
+      <Setter Property="Foreground" Value="{DynamicResource ErrorBrush}"/>
+    </Style>
+  </Window.Styles>
+
+  <StackPanel Margin="24" Spacing="20">
+    <Grid ColumnDefinitions="Auto,*">
+      <Border x:Name="IconBadge" VerticalAlignment="Top">
+        <PathIcon/>
+      </Border>
+
+      <StackPanel Grid.Column="1" Margin="16 2 0 0" Spacing="6">
+        <TextBlock Classes="heading" Text="{Binding Title}" TextWrapping="Wrap"/>
+        <TextBlock Text="{Binding Message}" TextWrapping="Wrap"
+                   Foreground="{DynamicResource TextSecondaryBrush}"/>
+      </StackPanel>
+    </Grid>
+
+    <Button Classes="primary" HorizontalAlignment="Right" MinWidth="96"
+            HorizontalContentAlignment="Center"
+            Content="{Binding OkMsg}"
+            Command="{Binding CloseCommand}"
+            IsDefault="True"/>
+  </StackPanel>
+</Window>

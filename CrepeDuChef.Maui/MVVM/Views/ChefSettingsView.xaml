@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CrepeDuChef.Maui.MVVM.Views.ChefSettingsView"
+             xmlns:converter="clr-namespace:CrepeDuChef.Maui.Converters"
+             xmlns:vm="clr-namespace:CrepeDuChef.ViewModels.ViewModels;assembly=CrepeDuChef.ViewModels"
+             xmlns:dto="clr-namespace:CrepeDuChef.Application.DTOs;assembly=CrepeDuChef.Application"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="vm:ChefSettingsViewModel"
+             Title=""
+             StyleClass="page">
+
+    <ContentPage.Resources>
+        <converter:InitialsConverter x:Key="InitialsConverter" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*" Padding="16,12" RowSpacing="14" MaximumWidthRequest="760">
+
+        <Label StyleClass="title" Text="{Binding ChefsMsg}" />
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Chefs}" BackgroundColor="Transparent">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.EmptyView>
+                <Border StyleClass="card" VerticalOptions="Start">
+                    <VerticalStackLayout Spacing="10" Padding="0,20">
+                        <Image Source="icon_chefs.png" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{StaticResource Gold}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label StyleClass="caption" Text="{Binding NoChefMsg}" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="dto:ChefDto">
+                    <Border StyleClass="card" Padding="12,8">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                            <Border StyleClass="avatar">
+                                <Label StyleClass="avatarText" Text="{Binding FullName, Converter={StaticResource InitialsConverter}}" />
+                            </Border>
+
+                            <Label Grid.Column="1" StyleClass="strong" Text="{Binding FullName}" VerticalOptions="Center" />
+
+                            <ImageButton Grid.Column="2"
+                                         Source="icon_pencil.png"
+                                         WidthRequest="40" HeightRequest="40" Padding="10"
+                                         BackgroundColor="Transparent"
+                                         Command="{Binding EditChefCommand, Source={RelativeSource AncestorType={x:Type vm:ChefSettingsViewModel}}}"
+                                         CommandParameter="{Binding}"
+                                         SemanticProperties.Description="{Binding EditMsg, Source={RelativeSource AncestorType={x:Type vm:ChefSettingsViewModel}}}">
+                                <ImageButton.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource TextSecondaryLight}, Dark={StaticResource TextSecondaryDark}}" />
+                                </ImageButton.Behaviors>
+                            </ImageButton>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Floating add button -->
+        <Button Grid.Row="1"
+                StyleClass="primary"
+                ImageSource="icon_plus.png"
+                WidthRequest="64" HeightRequest="64" CornerRadius="32" Padding="0"
+                HorizontalOptions="End" VerticalOptions="End"
+                Margin="0,0,8,8"
+                SemanticProperties.Description="{Binding AddMsg}"
+                Command="{Binding AddChefCommand}">
+            <Button.Behaviors>
+                <toolkit:IconTintColorBehavior TintColor="White" />
+            </Button.Behaviors>
+            <Button.Shadow>
+                <Shadow Brush="#E03131" Offset="0,6" Radius="16" Opacity="0.35" />
+            </Button.Shadow>
+        </Button>
+    </Grid>
+</ContentPage>

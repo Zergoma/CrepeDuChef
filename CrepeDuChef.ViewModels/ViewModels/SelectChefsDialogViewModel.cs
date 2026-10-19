@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CrepeDuChef.Application.DTOs;
 using CrepeDuChef.ViewModels.Models;
-using Loca = CrepeDuChef.Localization.Resources.languages;
+using CrepeDuChef.Localization.Resources;
 
 namespace CrepeDuChef.ViewModels.ViewModels
 {
@@ -17,8 +17,8 @@ namespace CrepeDuChef.ViewModels.ViewModels
         public string Message { get; }
         public IReadOnlyList<SelectableChef> Chefs { get; }
 
-        public string CancelMsg => Loca.Traduction.Cancel;
-        public string ValidateMsg => Loca.Traduction.Validate;
+        public string CancelMsg => UiResources.Cancel;
+        public string ValidateMsg => UiResources.Validate;
 
         public SelectChefsDialogViewModel(
             string title,

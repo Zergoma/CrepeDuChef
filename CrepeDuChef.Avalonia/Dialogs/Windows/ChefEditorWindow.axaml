@@ -1,0 +1,36 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="420" d:DesignHeight="300"
+        x:Class="CrepeDuChef.Avalonia.Dialogs.Windows.ChefEditorWindow"
+        xmlns:vm="using:CrepeDuChef.ViewModels.ViewModels"
+        x:DataType="vm:ChefEditorViewModel"
+        Title="{Binding Title}"
+        Width="420"
+        SizeToContent="Height"
+        CanResize="False"
+        Classes="dialog">
+
+  <StackPanel Margin="24" Spacing="18">
+    <StackPanel Orientation="Horizontal" Spacing="10">
+      <PathIcon Data="{StaticResource ChefHatIcon}" Width="24" Height="24" Foreground="{DynamicResource BrandBrush}"/>
+      <TextBlock Classes="heading" Text="{Binding Title}" VerticalAlignment="Center"/>
+    </StackPanel>
+
+    <StackPanel Spacing="6">
+      <TextBlock Classes="caption" Text="{Binding FirstNameMsg}"/>
+      <TextBox Text="{Binding FirstName}"/>
+    </StackPanel>
+
+    <StackPanel Spacing="6">
+      <TextBlock Classes="caption" Text="{Binding LastNameMsg}"/>
+      <TextBox Text="{Binding LastName}"/>
+    </StackPanel>
+
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0 6 0 0">
+      <Button Classes="subtle" Content="{Binding CancelMsg}" Command="{Binding CancelCommand}" IsCancel="True"/>
+      <Button Classes="primary" Content="{Binding ValidateMsg}" Command="{Binding SaveCommand}" IsDefault="True"/>
+    </StackPanel>
+  </StackPanel>
+</Window>

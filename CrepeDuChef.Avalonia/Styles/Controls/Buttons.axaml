@@ -1,0 +1,125 @@
+<!-- Button variants. Fluent paints the background and foreground on the template's
+     ContentPresenter for interactive states, hence the /template/ selectors. -->
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <Style Selector="Button">
+    <Setter Property="CornerRadius" Value="10"/>
+    <Setter Property="Padding" Value="16 9"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="Cursor" Value="Hand"/>
+  </Style>
+
+  <!-- Icon + label content; PathIcon does not inherit the template's text color, so each variant sets it -->
+  <Style Selector="Button PathIcon">
+    <Setter Property="Width" Value="18"/>
+    <Setter Property="Height" Value="18"/>
+  </Style>
+  <Style Selector="Button.primary PathIcon">
+    <Setter Property="Foreground" Value="{DynamicResource OnBrandBrush}"/>
+  </Style>
+  <Style Selector="Button.secondary PathIcon">
+    <Setter Property="Foreground" Value="{DynamicResource OnGoldBrush}"/>
+  </Style>
+  <Style Selector="Button.subtle PathIcon">
+    <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+  </Style>
+  <Style Selector="Button.subtle:pointerover PathIcon">
+    <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+  </Style>
+  <Style Selector="Button.nav PathIcon">
+    <Setter Property="Foreground" Value="{DynamicResource SidebarForegroundBrush}"/>
+  </Style>
+  <Style Selector="Button.nav.selected PathIcon">
+    <Setter Property="Foreground" Value="{DynamicResource SidebarSelectedForegroundBrush}"/>
+  </Style>
+
+  <!-- Primary: brand red -->
+  <Style Selector="Button.primary">
+    <Setter Property="Background" Value="{DynamicResource BrandBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource OnBrandBrush}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+  </Style>
+  <Style Selector="Button.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource BrandHoverBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource OnBrandBrush}"/>
+  </Style>
+  <Style Selector="Button.primary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource BrandPressedBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource OnBrandBrush}"/>
+  </Style>
+  <Style Selector="Button.primary:disabled /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource BrandBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource OnBrandBrush}"/>
+    <Setter Property="Opacity" Value="0.5"/>
+  </Style>
+
+  <!-- Hero: the big "who is the chef" call to action -->
+  <Style Selector="Button.hero">
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="Height" Value="84"/>
+    <Setter Property="CornerRadius" Value="20"/>
+    <Setter Property="FontFamily" Value="{StaticResource TitleFontFamily}"/>
+    <Setter Property="FontWeight" Value="Normal"/>
+    <Setter Property="FontSize" Value="34"/>
+  </Style>
+  <Style Selector="Button.hero PathIcon">
+    <Setter Property="Width" Value="34"/>
+    <Setter Property="Height" Value="34"/>
+  </Style>
+
+  <!-- Secondary: golden, for side actions -->
+  <Style Selector="Button.secondary">
+    <Setter Property="Background" Value="{DynamicResource GoldSoftBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource OnGoldBrush}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+  </Style>
+  <Style Selector="Button.secondary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource GoldSoftHoverBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource OnGoldBrush}"/>
+  </Style>
+  <Style Selector="Button.secondary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource GoldBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource OnGoldBrush}"/>
+  </Style>
+
+  <!-- Subtle: transparent, for cancel and in-row actions -->
+  <Style Selector="Button.subtle">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+  </Style>
+  <Style Selector="Button.subtle:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource SurfaceHoverBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+  </Style>
+  <Style Selector="Button.subtle:pressed /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource CardBorderBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+  </Style>
+
+  <!-- Sidebar navigation -->
+  <Style Selector="Button.nav">
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource SidebarForegroundBrush}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding" Value="14 11"/>
+    <Setter Property="FontSize" Value="15"/>
+  </Style>
+  <Style Selector="Button.nav:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource SidebarHoverBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource SidebarForegroundBrush}"/>
+  </Style>
+  <Style Selector="Button.nav.selected">
+    <Setter Property="Background" Value="{DynamicResource SidebarSelectedBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource SidebarSelectedForegroundBrush}"/>
+  </Style>
+  <Style Selector="Button.nav.selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource SidebarSelectedBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource SidebarSelectedForegroundBrush}"/>
+  </Style>
+
+</Styles>

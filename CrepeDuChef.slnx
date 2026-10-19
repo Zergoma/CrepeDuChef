@@ -38,5 +38,6 @@
   <Project Path="CrepeDuChef.Infrastructure/CrepeDuChef.Infrastructure.csproj" Id="3bed3790-52e5-4308-9963-84c0f12cc63c" />
   <Project Path="CrepeDuChef.Localization/CrepeDuChef.Localization.csproj" Id="0ad83296-ec54-4b5c-b8a8-3d3f8f04d8f8" />
   <Project Path="CrepeDuChef.Tests/CrepeDuChef.Tests.csproj" Id="8cf615a1-73c7-4f32-91b9-46b067a1f287" />
+  <Project Path="CrepeDuChef.Avalonia.Tests/CrepeDuChef.Avalonia.Tests.csproj" />
   <Project Path="CrepeDuChef.ViewModels/CrepeDuChef.ViewModels.csproj" Id="17e9a965-e6b8-4d59-a091-25d3e1e19b4e" />
 </Solution>

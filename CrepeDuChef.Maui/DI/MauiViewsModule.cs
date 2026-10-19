@@ -6,8 +6,8 @@ public static class MauiViewsModule
 {
     public static IServiceCollection AddMauiViews(this IServiceCollection services)
     {
-        services.AddTransient<CrepeDuChefView>();
-        services.AddTransient<UserSettingView>();
+        services.AddTransient<CrepeSessionsView>();
+        services.AddTransient<ChefSettingsView>();
 
         return services;
     }

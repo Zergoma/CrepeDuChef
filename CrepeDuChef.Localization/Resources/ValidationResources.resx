@@ -123,9 +123,6 @@
   <data name="FirstNameRequired" xml:space="preserve">
     <value>Firstname is required</value>
   </data>
-  <data name="IDIsNotValid" xml:space="preserve">
-    <value>ID not valid</value>
-  </data>
   <data name="LastNameLengthRange" xml:space="preserve">
     <value>Lastname lenght [1-50]</value>
   </data>

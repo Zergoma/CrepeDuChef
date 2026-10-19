@@ -28,7 +28,7 @@
 		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
 
 		<!-- Display name -->
-		<ApplicationTitle>CrepeDuChef.Maui</ApplicationTitle>
+		<ApplicationTitle>Crêpe du chef</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.crepeduchef.maui</ApplicationId>
@@ -49,16 +49,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<!-- App Icon (design source: Docs/Design/Icons/crepeduchef-icon.svg); the foreground is
+		     scaled down to stay inside the Android adaptive icon safe zone -->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" ForegroundScale="0.85" Color="#E03131" />
 
 		<!-- Splash Screen -->
-		<!--<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />-->
-		<!--<MauiSplashScreen Include="Resources\Splash\kraken.svg" Color="#FFAC00" BaseSize="128,128" />-->
-		<MauiSplashScreen Include="Resources\Splash\crepeduchef.svg" Color="#000000" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#E03131" BaseSize="180,180" />
 
 		<!-- Images -->
+		<!-- icon_*.svg: Material Design Icons by Pictogrammers (Apache License 2.0), tinted at runtime -->
 		<MauiImage Include="Resources\Images\*" />
+		<!-- The icon foreground doubles as the logo shown in the flyout header (appiconfg.png) -->
+		<MauiImage Include="Resources\AppIcon\appiconfg.svg" BaseSize="128,128" />
 		
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -68,22 +70,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <AndroidResource Remove="Gui Design\**" />
-	  <Compile Remove="Gui Design\**" />
-	  <EmbeddedResource Remove="Gui Design\**" />
-	  <MauiCss Remove="Gui Design\**" />
-	  <MauiXaml Remove="Gui Design\**" />
-	  <None Remove="Gui Design\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" />
 		<PackageReference Include="CommunityToolkit.Mvvm" />
 		<PackageReference Include="Microsoft.Extensions.Localization" />
 		<PackageReference Include="Microsoft.Maui.Controls" />
 		<PackageReference Include="Microsoft.Maui.Essentials" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" />
-		<PackageReference Include="SkiaSharp.Extended.UI.Maui" />
 		<PackageReference Include="UraniumUI.Material" />
 	</ItemGroup>
 
@@ -92,43 +84,6 @@
 	  <ProjectReference Include="..\CrepeDuChef.Infrastructure\CrepeDuChef.Infrastructure.csproj" />
 	  <ProjectReference Include="..\CrepeDuChef.Localization\CrepeDuChef.Localization.csproj" />
 	  <ProjectReference Include="..\CrepeDuChef.ViewModels\CrepeDuChef.ViewModels.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Update="MVVM\Views\CrepeDuChefView.xaml.cs">
-	    <DependentUpon>CrepeDuChefView.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="UI\Popups\Views\TitledMessagePopup.xaml.cs">
-	    <DependentUpon>TitledMessagePopup.xaml</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <MauiXaml Update="MVVM\Views\CrepeDuChefView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="MVVM\Views\UserSettingView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="UI\Popups\Views\SelectUsersPopup.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="UI\Popups\Views\TitledMessagePopup.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="UI\Popups\Views\UserFormPopup.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\CrepeDuChefColors.xaml">
-	    <Generator></Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Resources\Styles\CrepeDuChefStyles.xaml">
-	    <Generator></Generator>
-	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="Resources\Splash\kraken.svg" Color="#FF0400" BaseSize="128,128" />
 	</ItemGroup>
 
 </Project>

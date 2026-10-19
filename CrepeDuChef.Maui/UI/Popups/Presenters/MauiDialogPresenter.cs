@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Extensions;
 using CrepeDuChef.Maui.UI.Popups.Core;
 using CrepeDuChef.Maui.UI.Popups.Factories;
+using CrepeDuChef.Maui.UI.Popups.Models;
 using CrepeDuChef.Maui.UI.Popups.Views;
 using SharedPresenters = CrepeDuChef.ViewModels.Presenters;
 
@@ -23,20 +24,20 @@ namespace CrepeDuChef.Maui.UI.Popups.Presenters
         }
 
         public Task ShowSuccessAsync(string title, string message)
-            => ShowMessageAsync(title, message, Colors.GreenYellow);
+            => ShowMessageAsync(title, message, MessageKind.Success);
 
         public Task ShowErrorAsync(string title, string message)
-            => ShowMessageAsync(title, message, Colors.Orange);
+            => ShowMessageAsync(title, message, MessageKind.Error);
 
         public Task ShowWarningAsync(string title, string message)
-            => ShowMessageAsync(title, message, Colors.Yellow);
+            => ShowMessageAsync(title, message, MessageKind.Warning);
 
-        private Task ShowMessageAsync(string title, string message, Color iconColor)
+        private Task ShowMessageAsync(string title, string message, MessageKind kind)
         {
             return _coordinator.RunAsync(async () =>
             {
-                TitledMessagePopup popup =
-                    _factory.Create(title, message, iconColor);
+                MessagePopup popup =
+                    _factory.Create(title, message, kind);
 
                 await Shell.Current.ShowPopupAsync(popup, _options.Create());
             });

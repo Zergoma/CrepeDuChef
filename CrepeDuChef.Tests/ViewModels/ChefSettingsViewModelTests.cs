@@ -83,5 +83,19 @@ namespace CrepeDuChef.Tests.ViewModels
             await _chefService.Received(1).UpdateAsync(new UpdateChefDto { Id = John.Id, FirstName = "Jane", LastName = "Doe" });
             await _chefService.Received(1).GetAllAsync();
         }
+
+        [Fact]
+        public async Task EditChef_Should_Edit_The_Chef_Given_As_Parameter()
+        {
+            // Arrange: row button, no list selection
+            _formPresenter.ShowUpdateChefFormAsync(John).Returns(new ChefFormData("Jane", "Doe"));
+            _chefService.UpdateAsync(default!).ReturnsForAnyArgs(Result<ChefDto>.Success(John with { FirstName = "Jane" }));
+
+            // Act
+            await _vm.EditChefCommand.ExecuteAsync(John);
+
+            // Assert
+            await _chefService.Received(1).UpdateAsync(new UpdateChefDto { Id = John.Id, FirstName = "Jane", LastName = "Doe" });
+        }
     }
 }

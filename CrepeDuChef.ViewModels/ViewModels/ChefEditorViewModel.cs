@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CrepeDuChef.Application.DTOs;
 using CrepeDuChef.ViewModels.Models;
-using Loca = CrepeDuChef.Localization.Resources.languages;
+using CrepeDuChef.Localization.Resources;
 
 namespace CrepeDuChef.ViewModels.ViewModels
 {
@@ -27,9 +27,9 @@ namespace CrepeDuChef.ViewModels.ViewModels
         public string Title { get; }
         public string ValidateMsg { get; }
 
-        public string FirstNameMsg => Loca.Traduction.FirstName;
-        public string LastNameMsg => Loca.Traduction.LastName;
-        public string CancelMsg => Loca.Traduction.Cancel;
+        public string FirstNameMsg => UiResources.FirstName;
+        public string LastNameMsg => UiResources.LastName;
+        public string CancelMsg => UiResources.Cancel;
 
         public bool CanValidate =>
             !string.IsNullOrWhiteSpace(FirstName)
@@ -44,10 +44,10 @@ namespace CrepeDuChef.ViewModels.ViewModels
         }
 
         public static ChefEditorViewModel ForAdd()
-            => new(Loca.Traduction.AddAChef, Loca.Traduction.Add, string.Empty, string.Empty);
+            => new(UiResources.AddAChef, UiResources.Add, string.Empty, string.Empty);
 
         public static ChefEditorViewModel ForEdit(ChefDto chef)
-            => new(Loca.Traduction.UpdateAChef, Loca.Traduction.Update, chef.FirstName, chef.LastName);
+            => new(UiResources.UpdateAChef, UiResources.Update, chef.FirstName, chef.LastName);
 
         [RelayCommand]
         private void Cancel() => RequestClose?.Invoke(null);

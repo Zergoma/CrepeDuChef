@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CrepeDuChef.Maui.MVVM.Views.CrepeSessionsView"
+             xmlns:converter="clr-namespace:CrepeDuChef.Maui.Converters"
+             xmlns:vm="clr-namespace:CrepeDuChef.ViewModels.ViewModels;assembly=CrepeDuChef.ViewModels"
+             xmlns:models="clr-namespace:CrepeDuChef.ViewModels.Models;assembly=CrepeDuChef.ViewModels"
+             xmlns:behaviors="clr-namespace:CrepeDuChef.Maui.Behaviors"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="vm:CrepeSessionsViewModel"
+             Title=""
+             StyleClass="page">
+
+    <ContentPage.Resources>
+        <converter:IsTodayConverter x:Key="IsTodayConverter" />
+        <converter:InitialsConverter x:Key="InitialsConverter" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,Auto,*" Padding="16,12" RowSpacing="18" MaximumWidthRequest="760">
+
+        <!-- Draw -->
+        <Border StyleClass="card" Padding="20">
+            <VerticalStackLayout Spacing="14">
+                <Grid>
+                    <Button StyleClass="hero"
+                            Text="{Binding WhoIsTheChef}"
+                            ImageSource="icon_chef_hat.png"
+                            ContentLayout="Left,12"
+                            Command="{Binding GetNewChefCommand}"
+                            IsEnabled="{Binding CanUpdate}">
+                        <Button.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="White" />
+                        </Button.Behaviors>
+                    </Button>
+
+                    <!-- Over the button while loading only, and never catching taps -->
+                    <ActivityIndicator Color="White"
+                                       HeightRequest="40"
+                                       WidthRequest="40"
+                                       InputTransparent="True"
+                                       IsVisible="{Binding IsUpdating}"
+                                       IsRunning="{Binding IsUpdating}" />
+                </Grid>
+
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                    <Label StyleClass="caption" Text="{Binding PresentChefsMsg}" VerticalOptions="Center" />
+                    <Button Grid.Column="1"
+                            StyleClass="secondary"
+                            Text="{Binding ChefsAwayMsg}"
+                            ImageSource="icon_away.png"
+                            ContentLayout="Left,8"
+                            Command="{Binding SelectAvailableChefsCommand}"
+                            IsVisible="{Binding IsMoreThanOneChef}">
+                        <Button.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource OnGoldLight}, Dark={StaticResource OnGoldDark}}" />
+                        </Button.Behaviors>
+                    </Button>
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- History header -->
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+            <Image Source="icon_history.png" WidthRequest="22" HeightRequest="22" VerticalOptions="Center">
+                <Image.Behaviors>
+                    <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource BrandLight}, Dark={StaticResource BrandDark}}" />
+                </Image.Behaviors>
+            </Image>
+            <Label Grid.Column="1" StyleClass="heading" Text="{Binding HistoryMsg}" VerticalOptions="Center" />
+            <HorizontalStackLayout Grid.Column="2" Spacing="6">
+                <Label StyleClass="caption" Text="{Binding TextSwitchMessage}" VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ToggleSwitchCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Switch StyleClass="brand" IsToggled="{Binding ShowOnlyCurrent}" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </Grid>
+
+        <!-- Sessions -->
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Sessions}" BackgroundColor="Transparent">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="14" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.EmptyView>
+                <Border StyleClass="card" VerticalOptions="Start">
+                    <VerticalStackLayout Spacing="10" Padding="0,20">
+                        <Image Source="icon_chef_hat.png" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center">
+                            <Image.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{StaticResource Gold}" />
+                            </Image.Behaviors>
+                        </Image>
+                        <Label StyleClass="caption"
+                               Text="{Binding NoSessionInDb}"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:CrepePartySessionGroup">
+                    <Border StyleClass="card" Padding="14,12">
+                        <VerticalStackLayout Spacing="4">
+                            <Label StyleClass="sessionTitle" Text="{Binding Title}" Margin="4,0,0,4" />
+
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding}" Spacing="2">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="models:CrepePartyEntryItem">
+                                        <Border StyleClass="row">
+                                            <Border.Triggers>
+                                                <DataTrigger TargetType="Border"
+                                                             Binding="{Binding DateLocal, Converter={StaticResource IsTodayConverter}}"
+                                                             Value="True">
+                                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource TodayLight}, Dark={StaticResource TodayDark}}" />
+                                                    <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource TodayBorderLight}, Dark={StaticResource TodayBorderDark}}" />
+                                                </DataTrigger>
+                                            </Border.Triggers>
+
+                                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                                <Border StyleClass="avatar">
+                                                    <Label StyleClass="avatarText" Text="{Binding ChefName, Converter={StaticResource InitialsConverter}}" />
+                                                </Border>
+
+                                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                                    <Label StyleClass="strong" Text="{Binding ChefName}" />
+                                                    <Label StyleClass="caption" FontSize="12"
+                                                           Text="{Binding DateLocal, StringFormat='{}{0:dddd d MMMM yyyy}'}" />
+                                                </VerticalStackLayout>
+
+                                                <Border Grid.Column="2" StyleClass="badge"
+                                                        IsVisible="{Binding DateLocal, Converter={StaticResource IsTodayConverter}}">
+                                                    <Border.Behaviors>
+                                                        <behaviors:PulseBehavior IsActive="{Binding DateLocal, Converter={StaticResource IsTodayConverter}}" />
+                                                    </Border.Behaviors>
+                                                    <Label StyleClass="badgeText"
+                                                           Text="{Binding TodayMsg, Source={RelativeSource AncestorType={x:Type vm:CrepeSessionsViewModel}}}" />
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

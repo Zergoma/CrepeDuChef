@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="CrepeDuChef.Maui.UI.Popups.Views.SelectChefsPopup"
+    xmlns:popupModels="clr-namespace:CrepeDuChef.Maui.UI.Popups.Models"
+    xmlns:vm="clr-namespace:CrepeDuChef.ViewModels.ViewModels;assembly=CrepeDuChef.ViewModels"
+    xmlns:models="clr-namespace:CrepeDuChef.ViewModels.Models;assembly=CrepeDuChef.ViewModels"
+    xmlns:converter="clr-namespace:CrepeDuChef.Maui.Converters"
+    x:TypeArguments="popupModels:ChefSelectionPopupResult"
+    x:DataType="vm:SelectChefsDialogViewModel"
+    BackgroundColor="Transparent"
+    Margin="0"
+    Padding="0"
+    CanBeDismissedByTappingOutsideOfPopup="False">
+
+    <toolkit:Popup.Resources>
+        <converter:InitialsConverter x:Key="InitialsConverter" />
+    </toolkit:Popup.Resources>
+
+    <Border StyleClass="card" Padding="22" WidthRequest="340">
+        <VerticalStackLayout Spacing="14">
+            <VerticalStackLayout Spacing="4">
+                <HorizontalStackLayout Spacing="10">
+                    <Image Source="icon_chefs.png" WidthRequest="26" HeightRequest="26" VerticalOptions="Center">
+                        <Image.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding Light={StaticResource BrandLight}, Dark={StaticResource BrandDark}}" />
+                        </Image.Behaviors>
+                    </Image>
+                    <Label StyleClass="heading" Text="{Binding Title}" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <Label StyleClass="caption" Text="{Binding Message}" LineBreakMode="WordWrap" />
+            </VerticalStackLayout>
+
+            <CollectionView ItemsSource="{Binding Chefs}" MaximumHeightRequest="320" BackgroundColor="Transparent">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:SelectableChef">
+                        <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="10" Padding="4,6">
+                            <CheckBox IsChecked="{Binding IsSelected}" VerticalOptions="Center"
+                                      Color="{AppThemeBinding Light={StaticResource BrandLight}, Dark={StaticResource BrandDark}}" />
+                            <Border Grid.Column="1" StyleClass="avatar" WidthRequest="32" HeightRequest="32" StrokeShape="RoundRectangle 16">
+                                <Label StyleClass="avatarText" FontSize="11" Text="{Binding Chef.FullName, Converter={StaticResource InitialsConverter}}" />
+                            </Border>
+                            <Label Grid.Column="2" StyleClass="strong" Text="{Binding Chef.FullName}" VerticalOptions="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <HorizontalStackLayout Spacing="8" HorizontalOptions="End">
+                <Button StyleClass="subtle" Text="{Binding CancelMsg}" Command="{Binding CancelCommand}" />
+                <Button StyleClass="primary" Text="{Binding ValidateMsg}" Command="{Binding ValidateCommand}" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Border>
+</toolkit:Popup>

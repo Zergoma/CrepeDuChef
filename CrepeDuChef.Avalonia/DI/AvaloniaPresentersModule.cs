@@ -9,8 +9,8 @@ public static class AvaloniaPresentersModule
     public static IServiceCollection AddAvaloniaPresenters(this IServiceCollection services)
     {
         services.AddTransient<IDialogPresenter, AvaloniaDialogPresenter>();
-        services.AddTransient<IChefFormPresenter, AvaloniaUserFormPresenter>();
-        services.AddTransient<IChefSelectionPresenter, AvaloniaUserSelectionPresenter>();
+        services.AddTransient<IChefFormPresenter, AvaloniaChefFormPresenter>();
+        services.AddTransient<IChefSelectionPresenter, AvaloniaChefSelectionPresenter>();
 
         return services;
     }

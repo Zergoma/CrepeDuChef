@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CrepeDuChef.ViewModels.ViewModels;
 using System.Threading.Tasks;
-using Loca = CrepeDuChef.Localization.Resources.languages;
+using CrepeDuChef.Localization.Resources;
 
 namespace CrepeDuChef.Avalonia.ViewModels
 {
@@ -14,16 +14,34 @@ namespace CrepeDuChef.Avalonia.ViewModels
         private readonly CrepeSessionsViewModel _crepeSessions;
         private readonly ChefSettingsViewModel _chefSettings;
 
-        public string UsersMsg => Loca.Traduction.Users;
-        public string CrepePartyMsg => Loca.Traduction.CrepeDuChef_title;
+        public string AppTitle => UiResources.CrepeDuChef_title;
+        public string ChefsMsg => UiResources.Chefs;
+        public string CrepePartyMsg => UiResources.CrepeDuChef_title;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsCrepePartyPage))]
+        [NotifyPropertyChangedFor(nameof(IsChefsPage))]
         public partial object? CurrentPage { get; private set; }
+
+        // Highlights the matching navigation entry
+        public bool IsCrepePartyPage => CurrentPage == _crepeSessions;
+        public bool IsChefsPage => CurrentPage == _chefSettings;
 
         public MainViewModel(CrepeSessionsViewModel crepeSessions, ChefSettingsViewModel chefSettings)
         {
             _crepeSessions = crepeSessions;
             _chefSettings = chefSettings;
+        }
+
+        /// <summary>
+        /// Shows the home page, unless a page is already displayed.
+        /// </summary>
+        public async Task ShowHomeAsync()
+        {
+            if (CurrentPage is null)
+            {
+                await GoToCrepeParty();
+            }
         }
 
         [RelayCommand]

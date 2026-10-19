@@ -1,30 +1,50 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<ResourceDictionary 
+<!-- Crêpe du chef colors (same palette as the Avalonia app): brick red brand, golden crepe
+     accents, warm cream surfaces. Light/Dark pairs, used through AppThemeBinding in CrepeDuChefStyles.xaml. -->
+<ResourceDictionary
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+    <Color x:Key="BrandLight">#E03131</Color>
+    <Color x:Key="BrandDark">#F04A4A</Color>
+    <Color x:Key="BrandPressedLight">#A61E1E</Color>
+    <Color x:Key="BrandPressedDark">#D63A3A</Color>
+    <Color x:Key="OnBrand">#FFFFFF</Color>
 
-    <Color x:Key="Bric">#e03131</Color>
-    <Color x:Key="NiceBlack">#1e1e1e</Color>
+    <Color x:Key="Gold">#F4BC55</Color>
+    <Color x:Key="GoldSoftLight">#FCE8BE</Color>
+    <Color x:Key="GoldSoftDark">#4A3820</Color>
+    <Color x:Key="OnGoldLight">#7A4A10</Color>
+    <Color x:Key="OnGoldDark">#FCD78A</Color>
+    <Color x:Key="OnBadge">#5A3608</Color>
 
-    <Color x:Key="DarkGray">#343a40</Color>
-    <Color x:Key="LightGray">#ced4da</Color>
+    <Color x:Key="WindowLight">#FFF8EE</Color>
+    <Color x:Key="WindowDark">#1E1814</Color>
+    <Color x:Key="SurfaceLight">#FFFFFF</Color>
+    <Color x:Key="SurfaceDark">#2A221C</Color>
+    <Color x:Key="CardBorderLight">#F1E2C9</Color>
+    <Color x:Key="CardBorderDark">#43352A</Color>
 
-    <Color x:Key="TitleDark">#3A3A3A</Color>
-    <Color x:Key="BorderDark">#3A3A3A</Color>
+    <Color x:Key="TextPrimaryLight">#3B2A1E</Color>
+    <Color x:Key="TextPrimaryDark">#F6EBDD</Color>
+    <Color x:Key="TextSecondaryLight">#8A715C</Color>
+    <Color x:Key="TextSecondaryDark">#BFA78F</Color>
 
-    <Color x:Key="OrangeLight">#FA6937</Color>
-    <Color x:Key="OrangeDark">#FA3900</Color>
+    <Color x:Key="SidebarLight">#E03131</Color>
+    <Color x:Key="SidebarDark">#3A1D1A</Color>
+    <Color x:Key="SidebarTextLight">#FFFFFF</Color>
+    <Color x:Key="SidebarTextDark">#F6EBDD</Color>
 
+    <Color x:Key="TodayLight">#FFF1C9</Color>
+    <Color x:Key="TodayDark">#45361D</Color>
+    <Color x:Key="TodayBorderLight">#F4BC55</Color>
+    <Color x:Key="TodayBorderDark">#C9963C</Color>
 
-    <Color x:Key="Orange">#f08c00</Color>
-
-    <Color x:Key="TodayLight">#FFD700</Color>
-
-    <Color x:Key="TodayDark">#B8860B</Color>
-
-    <Color x:Key="OrangeVeryDark">#755407</Color>
-
-
+    <Color x:Key="SuccessLight">#2F9E44</Color>
+    <Color x:Key="SuccessDark">#69DB7C</Color>
+    <Color x:Key="WarningLight">#E8590C</Color>
+    <Color x:Key="WarningDark">#FFA94D</Color>
+    <Color x:Key="ErrorLight">#C92A2A</Color>
+    <Color x:Key="ErrorDark">#FF8787</Color>
 
 </ResourceDictionary>
